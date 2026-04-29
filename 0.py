@@ -12,9 +12,9 @@ BENCHMARKS_DIR = os.environ["DOWNWARD_BENCHMARKS"]
 REVISIONS = ["9cee9542ab43cb5c420237011414f127353b4535"]
 BUILDS = ["release"]
 CONFIG_NICKS = [
-    ("astar-hmax-none", ["--translator-options", "--eliminate-disjunctions=none", "--search-options", "--search", "astar(hmax())"]),
-    ("astar-hmax-all", ["--translator-options", "--eliminate-disjunctions=all", "--search-options", "--search", "astar(hmax())"]),
-    ("astar-hmax-extreme", ["--translator-options", "--eliminate-disjunctions=extreme", "--search-options", "--search", "astar(hmax())"]),
+    ("astar-hmax-none", ["--translate-options", "--eliminate-disjunctions=none", "--search-options", "--search", "astar(hmax())"]),
+    ("astar-hmax-all", ["--translate-options", "--eliminate-disjunctions=all", "--search-options", "--search", "astar(hmax())"]),
+    ("astar-hmax-extreme", ["--translate-options", "--eliminate-disjunctions=extreme", "--search-options", "--search", "astar(hmax())"]),
     #("astar-hmax", ["--search", "astar(hmax())"]),
 ]
 CONFIGS = [
