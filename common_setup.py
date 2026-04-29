@@ -27,7 +27,7 @@ def parse_args():
     return ARGPARSER.parse_args()
 
 ARGS = parse_args()
-
+DEBUG_SUITE = ['explode-5']
 DISJUNCTION_SUITE = ['assembly', 'miconic-fulladl', 'recharging-robots-sat23-adl', 'explode-5']
 DISJUNCTION_DERIVED_SUITE = ['philosophers', 'psr-middle', 'optical-telegraphs',]
 
