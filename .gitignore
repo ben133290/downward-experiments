@@ -1,5 +1,5 @@
-./data/*/
-!./data/*-eval/
+data/*/
+!data/*-eval/
 
 
 # Byte-compiled / optimized / DLL files
