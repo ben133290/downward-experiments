@@ -12,7 +12,9 @@ BENCHMARKS_DIR = os.environ["DOWNWARD_BENCHMARKS"]
 REVISIONS = ["9cee9542ab43cb5c420237011414f127353b4535"]
 BUILDS = ["release"]
 CONFIG_NICKS = [
-    ("astar-blind", ["--search", "astar(blind())"]),
+    ("astar-hmax-none", ["--translator-options", "--eliminate-disjunctions=none", "--search-options", "--search", "astar(hmax())"]),
+    ("astar-hmax-all", ["--translator-options", "--eliminate-disjunctions=all", "--search-options", "--search", "astar(hmax())"]),
+    ("astar-hmax-extreme", ["--translator-options", "--eliminate-disjunctions=extreme", "--search-options", "--search", "astar(hmax())"]),
     #("astar-hmax", ["--search", "astar(hmax())"]),
 ]
 CONFIGS = [
@@ -20,12 +22,11 @@ CONFIGS = [
         nick=config_nick,
         component_options=config,
         build_options=[build],
-        driver_options=['--search-time-limit', '5m', "--build", build])
+        driver_options=['--search-time-limit', '10m', "--build", build])
     for build in BUILDS
     for config_nick, config in CONFIG_NICKS
 ]
-
-SUITE = list(set(common_setup.EXAMPLE_SUITE))
+SUITE = list(set(common_setup.DISJUNCTION_SUITE))
 ENVIRONMENT = BaselSlurmEnvironment(
     partition="infai_2",
     email="ben.heuser@unibas.ch",

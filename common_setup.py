@@ -28,7 +28,7 @@ def parse_args():
 
 ARGS = parse_args()
 
-EXAMPLE_SUITE = ['assembly']
+DISJUNCTION_SUITE = ['assembly', 'philosophers', 'miconic-fulladl', 'psr-middle', 'optical-telegraphs', 'recharging-robots-opt23-adl', 'recharging-robots-sat23-adl',] #psr-large
 
 def get_script():
     """Get file name of main script."""
