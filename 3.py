@@ -8,13 +8,13 @@ from common_setup import OptionsConfig, TranslatorExperiment
 
 DIR = os.path.dirname(os.path.abspath(__file__))
 REPO_DIR = os.environ["DOWNWARD_REPO"]
-BENCHMARKS_DIR = os.environ["DOWNWARD_BENCHMARKS"]
+BENCHMARKS_DIR = os.environ["DISJUNCTIVE_BENCHMARKS"]
 REVISIONS = ["9cee9542ab43cb5c420237011414f127353b4535"]
 BUILDS = ["release"]
 CONFIG_NICKS = [
-    ("astar-hmax-none", ["--translate-options", "--eliminate-disjunctions=none", "--search-options", "--search", "astar(hmax())"]),
-    ("astar-hmax-all", ["--translate-options", "--eliminate-disjunctions=all", "--search-options", "--search", "astar(hmax())"]),
-    ("astar-hmax-extreme", ["--translate-options", "--eliminate-disjunctions=extreme", "--search-options", "--search", "astar(hmax())"]),
+    ("astar-hmax-none", ["--translate-options", "--eliminate-disjunctions=none", "--search-options", "--search", "astar(blind())"]),
+    ("astar-hmax-all", ["--translate-options", "--eliminate-disjunctions=all", "--search-options", "--search", "astar(blind())"]),
+    ("astar-hmax-extreme", ["--translate-options", "--eliminate-disjunctions=extreme", "--search-options", "--search", "astar(blind())"]),
     #("astar-hmax", ["--search", "astar(hmax())"]),
 ]
 CONFIGS = [
@@ -27,7 +27,7 @@ CONFIGS = [
     for config_nick, config in CONFIG_NICKS
 ]
 
-SUITE = list(set(['muddy-children']))
+SUITE = list(set(['social-planning']))
 ENVIRONMENT = BaselSlurmEnvironment(
     partition="infai_2",
     email="ben.heuser@unibas.ch",
@@ -53,8 +53,7 @@ exp.add_step('start', exp.start_runs)
 exp.add_step('parse', exp.parse)
 exp.add_fetcher(name='fetch')
 
-exp.add_absolute_report_step(attributes=["translator_task_size"])
+exp.add_absolute_report_step(attributes=["translator_task_size", "memory", "expansions", "generated", "planner_memory", "planner_time"])
 # exp.add_comparison_table_step(attributes=exp.DEFAULT_TABLE_ATTRIBUTES + ["search_start_time"])
-# exp.add_scatter_plot_step(relative=True, attributes=["total_time", "memory", "search_start_time"])
-
+# exp.add_scatter_plot_step(relative=False, attributes=["total_time", "memory", "translator_task_size"])
 exp.run_steps()

@@ -26,7 +26,7 @@ CONFIGS = [
     for build in BUILDS
     for config_nick, config in CONFIG_NICKS
 ]
-SUITE = list(set(common_setup.DEBUG_SUITE))
+SUITE = list(set(['sum']))
 ENVIRONMENT = BaselSlurmEnvironment(
     partition="infai_2",
     email="ben.heuser@unibas.ch",

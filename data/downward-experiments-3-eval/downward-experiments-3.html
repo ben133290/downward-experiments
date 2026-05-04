@@ -1,0 +1,683 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>downward-experiments-3</title>
+<meta name="generator" content="https://txt2tags.org">
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<style>
+blockquote{margin: 1em 2em; border-left: 2px solid #999;
+  font-style: oblique; padding-left: 1em;}
+blockquote:first-letter{margin: .2em .1em .1em 0; font-size: 160%; font-weight: bold;}
+blockquote:first-line{font-weight: bold;}
+body{font-family: sans-serif;}
+hr{background-color:#000;border:0;color:#000;}
+hr.heavy{height:2px;}
+hr.light{height:1px;}
+img{border:0;display:block;}
+img.right{margin:0 0 0 auto;}
+img.center{border:0;margin:0 auto;}
+table{border-collapse: collapse;}
+table th,table td{padding: 3px 7px 2px 7px;}
+table th{background-color: lightgrey;}
+table.center{margin-left:auto; margin-right:auto;}
+.center{text-align:center;}
+.right{text-align:right;}
+.left{text-align:left;}
+.tableborder,.tableborder td,.tableborder th{border:1px solid #000;}
+.underline{text-decoration:underline;}
+</style>
+<style type="text/css">
+    body {
+        font-family: Ubuntu, Helvetica, Arial, sans-serif;
+    }
+    table {
+        border-collapse: collapse;
+    }
+    table th {
+        text-align: left;
+        padding-top: 5px;
+        padding-bottom: 4px;
+        background-color: #aaa;
+        color: #ffffff;
+        /* Make table headers sticky. */
+        position: sticky;
+        top: 0;
+    }
+</style>
+<script type="text/javascript">
+function toggle_element(element) {
+    if (element.style.display == "none") {
+        element.style.display = "";
+    } else {
+        element.style.display = "none";
+    }
+}
+
+function find_next(element, classname) {
+    element = element.nextSibling;
+    while(element.nodeName != classname)
+        element = element.nextSibling;
+    return element;
+}
+
+function toggle_table(toggle_button) {
+    var table = find_next(toggle_button, "TABLE");
+    toggle_element(table);
+    if (toggle_button.innerHTML == "Show table") {
+        toggle_button.innerHTML = "Hide table";
+    } else {
+        toggle_button.innerHTML = "Show table";
+    }
+}
+
+function show_table(section) {
+    heading = section.children[0];
+    var toggle_button = find_next(heading, "BUTTON");
+    var table = find_next(toggle_button, "TABLE");
+    table.style.display = "";
+    toggle_button.innerHTML = "Hide table";
+}
+
+function show_all_tables_in_section(section_id) {
+    var section = document.getElementById(section_id);
+    if (!section) return;
+
+    var tables = section.getElementsByTagName('table');
+    var buttons = section.getElementsByClassName('toggle-table');
+
+    for (var i = 0; i < tables.length; i++) {
+        tables[i].style.display = "";
+    }
+    for (var i = 0; i < buttons.length; i++) {
+        buttons[i].innerHTML = "Hide table";
+    }
+}
+
+function hide_all_tables_in_section(section_id) {
+    var section = document.getElementById(section_id);
+    if (!section) return;
+
+    var tables = section.getElementsByTagName('table');
+    var buttons = section.getElementsByClassName('toggle-table');
+
+    for (var i = 0; i < tables.length; i++) {
+        tables[i].style.display = "none";
+    }
+    for (var i = 0; i < buttons.length; i++) {
+        buttons[i].innerHTML = "Show table";
+    }
+}
+
+function show_main_tables() {
+    var names = ["unexplained-errors", "info", "summary"];
+    for (var i = 0; i < names.length; i++) {
+        var section = document.getElementById(names[i]);
+        try {
+            show_table(section);
+        } catch (e) {
+            console.log("No table found for " + names[i]);
+        }
+    }
+
+    // If there is only one table, show it and hide the button.
+    var buttons = document.getElementsByTagName('button');
+    var tables = document.getElementsByTagName('table');
+    if (buttons.length == 1 && tables.length == 1) {
+        tables[0].style.display = "";
+        buttons[0].style.display = "none";
+    }
+}
+
+document.addEventListener("DOMContentLoaded", show_main_tables);
+</script>
+</head>
+<body>
+<header>
+<hgroup>
+<h1>downward-experiments-3</h1>
+<h3>2026-05-04</h3>
+</hgroup>
+</header>
+
+
+<div class="body">
+
+<ul>
+<li><strong><a href="#unexplained-errors" onclick="show_table(document.getElementById('unexplained-errors'));">Unexplained Errors</a></strong>
+</li>
+<li><strong><a href="#info" onclick="show_table(document.getElementById('info'));">Info</a></strong>
+</li>
+<li><strong><a href="#summary" onclick="show_table(document.getElementById('summary'));">Summary</a></strong>
+</li>
+<li><strong><a href="#expansions" onclick="show_table(document.getElementById('expansions'));">expansions</a></strong>
+  <ul>
+  <li><a href="#expansions-social-planning" onclick="show_table(document.getElementById('expansions-social-planning'));">social-planning</a>
+  </li>
+  </ul>
+</li>
+<li><strong><a href="#generated" onclick="show_table(document.getElementById('generated'));">generated</a></strong>
+  <ul>
+  <li><a href="#generated-social-planning" onclick="show_table(document.getElementById('generated-social-planning'));">social-planning</a>
+  </li>
+  </ul>
+</li>
+<li><strong><a href="#memory" onclick="show_table(document.getElementById('memory'));">memory</a></strong>
+  <ul>
+  <li><a href="#memory-social-planning" onclick="show_table(document.getElementById('memory-social-planning'));">social-planning</a>
+  </li>
+  </ul>
+</li>
+<li><strong><a href="#planner_memory" onclick="show_table(document.getElementById('planner_memory'));">planner_memory</a></strong>
+  <ul>
+  <li><a href="#planner_memory-social-planning" onclick="show_table(document.getElementById('planner_memory-social-planning'));">social-planning</a>
+  </li>
+  </ul>
+</li>
+<li><strong><a href="#planner_time" onclick="show_table(document.getElementById('planner_time'));">planner_time</a></strong>
+  <ul>
+  <li><a href="#planner_time-social-planning" onclick="show_table(document.getElementById('planner_time-social-planning'));">social-planning</a>
+  </li>
+  </ul>
+</li>
+<li><strong><a href="#translator_task_size" onclick="show_table(document.getElementById('translator_task_size'));">translator_task_size</a></strong>
+  <ul>
+  <li><a href="#translator_task_size-social-planning" onclick="show_table(document.getElementById('translator_task_size-social-planning'));">social-planning</a>
+  </li>
+  </ul>
+</li>
+</ul>
+
+<section~A~>
+<h1></h1>
+<section id="unexplained-errors">
+<h2>unexplained-errors</h2>
+
+<button type="button" class="toggle-table" onclick="toggle_table(this)">Show table</button><p></p>
+<table class="tableborder" style="display:none">
+<tr>
+<th>Unexplained errors</th> <th>algorithm</th> <th>domain</th> <th>problem</th> <th>error</th> <th>planner_wall_clock_time</th> <th>raw_memory</th> <th>node</th> <th>run_dir</th>
+</tr>
+<tr>
+<td rowspan="6">['driver-input-error',&nbsp;'run.err:&nbsp;Error:&nbsp;Trying&nbsp;to&nbsp;run&nbsp;validate&nbsp;but&nbsp;it&nbsp;was&nbsp;not&nbsp;found&nbsp;on&nbsp;the&nbsp;PATH.<br />']</td>
+<td>9cee9542ab43cb5c420237011414f127353b4535-astar-hmax-all</td> <td>social-planning</td> <td>iago-1.pddl</td> <td>driver-input-error</td> <td>2.29</td> <td>16584</td> <td>icb01</td> <td>runs-00001-00100/00003</td>
+</tr>
+<tr><td>9cee9542ab43cb5c420237011414f127353b4535-astar-hmax-all</td> <td>social-planning</td> <td>iago-2.pddl</td> <td>driver-input-error</td> <td>61.04</td> <td>156556</td> <td>icb01</td> <td>runs-00001-00100/00004</td></tr>
+<tr><td>9cee9542ab43cb5c420237011414f127353b4535-astar-hmax-extreme</td> <td>social-planning</td> <td>iago-1.pddl</td> <td>driver-input-error</td> <td>4.01</td> <td>18740</td> <td>icb01</td> <td>runs-00001-00100/00005</td></tr>
+<tr><td>9cee9542ab43cb5c420237011414f127353b4535-astar-hmax-extreme</td> <td>social-planning</td> <td>iago-2.pddl</td> <td>driver-input-error</td> <td>149.29</td> <td>252016</td> <td>icb01</td> <td>runs-00001-00100/00006</td></tr>
+<tr><td>9cee9542ab43cb5c420237011414f127353b4535-astar-hmax-none</td> <td>social-planning</td> <td>iago-1.pddl</td> <td>driver-input-error</td> <td>1.26</td> <td>13444</td> <td>icb01</td> <td>runs-00001-00100/00001</td></tr>
+<tr><td>9cee9542ab43cb5c420237011414f127353b4535-astar-hmax-none</td> <td>social-planning</td> <td>iago-2.pddl</td> <td>driver-input-error</td> <td>41.62</td> <td>132340</td> <td>icb01</td> <td>runs-00001-00100/00002</td></tr>
+</table>
+
+</section>
+<section id="info">
+<h2>info</h2>
+
+<button type="button" class="toggle-table" onclick="toggle_table(this)">Show table</button><p></p>
+
+<table class="tableborder" style="display:none">
+<tr>
+<th>algorithm</th>
+<th>local_<wbr>revision</th>
+<th>global_<wbr>revision</th>
+<th>build_<wbr>options</th>
+<th>driver_<wbr>options</th>
+<th>component_<wbr>options</th>
+</tr>
+<tr>
+<td>9cee9542ab43cb5c420237011414f127353b4535-astar-hmax-all</td>
+<td>9cee9542ab43cb5c420237011414f127353b4535</td>
+<td>9cee9542ab43cb5c420237011414f127353b4535</td>
+<td>['release']</td>
+<td>['--validate', '--overall-time-limit', '30m', '--overall-memory-limit', '3584M', '--search-time-limit', '10m', '--build', 'release']</td>
+<td>['--translate-options', '--eliminate-disjunctions=all', '--search-options', '--search', 'astar(blind())']</td>
+</tr>
+<tr>
+<td>9cee9542ab43cb5c420237011414f127353b4535-astar-hmax-extreme</td>
+<td>9cee9542ab43cb5c420237011414f127353b4535</td>
+<td>9cee9542ab43cb5c420237011414f127353b4535</td>
+<td>['release']</td>
+<td>['--validate', '--overall-time-limit', '30m', '--overall-memory-limit', '3584M', '--search-time-limit', '10m', '--build', 'release']</td>
+<td>['--translate-options', '--eliminate-disjunctions=extreme', '--search-options', '--search', 'astar(blind())']</td>
+</tr>
+<tr>
+<td>9cee9542ab43cb5c420237011414f127353b4535-astar-hmax-none</td>
+<td>9cee9542ab43cb5c420237011414f127353b4535</td>
+<td>9cee9542ab43cb5c420237011414f127353b4535</td>
+<td>['release']</td>
+<td>['--validate', '--overall-time-limit', '30m', '--overall-memory-limit', '3584M', '--search-time-limit', '10m', '--build', 'release']</td>
+<td>['--translate-options', '--eliminate-disjunctions=none', '--search-options', '--search', 'astar(blind())']</td>
+</tr>
+</table>
+
+<p>
+Used nodes: [icb01]
+</p>
+
+</section>
+<section id="summary">
+<h2>summary</h2>
+
+<button type="button" class="toggle-table" onclick="toggle_table(this)">Show table</button><p></p>
+
+<table class="tableborder" style="display:none">
+<tr>
+<th>Summary</th>
+<th>9cee9542ab43cb5c420237011414f127353b4535-astar-hmax-all</th>
+<th>9cee9542ab43cb5c420237011414f127353b4535-astar-hmax-extreme</th>
+<th>9cee9542ab43cb5c420237011414f127353b4535-astar-hmax-none</th>
+</tr>
+<tr>
+<td><a href="#expansions" onclick="show_table(document.getElementById('expansions'));">expansions - Geometric mean</a></td>
+<td class="right"><span style="color:rgb(0,105,178)">230459.70</span></td>
+<td class="right"><span style="color:rgb(0,0,178)">260886.65</span></td>
+<td class="right"><span style="color:rgb(0,178,0)">158185.23</span></td>
+</tr>
+<tr>
+<td><a href="#generated" onclick="show_table(document.getElementById('generated'));">generated - Geometric mean</a></td>
+<td class="right"><span style="color:rgb(0,104,178)">4477399.60</span></td>
+<td class="right"><span style="color:rgb(0,0,178)">5085723.18</span></td>
+<td class="right"><span style="color:rgb(0,178,0)">2998595.70</span></td>
+</tr>
+<tr>
+<td><a href="#memory" onclick="show_table(document.getElementById('memory'));">memory - Sum</a></td>
+<td class="right"><span style="color:rgb(0,178,78)">173140</span></td>
+<td class="right"><span style="color:rgb(0,0,178)">270756</span></td>
+<td class="right"><span style="color:rgb(0,178,0)">145784</span></td>
+</tr>
+<tr>
+<td><a href="#planner_memory" onclick="show_table(document.getElementById('planner_memory'));">planner_memory - Sum</a></td>
+<td class="right"><span style="color:rgb(0,178,71)">192748</span></td>
+<td class="right"><span style="color:rgb(0,0,178)">289232</span></td>
+<td class="right"><span style="color:rgb(0,178,0)">168376</span></td>
+</tr>
+<tr>
+<td><a href="#planner_time" onclick="show_table(document.getElementById('planner_time'));">planner_time - Geometric mean</a></td>
+<td class="right"><span style="color:rgb(0,178,106)">11.21</span></td>
+<td class="right"><span style="color:rgb(0,0,178)">23.79</span></td>
+<td class="right"><span style="color:rgb(0,178,0)">5.84</span></td>
+</tr>
+<tr>
+<td><a href="#translator_task_size" onclick="show_table(document.getElementById('translator_task_size'));">translator_task_size - Sum</a></td>
+<td class="right"><span style="color:rgb(0,178,80)">4892</span></td>
+<td class="right"><span style="color:rgb(0,0,178)">6886</span></td>
+<td class="right"><span style="color:rgb(0,178,0)">4316</span></td>
+</tr>
+</table>
+
+</section>
+<section id="expansions">
+<h2>expansions</h2>
+
+<p>
+<button type="button" onclick="show_all_tables_in_section('expansions')">Show all tables</button> <button type="button" onclick="hide_all_tables_in_section('expansions')">Hide all tables</button>
+</p>
+
+<button type="button" class="toggle-table" onclick="toggle_table(this)">Show table</button><p></p>
+
+<table class="tableborder" style="display:none">
+<tr>
+<th>expansions</th>
+<th>9cee9542ab43cb5c420237011414f127353b4535-astar-hmax-all</th>
+<th>9cee9542ab43cb5c420237011414f127353b4535-astar-hmax-extreme</th>
+<th>9cee9542ab43cb5c420237011414f127353b4535-astar-hmax-none</th>
+</tr>
+<tr>
+<td><a href="#expansions-social-planning" onclick="show_table(document.getElementById('expansions-social-planning'));">social-planning</a> (2)</td>
+<td class="right"><span style="color:rgb(0,105,178)">230459.70</span></td>
+<td class="right"><span style="color:rgb(0,0,178)">260886.65</span></td>
+<td class="right"><span style="color:rgb(0,178,0)">158185.23</span></td>
+</tr>
+<tr>
+<td><strong>Geometric mean (2)</strong></td>
+<td class="right"><span style="color:rgb(0,105,178)">230459.70</span></td>
+<td class="right"><span style="color:rgb(0,0,178)">260886.65</span></td>
+<td class="right"><span style="color:rgb(0,178,0)">158185.23</span></td>
+</tr>
+</table>
+
+<p>
+Only tasks where all algorithms have a value for "expansions" are considered. Each table entry gives the geometric mean of "expansions" for that domain. The bottom row reports the geometric mean across all domains.
+</p>
+
+<section id="expansions-social-planning">
+<h3>social-planning</h3>
+
+<button type="button" class="toggle-table" onclick="toggle_table(this)">Show table</button><p></p>
+
+<table class="tableborder" style="display:none">
+<tr>
+<th>expansions</th>
+<th>9cee9542ab43cb5c420237011414f127353b4535-astar-hmax-all</th>
+<th>9cee9542ab43cb5c420237011414f127353b4535-astar-hmax-extreme</th>
+<th>9cee9542ab43cb5c420237011414f127353b4535-astar-hmax-none</th>
+</tr>
+<tr>
+<td>iago-1.pddl</td>
+<td class="right"><span style="color:rgb(0,0,178)">41095</span></td>
+<td class="right"><span style="color:rgb(0,1,178)">41002</span></td>
+<td class="right"><span style="color:rgb(0,178,0)">21109</span></td>
+</tr>
+<tr>
+<td>iago-2.pddl</td>
+<td class="right"><span style="color:rgb(0,178,80)">1292412</span></td>
+<td class="right"><span style="color:rgb(0,0,178)">1659964</span></td>
+<td class="right"><span style="color:rgb(0,178,0)">1185398</span></td>
+</tr>
+</table>
+
+</section>
+</section>
+<section id="generated">
+<h2>generated</h2>
+
+<p>
+<button type="button" onclick="show_all_tables_in_section('generated')">Show all tables</button> <button type="button" onclick="hide_all_tables_in_section('generated')">Hide all tables</button>
+</p>
+
+<button type="button" class="toggle-table" onclick="toggle_table(this)">Show table</button><p></p>
+
+<table class="tableborder" style="display:none">
+<tr>
+<th>generated</th>
+<th>9cee9542ab43cb5c420237011414f127353b4535-astar-hmax-all</th>
+<th>9cee9542ab43cb5c420237011414f127353b4535-astar-hmax-extreme</th>
+<th>9cee9542ab43cb5c420237011414f127353b4535-astar-hmax-none</th>
+</tr>
+<tr>
+<td><a href="#generated-social-planning" onclick="show_table(document.getElementById('generated-social-planning'));">social-planning</a> (2)</td>
+<td class="right"><span style="color:rgb(0,104,178)">4477399.60</span></td>
+<td class="right"><span style="color:rgb(0,0,178)">5085723.18</span></td>
+<td class="right"><span style="color:rgb(0,178,0)">2998595.70</span></td>
+</tr>
+<tr>
+<td><strong>Geometric mean (2)</strong></td>
+<td class="right"><span style="color:rgb(0,104,178)">4477399.60</span></td>
+<td class="right"><span style="color:rgb(0,0,178)">5085723.18</span></td>
+<td class="right"><span style="color:rgb(0,178,0)">2998595.70</span></td>
+</tr>
+</table>
+
+<p>
+Only tasks where all algorithms have a value for "generated" are considered. Each table entry gives the geometric mean of "generated" for that domain. The bottom row reports the geometric mean across all domains.
+</p>
+
+<section id="generated-social-planning">
+<h3>social-planning</h3>
+
+<button type="button" class="toggle-table" onclick="toggle_table(this)">Show table</button><p></p>
+
+<table class="tableborder" style="display:none">
+<tr>
+<th>generated</th>
+<th>9cee9542ab43cb5c420237011414f127353b4535-astar-hmax-all</th>
+<th>9cee9542ab43cb5c420237011414f127353b4535-astar-hmax-extreme</th>
+<th>9cee9542ab43cb5c420237011414f127353b4535-astar-hmax-none</th>
+</tr>
+<tr>
+<td>iago-1.pddl</td>
+<td class="right"><span style="color:rgb(0,0,178)">786226</span></td>
+<td class="right"><span style="color:rgb(0,0,178)">785267</span></td>
+<td class="right"><span style="color:rgb(0,178,0)">391147</span></td>
+</tr>
+<tr>
+<td>iago-2.pddl</td>
+<td class="right"><span style="color:rgb(0,178,90)">25497894</span></td>
+<td class="right"><span style="color:rgb(0,0,178)">32937307</span></td>
+<td class="right"><span style="color:rgb(0,178,0)">22987716</span></td>
+</tr>
+</table>
+
+</section>
+</section>
+<section id="memory">
+<h2>memory</h2>
+
+<p>
+<button type="button" onclick="show_all_tables_in_section('memory')">Show all tables</button> <button type="button" onclick="hide_all_tables_in_section('memory')">Hide all tables</button>
+</p>
+
+<button type="button" class="toggle-table" onclick="toggle_table(this)">Show table</button><p></p>
+
+<table class="tableborder" style="display:none">
+<tr>
+<th>memory</th>
+<th>9cee9542ab43cb5c420237011414f127353b4535-astar-hmax-all</th>
+<th>9cee9542ab43cb5c420237011414f127353b4535-astar-hmax-extreme</th>
+<th>9cee9542ab43cb5c420237011414f127353b4535-astar-hmax-none</th>
+</tr>
+<tr>
+<td><a href="#memory-social-planning" onclick="show_table(document.getElementById('memory-social-planning'));">social-planning</a> (2)</td>
+<td class="right"><span style="color:rgb(0,178,78)">173140</span></td>
+<td class="right"><span style="color:rgb(0,0,178)">270756</span></td>
+<td class="right"><span style="color:rgb(0,178,0)">145784</span></td>
+</tr>
+<tr>
+<td><strong>Sum (2)</strong></td>
+<td class="right"><span style="color:rgb(0,178,78)">173140</span></td>
+<td class="right"><span style="color:rgb(0,0,178)">270756</span></td>
+<td class="right"><span style="color:rgb(0,178,0)">145784</span></td>
+</tr>
+</table>
+
+<p>
+Only tasks where all algorithms have a value for "memory" are considered. Each table entry gives the sum of "memory" for that domain. The bottom row reports the sum across all domains.
+</p>
+
+<section id="memory-social-planning">
+<h3>social-planning</h3>
+
+<button type="button" class="toggle-table" onclick="toggle_table(this)">Show table</button><p></p>
+
+<table class="tableborder" style="display:none">
+<tr>
+<th>memory</th>
+<th>9cee9542ab43cb5c420237011414f127353b4535-astar-hmax-all</th>
+<th>9cee9542ab43cb5c420237011414f127353b4535-astar-hmax-extreme</th>
+<th>9cee9542ab43cb5c420237011414f127353b4535-astar-hmax-none</th>
+</tr>
+<tr>
+<td>iago-1.pddl</td>
+<td class="right"><span style="color:rgb(0,145,178)">16584</span></td>
+<td class="right"><span style="color:rgb(0,0,178)">18740</span></td>
+<td class="right"><span style="color:rgb(0,178,0)">13444</span></td>
+</tr>
+<tr>
+<td>iago-2.pddl</td>
+<td class="right"><span style="color:rgb(0,178,72)">156556</span></td>
+<td class="right"><span style="color:rgb(0,0,178)">252016</span></td>
+<td class="right"><span style="color:rgb(0,178,0)">132340</span></td>
+</tr>
+</table>
+
+</section>
+</section>
+<section id="planner_memory">
+<h2>planner_memory</h2>
+
+<p>
+<button type="button" onclick="show_all_tables_in_section('planner_memory')">Show all tables</button> <button type="button" onclick="hide_all_tables_in_section('planner_memory')">Hide all tables</button>
+</p>
+
+<button type="button" class="toggle-table" onclick="toggle_table(this)">Show table</button><p></p>
+
+<table class="tableborder" style="display:none">
+<tr>
+<th>planner_<wbr>memory</th>
+<th>9cee9542ab43cb5c420237011414f127353b4535-astar-hmax-all</th>
+<th>9cee9542ab43cb5c420237011414f127353b4535-astar-hmax-extreme</th>
+<th>9cee9542ab43cb5c420237011414f127353b4535-astar-hmax-none</th>
+</tr>
+<tr>
+<td><a href="#planner_memory-social-planning" onclick="show_table(document.getElementById('planner_memory-social-planning'));">social-planning</a> (2)</td>
+<td class="right"><span style="color:rgb(0,178,71)">192748</span></td>
+<td class="right"><span style="color:rgb(0,0,178)">289232</span></td>
+<td class="right"><span style="color:rgb(0,178,0)">168376</span></td>
+</tr>
+<tr>
+<td><strong>Sum (2)</strong></td>
+<td class="right"><span style="color:rgb(0,178,71)">192748</span></td>
+<td class="right"><span style="color:rgb(0,0,178)">289232</span></td>
+<td class="right"><span style="color:rgb(0,178,0)">168376</span></td>
+</tr>
+</table>
+
+<p>
+Only tasks where all algorithms have a value for "planner_memory" are considered. Each table entry gives the sum of "planner_memory" for that domain. The bottom row reports the sum across all domains.
+</p>
+
+<section id="planner_memory-social-planning">
+<h3>social-planning</h3>
+
+<button type="button" class="toggle-table" onclick="toggle_table(this)">Show table</button><p></p>
+
+<table class="tableborder" style="display:none">
+<tr>
+<th>planner_<wbr>memory</th>
+<th>9cee9542ab43cb5c420237011414f127353b4535-astar-hmax-all</th>
+<th>9cee9542ab43cb5c420237011414f127353b4535-astar-hmax-extreme</th>
+<th>9cee9542ab43cb5c420237011414f127353b4535-astar-hmax-none</th>
+</tr>
+<tr>
+<td>iago-1.pddl</td>
+<td class="right"><span style="color:rgb(0,178,47)">36192</span></td>
+<td class="right"><span style="color:rgb(0,0,178)">37216</span></td>
+<td class="right"><span style="color:rgb(0,178,0)">36036</span></td>
+</tr>
+<tr>
+<td>iago-2.pddl</td>
+<td class="right"><span style="color:rgb(0,178,72)">156556</span></td>
+<td class="right"><span style="color:rgb(0,0,178)">252016</span></td>
+<td class="right"><span style="color:rgb(0,178,0)">132340</span></td>
+</tr>
+</table>
+
+</section>
+</section>
+<section id="planner_time">
+<h2>planner_time</h2>
+
+<p>
+<button type="button" onclick="show_all_tables_in_section('planner_time')">Show all tables</button> <button type="button" onclick="hide_all_tables_in_section('planner_time')">Hide all tables</button>
+</p>
+
+<button type="button" class="toggle-table" onclick="toggle_table(this)">Show table</button><p></p>
+
+<table class="tableborder" style="display:none">
+<tr>
+<th>planner_<wbr>time</th>
+<th>9cee9542ab43cb5c420237011414f127353b4535-astar-hmax-all</th>
+<th>9cee9542ab43cb5c420237011414f127353b4535-astar-hmax-extreme</th>
+<th>9cee9542ab43cb5c420237011414f127353b4535-astar-hmax-none</th>
+</tr>
+<tr>
+<td><a href="#planner_time-social-planning" onclick="show_table(document.getElementById('planner_time-social-planning'));">social-planning</a> (2)</td>
+<td class="right"><span style="color:rgb(0,178,106)">11.21</span></td>
+<td class="right"><span style="color:rgb(0,0,178)">23.79</span></td>
+<td class="right"><span style="color:rgb(0,178,0)">5.84</span></td>
+</tr>
+<tr>
+<td><strong>Geometric mean (2)</strong></td>
+<td class="right"><span style="color:rgb(0,178,106)">11.21</span></td>
+<td class="right"><span style="color:rgb(0,0,178)">23.79</span></td>
+<td class="right"><span style="color:rgb(0,178,0)">5.84</span></td>
+</tr>
+</table>
+
+<p>
+Only tasks where all algorithms have a value for "planner_time" are considered. Each table entry gives the geometric mean of "planner_time" for that domain. The bottom row reports the geometric mean across all domains.
+</p>
+
+<section id="planner_time-social-planning">
+<h3>social-planning</h3>
+
+<button type="button" class="toggle-table" onclick="toggle_table(this)">Show table</button><p></p>
+
+<table class="tableborder" style="display:none">
+<tr>
+<th>planner_<wbr>time</th>
+<th>9cee9542ab43cb5c420237011414f127353b4535-astar-hmax-all</th>
+<th>9cee9542ab43cb5c420237011414f127353b4535-astar-hmax-extreme</th>
+<th>9cee9542ab43cb5c420237011414f127353b4535-astar-hmax-none</th>
+</tr>
+<tr>
+<td>iago-1.pddl</td>
+<td class="right"><span style="color:rgb(0,178,149)">2.07</span></td>
+<td class="right"><span style="color:rgb(0,0,178)">3.80</span></td>
+<td class="right"><span style="color:rgb(0,178,0)">0.82</span></td>
+</tr>
+<tr>
+<td>iago-2.pddl</td>
+<td class="right"><span style="color:rgb(0,178,64)">60.81</span></td>
+<td class="right"><span style="color:rgb(0,0,178)">149.01</span></td>
+<td class="right"><span style="color:rgb(0,178,0)">41.37</span></td>
+</tr>
+</table>
+
+</section>
+</section>
+<section id="translator_task_size">
+<h2>translator_task_size</h2>
+
+<p>
+<button type="button" onclick="show_all_tables_in_section('translator_task_size')">Show all tables</button> <button type="button" onclick="hide_all_tables_in_section('translator_task_size')">Hide all tables</button>
+</p>
+
+<button type="button" class="toggle-table" onclick="toggle_table(this)">Show table</button><p></p>
+
+<table class="tableborder" style="display:none">
+<tr>
+<th>translator_<wbr>task_<wbr>size</th>
+<th>9cee9542ab43cb5c420237011414f127353b4535-astar-hmax-all</th>
+<th>9cee9542ab43cb5c420237011414f127353b4535-astar-hmax-extreme</th>
+<th>9cee9542ab43cb5c420237011414f127353b4535-astar-hmax-none</th>
+</tr>
+<tr>
+<td><a href="#translator_task_size-social-planning" onclick="show_table(document.getElementById('translator_task_size-social-planning'));">social-planning</a> (2)</td>
+<td class="right"><span style="color:rgb(0,178,80)">4892</span></td>
+<td class="right"><span style="color:rgb(0,0,178)">6886</span></td>
+<td class="right"><span style="color:rgb(0,178,0)">4316</span></td>
+</tr>
+<tr>
+<td><strong>Sum (2)</strong></td>
+<td class="right"><span style="color:rgb(0,178,80)">4892</span></td>
+<td class="right"><span style="color:rgb(0,0,178)">6886</span></td>
+<td class="right"><span style="color:rgb(0,178,0)">4316</span></td>
+</tr>
+</table>
+
+<p>
+Only tasks where all algorithms have a value for "translator_task_size" are considered. Each table entry gives the sum of "translator_task_size" for that domain. The bottom row reports the sum across all domains.
+</p>
+
+<section id="translator_task_size-social-planning">
+<h3>social-planning</h3>
+
+<button type="button" class="toggle-table" onclick="toggle_table(this)">Show table</button><p></p>
+
+<table class="tableborder" style="display:none">
+<tr>
+<th>translator_<wbr>task_<wbr>size</th>
+<th>9cee9542ab43cb5c420237011414f127353b4535-astar-hmax-all</th>
+<th>9cee9542ab43cb5c420237011414f127353b4535-astar-hmax-extreme</th>
+<th>9cee9542ab43cb5c420237011414f127353b4535-astar-hmax-none</th>
+</tr>
+<tr>
+<td>iago-1.pddl</td>
+<td class="right"><span style="color:rgb(0,178,80)">2441</span></td>
+<td class="right"><span style="color:rgb(0,0,178)">3438</span></td>
+<td class="right"><span style="color:rgb(0,178,0)">2153</span></td>
+</tr>
+<tr>
+<td>iago-2.pddl</td>
+<td class="right"><span style="color:rgb(0,178,80)">2451</span></td>
+<td class="right"><span style="color:rgb(0,0,178)">3448</span></td>
+<td class="right"><span style="color:rgb(0,178,0)">2163</span></td>
+</tr>
+</table>
+
+</section>
+</section>
+</section>
+</div>
+</body></html>
