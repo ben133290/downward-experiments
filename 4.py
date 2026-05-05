@@ -27,7 +27,7 @@ CONFIGS = [
     for config_nick, config in CONFIG_NICKS
 ]
 
-SUITE = list(set(['muddy-children', 'blocker', 'psr-middle', 'sum']))
+SUITE = list(set(['muddy-children', 'blocker', 'psr-middle', 'sum', 'word-rooms', 'spanning-tree', 'collab-and-comm']))
 ENVIRONMENT = BaselSlurmEnvironment(
     partition="infai_2",
     email="ben.heuser@unibas.ch",
