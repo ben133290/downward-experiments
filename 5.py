@@ -55,6 +55,6 @@ exp.add_fetcher(name='fetch')
 
 exp.add_absolute_report_step(attributes=["translator_task_size", "memory", "planner_memory", "expansions_until_last_f_layer", "generated",  "planner_time", "coverage", "task_size", "axioms", "derived_variables", "variables"])
 # exp.add_comparison_table_step(attributes=exp.DEFAULT_TABLE_ATTRIBUTES + ["search_start_time"])
-exp.add_scatter_plot_step(relative=True, attributes=["translator_task_size"])
+exp.add_scatter_plot_step(relative=False, attributes=["translator_task_size"])
 
 exp.run_steps()

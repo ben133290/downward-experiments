@@ -307,13 +307,13 @@ class TranslatorExperiment(FastDownwardExperiment):
         if attributes is None:
             attributes = self.DEFAULT_SCATTER_PLOT_ATTRIBUTES
 
-        def make_scatter_plot(config_nick, rev1, rev2, attribute, config_nick2=None):
-            name = "-".join([self.name, rev1, rev2, attribute, config_nick])
-            if config_nick2 is not None:
-                name += "-" + config_nick2
+        def make_scatter_plot(config1, config2, rev, attribute):
+            name = "-".join([self.name, config1, config2])
             print("Make scatter plot for", name)
-            algo1 = get_algo_nick(rev1, config_nick)
-            algo2 = get_algo_nick(rev2, config_nick if config_nick2 is None else config_nick2)
+            algo1 = get_algo_nick(rev, config1)
+            algo2 = get_algo_nick(rev, config2)
+
+            print(f"{attribute}")
             report = ScatterPlotReport(
                 filter_algorithm=[algo1, algo2],
                 attributes=[attribute],
@@ -321,16 +321,13 @@ class TranslatorExperiment(FastDownwardExperiment):
                 get_category=lambda run1, run2: run1["domain"])
             report(
                 self.eval_dir,
-                os.path.join(scatter_dir, rev1 + "-" + rev2, name))
+                os.path.join(scatter_dir, config1 + "-" + config2, name))
 
         def make_scatter_plots():
-            for config in self._configs:
-                for rev1, rev2 in itertools.combinations(self._revisions, 2):
-                    for attribute in self.get_supported_attributes(
-                            config.nick, attributes):
-                        make_scatter_plot(config.nick, rev1, rev2, attribute)
-            for nick1, nick2, rev1, rev2, attribute in additional:
-                make_scatter_plot(nick1, rev1, rev2, attribute, config_nick2=nick2)
+            for config1, config2 in itertools.combinations(self._configs, 2):
+                for rev in self._revisions:
+                    for attribute in self.get_supported_attributes(config1.nick, attributes):
+                        make_scatter_plot(config1.nick, config2.nick, rev, attribute)
 
         self.add_step(step_name, make_scatter_plots)
 
