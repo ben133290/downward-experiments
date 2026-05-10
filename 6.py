@@ -22,12 +22,12 @@ CONFIGS = [
         nick=config_nick,
         component_options=config,
         build_options=[build],
-        driver_options=['--search-time-limit', '10m', '--search-memory-limit', '4000', "--build", build])
+        driver_options=['--search-time-limit', '30m', '--search-memory-limit', '4000', "--build", build])
     for build in BUILDS
     for config_nick, config in CONFIG_NICKS
 ]
 
-SUITE = list(set(['muddy-children', 'blocker', 'psr-middle', 'sum', 'word-rooms', 'collab-and-comm', 'psr-large', 'miconic-fulladl', 'optical-telegraphs', 'social-planning']))
+SUITE = list(set(['muddy-children', 'sum', 'word-rooms', 'collab-and-comm']))
 ENVIRONMENT = BaselSlurmEnvironment(
     partition="infai_2",
     email="ben.heuser@unibas.ch",
