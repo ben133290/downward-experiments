@@ -315,6 +315,7 @@ class TranslatorExperiment(FastDownwardExperiment):
 
             print(f"{attribute}")
             report = ScatterPlotReport(
+                format="pdf",
                 filter_algorithm=[algo1, algo2],
                 attributes=[attribute],
                 relative=relative,
