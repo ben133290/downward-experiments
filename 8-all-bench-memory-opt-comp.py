@@ -5,6 +5,7 @@ import custom_parser
 from lab.environments import BaselSlurmEnvironment
 import common_setup
 from common_setup import OptionsConfig, TranslatorExperiment
+from downward.reports.scatter import ScatterPlotReport
 
 DIR = os.path.dirname(os.path.abspath(__file__))
 REPO_DIR = os.environ["DOWNWARD_REPO"]
@@ -55,6 +56,16 @@ exp.add_fetcher(name='fetch')
 
 exp.add_absolute_report_step(attributes=["translator_task_size", "memory", "planner_memory", "expansions_until_last_jump", "generated",  "planner_time", "coverage", "task_size", "translator_axioms", "translator_derived_variables", "variables"])
 # exp.add_comparison_table_step(attributes=exp.DEFAULT_TABLE_ATTRIBUTES + ["search_start_time"])
-exp.add_scatter_plot_step(relative=False, attributes=["translator_task_size"])
+#exp.add_scatter_plot_step(relative=False, attributes=["translator_task_size"])
+#exp.add_scatter_plot_step(relative=False, attributes=["translator_task_size"])
+
+exp.add_report(
+    ScatterPlotReport(
+        attributes=["memory"],
+        filter_algorithm=["7cfda21c4-astar-blind-extreme", "0f0b7b4cb-astar-blind-extreme"],
+        format="png",
+    ),
+    name="test-scatter",
+)
 
 exp.run_steps()
