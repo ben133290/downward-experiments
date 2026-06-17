@@ -13,9 +13,9 @@ BENCHMARKS_DIR = os.environ["DISJUNCTIVE_BENCHMARKS"]
 REVISIONS = ["0f0b7b4cb", "a1c11625d"]
 BUILDS = ["release"]
 CONFIG_NICKS = [
-    ("astar-blind-none", ["--translate-options", "--eliminate-disjunctions=none", "--search-options", "--search", "astar(blind())"]),
-    ("astar-blind-all", ["--translate-options", "--eliminate-disjunctions=all", "--search-options", "--search", "astar(blind())"]),
-    ("astar-blind-extreme", ["--translate-options", "--eliminate-disjunctions=extreme", "--search-options", "--search", "astar(blind())"]),
+    ("lama-none", ["--translate-options", "--eliminate-disjunctions=none"]),
+    ("lama-all", ["--translate-options", "--eliminate-disjunctions=all"]),
+    ("lama-extreme", ["--translate-options", "--eliminate-disjunctions=extreme"]),
     #("astar-hmax", ["--search", "astar(hmax())"]),
 ]
 CONFIGS = [
@@ -23,7 +23,7 @@ CONFIGS = [
         nick=config_nick,
         component_options=config,
         build_options=[build],
-        driver_options=['--alias lama-first', '--search-time-limit', '20m', '--search-memory-limit', '4000', "--build", build])
+        driver_options=['--alias', 'lama-first', '--search-time-limit', '20m', '--search-memory-limit', '4000', "--build", build])
     for build in BUILDS
     for config_nick, config in CONFIG_NICKS
 ]
@@ -57,14 +57,5 @@ exp.add_fetcher(name='fetch')
 exp.add_absolute_report_step(attributes=["translator_task_size", "memory", "planner_memory", "expansions_until_last_jump", "generated",  "planner_time", "coverage", "task_size", "translator_axioms", "translator_derived_variables", "variables"])
 # exp.add_comparison_table_step(attributes=exp.DEFAULT_TABLE_ATTRIBUTES + ["search_start_time"])
 exp.add_scatter_plot_step(relative=False, attributes=["translator_task_size", "memory"])
-
-exp.add_report(
-    ScatterPlotReport(
-        attributes=["memory"],
-        filter_algorithm=["7cfda21c4-astar-blind-extreme", "0f0b7b4cb-astar-blind-extreme"],
-        format="png",
-    ),
-    name="test-scatter",
-)
 
 exp.run_steps()
