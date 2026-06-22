@@ -13,9 +13,9 @@ BENCHMARKS_DIR = os.environ["DISJUNCTIVE_BENCHMARKS"]
 REVISIONS = ["0f0b7b4cb", "e9fd48871", "15db978245"]
 BUILDS = ["release"]
 CONFIG_NICKS = [
-    ("lama-none", ["--translate-options", "--eliminate-disjunctions=none", "--search-options", "--search", "astar(blind())"]),
-    ("lama-all", ["--translate-options", "--eliminate-disjunctions=all", "--search-options", "--search", "astar(blind())"]),
-    ("lama-extreme", ["--translate-options", "--eliminate-disjunctions=extreme", "--search-options", "--search", "astar(blind())"]),
+    ("astar-none", ["--translate-options", "--eliminate-disjunctions=none", "--search-options", "--search", "astar(blind())"]),
+    ("astar-all", ["--translate-options", "--eliminate-disjunctions=all", "--search-options", "--search", "astar(blind())"]),
+    ("astar-extreme", ["--translate-options", "--eliminate-disjunctions=extreme", "--search-options", "--search", "astar(blind())"]),
 ]
 CONFIGS = [
     OptionsConfig(
