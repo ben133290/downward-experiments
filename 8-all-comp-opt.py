@@ -6,6 +6,7 @@ from lab.environments import BaselSlurmEnvironment
 import common_setup
 from common_setup import OptionsConfig, TranslatorExperiment
 from downward.reports.scatter import ScatterPlotReport
+from ground_report import GroundReport
 
 DIR = os.path.dirname(os.path.abspath(__file__))
 REPO_DIR = os.environ["DOWNWARD_REPO"]
@@ -54,12 +55,8 @@ exp.add_step('start', exp.start_runs)
 exp.add_step('parse', exp.parse)
 exp.add_fetcher(name='fetch')
 
-exp.add_absolute_report_step(attributes=["translator_task_size", "memory", "cost", "planner_memory", "expansions_until_last_jump", "generated",  "planner_time", "coverage", "task_size", "translator_axioms", "translator_derived_variables", "variables"])
+exp.add_absolute_report_step(attributes=["translator_task_size", "memory", "cost", "planner_memory", "expansions_until_last_jump", "generated", "planner_time", "coverage", "task_size", "translator_axioms", "translator_derived_variables", "variables"])
 
-exp.add_report(report=ground_report(), name="grounding-report")
-
-def ground_report():
-
-    return 
+exp.add_report(report=GroundReport(), name="grounding-report")
 
 exp.run_steps()
