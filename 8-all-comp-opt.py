@@ -55,8 +55,11 @@ exp.add_step('parse', exp.parse)
 exp.add_fetcher(name='fetch')
 
 exp.add_absolute_report_step(attributes=["translator_task_size", "memory", "cost", "planner_memory", "expansions_until_last_jump", "generated",  "planner_time", "coverage", "task_size", "translator_axioms", "translator_derived_variables", "variables"])
-exp.add_report(
 
-)
+exp.add_report(report=ground_report(), name="grounding-report")
+
+def ground_report():
+
+    return 
 
 exp.run_steps()

@@ -287,17 +287,6 @@ class TranslatorExperiment(FastDownwardExperiment):
         self.add_step("make-comparison-tables", make_comparison_tables)
 
     def add_scatter_plot_step(self, relative=False, attributes=None, additional=[]):
-        """Add step creating (relative) scatter plots for all revision pairs.
-
-        Create a scatter plot for each combination of attribute,
-        configuration and revisions pair. If *attributes* is not
-        specified, a list of common scatter plot attributes is used.
-        For portfolios all attributes except "cost", "coverage" and
-        "plan_length" will be ignored. ::
-
-            exp.add_scatter_plot_step(attributes=["expansions"])
-
-        """
         if relative:
             scatter_dir = os.path.join(self.eval_dir, "scatter-relative")
             step_name = "make-relative-scatter-plots"
@@ -331,4 +320,6 @@ class TranslatorExperiment(FastDownwardExperiment):
                         make_scatter_plot(config1.nick, config2.nick, rev, attribute)
 
         self.add_step(step_name, make_scatter_plots)
+
+
 
