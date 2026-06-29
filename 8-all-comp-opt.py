@@ -6,7 +6,6 @@ from lab.environments import BaselSlurmEnvironment
 import common_setup
 from common_setup import OptionsConfig, TranslatorExperiment
 from downward.reports.scatter import ScatterPlotReport
-from ground_report import GroundReport
 
 DIR = os.path.dirname(os.path.abspath(__file__))
 REPO_DIR = os.environ["DOWNWARD_REPO"]
