@@ -12,10 +12,5 @@ class CustomParser(Parser):
 
 def get_parser():
     parser = CustomParser()
-    # The following two were used for v1.
-    parser.add_pattern("search_start_time", r"\[t=(.+)s, \d+ KB\] g=0, 1 evaluated, 0 expanded", type=int)
-    parser.add_pattern("search_start_memory", r"\[t=.+s, (\d+) KB\] g=0, 1 evaluated, 0 expanded", type=int)
-    # The following two were used for the later experiments.
-    parser.add_pattern("read_input_time", r"\[t=(.+)s, \d+ KB\] done reading input!", type=int)
-    parser.add_pattern("read_input_memory", r"\[t=.+s, (\d+) KB\] done reading input!", type=int)
+    parser.add_pattern("translator_exit_code", r"translate exit code: (.+)", type=int, file="run.log")
     return parser

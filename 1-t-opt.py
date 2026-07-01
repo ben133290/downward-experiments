@@ -46,7 +46,7 @@ exp.add_parser(exp.EXITCODE_PARSER)
 exp.add_parser(exp.TRANSLATOR_PARSER)
 exp.add_parser(exp.SINGLE_SEARCH_PARSER)
 exp.add_parser(exp.PLANNER_PARSER)
-# exp.add_parser(custom_parser.get_parser())
+exp.add_parser(custom_parser.get_parser())
 
 exp.add_step('build', exp.build)
 exp.add_step('start', exp.start_runs)
