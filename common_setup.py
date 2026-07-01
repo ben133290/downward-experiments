@@ -50,9 +50,8 @@ def get_experiment_name():
     Derived from the absolute filename of the main script, e.g.
     "/ham/spam/eggs.py" => "spam-eggs"."""
     script = os.path.abspath(get_script())
-    script_dir = os.path.basename(os.path.dirname(script))
     script_base = os.path.splitext(os.path.basename(script))[0]
-    return "%s-%s" % (script_dir, script_base)
+    return "%s" % (script_base)
 
 
 def get_data_dir():
@@ -147,40 +146,6 @@ class TranslatorExperiment(FastDownwardExperiment):
         ]
 
     def __init__(self, repo_path=None, revisions=None, configs=None, path=None, **kwargs):
-        """
-
-        You can either specify both *revisions* and *configs* or none
-        of them. If they are omitted, you will need to call
-        exp.add_algorithm() manually.
-
-        If *revisions* is given, it must be a non-empty list of
-        revision identifiers, which specify which planner versions to
-        use in the experiment. The same versions are used for
-        translator, preprocessor and search. ::
-
-            IssueExperiment(revisions=["issue123", "4b3d581643"], ...)
-
-        If *configs* is given, it must be a non-empty list of
-        IssueConfig objects. ::
-
-            IssueExperiment(..., configs=[
-                IssueConfig("ff", ["--search", "eager_greedy(ff())"]),
-                IssueConfig(
-                    "lama", [],
-                    driver_options=["--alias", "seq-sat-lama-2011"]),
-            ])
-
-        If *path* is specified, it must be the path to where the
-        experiment should be built (e.g.
-        /home/john/experiments/issue123/exp01/). If omitted, the
-        experiment path is derived automatically from the main
-        script's filename. Example::
-
-            script = experiments/issue123/exp01.py -->
-            path = experiments/issue123/data/issue123-exp01/
-
-        """
-
         path = path or get_data_dir()
 
         FastDownwardExperiment.__init__(self, path=path, **kwargs)
