@@ -53,6 +53,6 @@ exp.add_step('start', exp.start_runs)
 exp.add_step('parse', exp.parse)
 exp.add_fetcher(name='fetch')
 
-exp.add_absolute_report_step(attributes=["error", "translator_exit_code", "translator_success", "translator_task_size", "memory", "cost", "planner_memory", "expansions_until_last_jump", "generated", "planner_time", "coverage", "task_size", "translator_axioms", "translator_derived_variables", "variables"])
+exp.add_absolute_report_step(attributes=["error", "translator_exit_code", "translator_peak_memory", "translator_success", "translator_task_size", "memory", "cost", "planner_memory", "expansions_until_last_jump", "generated", "planner_time", "coverage", "task_size", "translator_axioms", "translator_derived_variables", "variables"])
 
 exp.run_steps()
