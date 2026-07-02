@@ -3,8 +3,9 @@
 import os
 import custom_parser
 from lab.environments import BaselSlurmEnvironment
+from lab.reports import Attribute
 import common_setup
-from common_setup import OptionsConfig, TranslatorExperiment
+from common_setup import OptionsConfig, TranslatorExperiment, average
 from downward.reports.scatter import ScatterPlotReport
 
 DIR = os.path.dirname(os.path.abspath(__file__))
@@ -53,6 +54,25 @@ exp.add_step('start', exp.start_runs)
 exp.add_step('parse', exp.parse)
 exp.add_fetcher(name='fetch')
 
-exp.add_absolute_report_step(attributes=["error", "translator_exit_code", "translator_peak_memory", "translator_success", "translator_task_size", "memory", "cost", "planner_memory", "expansions_until_last_jump", "generated", "planner_time", "coverage", "task_size", "translator_axioms", "translator_derived_variables", "variables"])
+REPORT_ATTRIBUTES = [
+        "error", 
+        "translator_exit_code", 
+        Attribute("translator_peak_memory", function=average, min_wins=True), 
+        "translator_success", 
+        "translator_task_size", 
+        "memory",
+        "cost", 
+        "planner_memory",
+        "expansions_until_last_jump",
+        "generated", 
+        "planner_time", 
+        "coverage", 
+        "task_size", 
+        "translator_axioms", 
+        "translator_derived_variables", 
+        "variables"
+        ]
+
+exp.add_absolute_report_step(attributes=REPORT_ATTRIBUTES)
 
 exp.run_steps()

@@ -287,4 +287,5 @@ class TranslatorExperiment(FastDownwardExperiment):
         self.add_step(step_name, make_scatter_plots)
 
 
-
+def average(values):
+    return sum(values) / len(values) if values else None
