@@ -65,6 +65,7 @@ REPORT_ATTRIBUTES = [
         "planner_memory",
         "expansions_until_last_jump",
         "generated", 
+        "generated_until_last_jump", 
         "planner_time", 
         "coverage", 
         "task_size", 
