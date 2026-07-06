@@ -73,10 +73,12 @@ REPORT_ATTRIBUTES = [
         "translator_axioms", 
         "translator_derived_variables", 
         "variables",
-        "search_time",
+        Attribute("search_time", function=sum, min_wins=True),
         "total_time"
         ]
 
 exp.add_absolute_report_step(attributes=REPORT_ATTRIBUTES)
+
+exp.add_scatter_plot_step(relative=False, attributes=["search_time"])
 
 exp.run_steps()
