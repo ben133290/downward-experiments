@@ -70,7 +70,9 @@ REPORT_ATTRIBUTES = [
         "task_size", 
         "translator_axioms", 
         "translator_derived_variables", 
-        "variables"
+        "variables",
+        "search_time",
+        "total_time"
         ]
 
 exp.add_absolute_report_step(attributes=REPORT_ATTRIBUTES)
