@@ -3,27 +3,27 @@
 import os
 import custom_parser
 from lab.environments import BaselSlurmEnvironment
+from lab.reports import Attribute
 import common_setup
-from common_setup import OptionsConfig, TranslatorExperiment
+from common_setup import OptionsConfig, TranslatorExperiment, average
 from downward.reports.scatter import ScatterPlotReport
 
 DIR = os.path.dirname(os.path.abspath(__file__))
 REPO_DIR = os.environ["DOWNWARD_REPO"]
 BENCHMARKS_DIR = os.environ["DISJUNCTIVE_BENCHMARKS"]
-REVISIONS = ["0f0b7b4cb", "a1c11625d"]
+REVISIONS = ["cc6ee384e"]
 BUILDS = ["release"]
 CONFIG_NICKS = [
-    ("lama-none", ["--translate-options", "--eliminate-disjunctions=none"]),
-    ("lama-all", ["--translate-options", "--eliminate-disjunctions=all"]),
-    ("lama-extreme", ["--translate-options", "--eliminate-disjunctions=extreme"]),
-    #("astar-hmax", ["--search", "astar(hmax())"]),
+    ("1lama-none", ["--translate-options", "--eliminate-disjunctions=none"]),
+    ("2lama-all", ["--translate-options", "--eliminate-disjunctions=all"]),
+    ("3lama-extreme", ["--translate-options", "--eliminate-disjunctions=extreme"]),
 ]
 CONFIGS = [
     OptionsConfig(
         nick=config_nick,
         component_options=config,
         build_options=[build],
-        driver_options=['--alias', 'lama-first', '--search-time-limit', '20m', '--search-memory-limit', '4000', "--build", build])
+        driver_options=['--search-time-limit', '20m', '--search-memory-limit', '4000', "--build", build])
     for build in BUILDS
     for config_nick, config in CONFIG_NICKS
 ]
@@ -47,15 +47,38 @@ exp.add_parser(exp.EXITCODE_PARSER)
 exp.add_parser(exp.TRANSLATOR_PARSER)
 exp.add_parser(exp.SINGLE_SEARCH_PARSER)
 exp.add_parser(exp.PLANNER_PARSER)
-# exp.add_parser(custom_parser.get_parser())
+exp.add_parser(custom_parser.get_parser())
 
 exp.add_step('build', exp.build)
 exp.add_step('start', exp.start_runs)
 exp.add_step('parse', exp.parse)
 exp.add_fetcher(name='fetch')
 
-exp.add_absolute_report_step(attributes=["translator_task_size", "memory", "planner_memory", "expansions_until_last_jump", "generated",  "planner_time", "coverage", "task_size", "translator_axioms", "translator_derived_variables", "variables"])
-# exp.add_comparison_table_step(attributes=exp.DEFAULT_TABLE_ATTRIBUTES + ["search_start_time"])
-exp.add_scatter_plot_step(relative=False, attributes=["translator_task_size", "memory"])
+REPORT_ATTRIBUTES = [
+        "error", 
+        "translator_exit_code", 
+        Attribute("translator_peak_memory", function=average, min_wins=True), 
+        "translator_success", 
+        "translator_task_size", 
+        "memory",
+        "cost", 
+        "planner_memory",
+        "expansions_until_last_jump",
+        Attribute("generated", function=sum, min_wins=True),
+        Attribute("expansions", function=sum, min_wins=True),
+        "generated_until_last_jump", 
+        "planner_time", 
+        "coverage", 
+        "task_size", 
+        "translator_axioms", 
+        "translator_derived_variables", 
+        "variables",
+        Attribute("search_time", function=sum, min_wins=True),
+        "total_time"
+        ]
+
+exp.add_absolute_report_step(attributes=REPORT_ATTRIBUTES)
+
+exp.add_scatter_plot_step(relative=False, attributes=["search_time"])
 
 exp.run_steps()
