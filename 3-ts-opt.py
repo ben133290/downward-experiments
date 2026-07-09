@@ -3,6 +3,7 @@
 import os
 import custom_parser
 from lab.environments import BaselSlurmEnvironment
+from lab.reports import Attribute
 import common_setup
 from common_setup import OptionsConfig, TranslatorExperiment
 from downward.reports.scatter import ScatterPlotReport
@@ -10,7 +11,7 @@ from downward.reports.scatter import ScatterPlotReport
 DIR = os.path.dirname(os.path.abspath(__file__))
 REPO_DIR = os.environ["DOWNWARD_REPO"]
 BENCHMARKS_DIR = os.environ["DISJUNCTIVE_BENCHMARKS"]
-REVISIONS = ["0f0b7b4cb", "e9fd48871", "2b056ff658"]
+REVISIONS = ["4fad6ce0b"]
 BUILDS = ["release"]
 CONFIG_NICKS = [
     ("1astar-none", ["--translate-options", "--eliminate-disjunctions=none", "--search-options", "--search", "astar(blind())"]),
