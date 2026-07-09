@@ -13,9 +13,9 @@ BENCHMARKS_DIR = os.environ["DISJUNCTIVE_BENCHMARKS"]
 REVISIONS = ["0f0b7b4cb", "e9fd48871", "2b056ff658"]
 BUILDS = ["release"]
 CONFIG_NICKS = [
-    ("astar-none", ["--translate-options", "--eliminate-disjunctions=none", "--search-options", "--search", "astar(blind())"]),
-    ("astar-all", ["--translate-options", "--eliminate-disjunctions=all", "--search-options", "--search", "astar(blind())"]),
-    ("astar-extreme", ["--translate-options", "--eliminate-disjunctions=extreme", "--search-options", "--search", "astar(blind())"]),
+    ("1astar-none", ["--translate-options", "--eliminate-disjunctions=none", "--search-options", "--search", "astar(blind())"]),
+    ("2astar-all", ["--translate-options", "--eliminate-disjunctions=all", "--search-options", "--search", "astar(blind())"]),
+    ("2astar-extreme", ["--translate-options", "--eliminate-disjunctions=extreme", "--search-options", "--search", "astar(blind())"]),
 ]
 CONFIGS = [
     OptionsConfig(
@@ -53,8 +53,26 @@ exp.add_step('start', exp.start_runs)
 exp.add_step('parse', exp.parse)
 exp.add_fetcher(name='fetch')
 
-exp.add_absolute_report_step(attributes=["error", "translator_task_size", "memory", "cost", "planner_memory", "expansions_until_last_jump", "generated",  "planner_time", "coverage", "task_size", "translator_axioms", "translator_derived_variables", "variables"])
-# exp.add_comparison_table_step(attributes=exp.DEFAULT_TABLE_ATTRIBUTES + ["search_start_time"])
-exp.add_scatter_plot_step(relative=False, attributes=["translator_task_size", "memory"])
+REPORT_ATTRIBUTES = [
+        "memory",
+        "cost", 
+        "planner_memory",
+        "expansions_until_last_jump",
+        Attribute("generated", function=sum, min_wins=True),
+        Attribute("expansions", function=sum, min_wins=True),
+        "generated_until_last_jump", 
+        "planner_time", 
+        "coverage", 
+        "task_size", 
+        "translator_axioms", 
+        "translator_derived_variables", 
+        "variables",
+        Attribute("search_time", function=sum, min_wins=True),
+        "total_time"
+        ]
+
+exp.add_absolute_report_step(attributes=REPORT_ATTRIBUTES)
+
+exp.add_scatter_plot_step(relative=False, attributes=["memory"])
 
 exp.run_steps()

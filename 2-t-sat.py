@@ -23,7 +23,7 @@ CONFIGS = [
         nick=config_nick,
         component_options=config,
         build_options=[build],
-        driver_options=['--search-time-limit', '20m', '--search-memory-limit', '4000', "--build", build])
+        driver_options=['--alias', 'lama-first', '--search-time-limit', '20m', '--search-memory-limit', '4000', "--build", build])
     for build in BUILDS
     for config_nick, config in CONFIG_NICKS
 ]
