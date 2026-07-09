@@ -11,7 +11,7 @@ from downward.reports.scatter import ScatterPlotReport
 DIR = os.path.dirname(os.path.abspath(__file__))
 REPO_DIR = os.environ["DOWNWARD_REPO"]
 BENCHMARKS_DIR = os.environ["DISJUNCTIVE_BENCHMARKS"]
-REVISIONS = ["4fad6ce0b"]
+REVISIONS = ["4fad6ce0b", ""]
 BUILDS = ["release"]
 CONFIG_NICKS = [
     ("1astar-none", ["--translate-options", "--eliminate-disjunctions=none", "--search-options", "--search", "astar(blind())"]),
@@ -74,6 +74,6 @@ REPORT_ATTRIBUTES = [
 
 exp.add_absolute_report_step(attributes=REPORT_ATTRIBUTES)
 
-exp.add_scatter_plot_step(relative=False, attributes=["memory"])
+exp.add_scatter_plot_step_rev(attribute="memory", revisions=REVISIONS)
 
 exp.run_steps()

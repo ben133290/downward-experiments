@@ -287,5 +287,36 @@ class TranslatorExperiment(FastDownwardExperiment):
         self.add_step(step_name, make_scatter_plots)
 
 
+
+    def add_scatter_plot_step_rev(self, attribute=None, revisions=[]):
+        scatter_dir = os.path.join(self.eval_dir, "scatter-absolute")
+        step_name = "make-absolute-scatter-plots-2"
+
+        def make_scatter_plot(config, rev1, rev2, attribute):
+            name = "-".join([self.name, rev1, rev2])
+            print("Make scatter plot for", name)
+            algo1 = get_algo_nick(rev1, config)
+            algo2 = get_algo_nick(rev2, config)
+
+            print(f"{attribute}")
+            report = ScatterPlotReport(
+                format="pdf",
+                filter_algorithm=[algo1, algo2],
+                attributes=[attribute],
+                relative=False,
+                get_category=lambda run1, run2: run1["domain"])
+            report(
+                self.eval_dir,
+                os.path.join(scatter_dir, rev1 + "-" + rev2, name))
+
+        def make_scatter_plots():
+            for config in self._configs:
+                for rev1, rev2 in itertools.combinations(self._revisions, 2):
+                    make_scatter_plot(config.nick, rev1, rev2, attribute)
+
+        self.add_step(step_name, make_scatter_plots)
+
+
+
 def average(values):
     return sum(values) / len(values) if values else None
