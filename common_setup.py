@@ -267,14 +267,23 @@ class TranslatorExperiment(FastDownwardExperiment):
             algo1 = get_algo_nick(rev, config1)
             algo2 = get_algo_nick(rev, config2)
 
-            print(f"{attribute}")
+            print(f"{attribute} {algo1} {algo2}")
             report = ScatterPlotReport(
                 format="pdf",
                 filter_algorithm=[algo1, algo2],
                 attributes=[attribute],
                 relative=relative,
                 get_category=lambda run1, run2: run1["domain"])
+            report2 = ScatterPlotReport(
+                format="tex",
+                filter_algorithm=[algo1, algo2],
+                attributes=[attribute],
+                relative=relative,
+                get_category=lambda run1, run2: run1["domain"])
             report(
+                self.eval_dir,
+                os.path.join(scatter_dir, config1 + "-" + config2, name))
+            report2(
                 self.eval_dir,
                 os.path.join(scatter_dir, config1 + "-" + config2, name))
 

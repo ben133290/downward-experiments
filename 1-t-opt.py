@@ -14,9 +14,9 @@ BENCHMARKS_DIR = os.environ["DISJUNCTIVE_BENCHMARKS"]
 REVISIONS = ["cc6ee384e"]
 BUILDS = ["release"]
 CONFIG_NICKS = [
-    ("1astar-blind-none", ["--translate-options", "--eliminate-disjunctions=none", "--search-options", "--search", "astar(blind())"]),
-    ("2astar-blind-all", ["--translate-options", "--eliminate-disjunctions=all", "--search-options", "--search", "astar(blind())"]),
-    ("3astar-blind-extreme", ["--translate-options", "--eliminate-disjunctions=extreme", "--search-options", "--search", "astar(blind())"]),
+    ("astar-blind-none", ["--translate-options", "--eliminate-disjunctions=none", "--search-options", "--search", "astar(blind())"]),
+    ("astar-blind-all", ["--translate-options", "--eliminate-disjunctions=all", "--search-options", "--search", "astar(blind())"]),
+    ("astar-blind-extreme", ["--translate-options", "--eliminate-disjunctions=extreme", "--search-options", "--search", "astar(blind())"]),
 ]
 CONFIGS = [
     OptionsConfig(
@@ -79,6 +79,6 @@ REPORT_ATTRIBUTES = [
 
 exp.add_absolute_report_step(attributes=REPORT_ATTRIBUTES)
 
-exp.add_scatter_plot_step(relative=False, attributes=["memory"])
+exp.add_scatter_plot_step(relative=False, attributes=["translator_task_size"])
 
 exp.run_steps()
