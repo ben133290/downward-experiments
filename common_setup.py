@@ -257,7 +257,7 @@ class TranslatorExperiment(FastDownwardExperiment):
             step_name = "make-relative-scatter-plots"
         else:
             scatter_dir = os.path.join(self.eval_dir, "scatter-absolute")
-            step_name = "make-absolute-scatter-plots"
+            step_name = f"make-scatter-{attributes[0]}"
         if attributes is None:
             attributes = self.DEFAULT_SCATTER_PLOT_ATTRIBUTES
 
@@ -299,7 +299,7 @@ class TranslatorExperiment(FastDownwardExperiment):
 
     def add_scatter_plot_step_rev(self, attribute=None, revisions=[]):
         scatter_dir = os.path.join(self.eval_dir, "scatter-absolute")
-        step_name = "make-absolute-scatter-plots-2"
+        step_name = f"make-absolute-scatter-plots-2"
 
         def make_scatter_plot(config, rev1, rev2, attribute):
             name = "-".join([self.name, rev1, rev2])
