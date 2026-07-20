@@ -5,18 +5,17 @@ import custom_parser
 from lab.environments import BaselSlurmEnvironment
 from lab.reports import Attribute
 import common_setup
-from common_setup import OptionsConfig, TranslatorExperiment
+from common_setup import OptionsConfig, TranslatorExperiment, average
 from downward.reports.scatter import ScatterPlotReport
 
 DIR = os.path.dirname(os.path.abspath(__file__))
 REPO_DIR = os.environ["DOWNWARD_REPO"]
 BENCHMARKS_DIR = os.environ["DISJUNCTIVE_BENCHMARKS"]
-REVISIONS = ["0f0b7b4cbf", "4fad6ce0b"]
+REVISIONS = ["413175f42"]
 BUILDS = ["release"]
 CONFIG_NICKS = [
-    ("1astar-none", ["--translate-options", "--eliminate-disjunctions=none", "--search-options", "--search", "astar(blind())"]),
-    ("2astar-all", ["--translate-options", "--eliminate-disjunctions=all", "--search-options", "--search", "astar(blind())"]),
-    ("2astar-extreme", ["--translate-options", "--eliminate-disjunctions=extreme", "--search-options", "--search", "astar(blind())"]),
+    ("1astar-blind-none", ["--translate-options", "--eliminate-disjunctions=none", "--search-options", "--search", "astar(blind())"]),
+    ("2astar-blind-hybrid", ["--translate-options", "--eliminate-disjunctions=hybrid", "--search-options", "--search", "astar(blind())"]),
 ]
 CONFIGS = [
     OptionsConfig(
@@ -55,6 +54,14 @@ exp.add_step('parse', exp.parse)
 exp.add_fetcher(name='fetch')
 
 REPORT_ATTRIBUTES = [
+        "error", 
+        "blowup_potential", 
+        "translator_exit_code", 
+        "refactored_disjunctions",
+        "refactored_conditions", 
+        Attribute("translator_peak_memory", function=average, min_wins=True), 
+        "translator_success", 
+        "translator_task_size", 
         "memory",
         "cost", 
         "planner_memory",
@@ -66,8 +73,7 @@ REPORT_ATTRIBUTES = [
         "coverage", 
         "task_size", 
         "translator_axioms", 
-        "translator_derived_variables",
-        "search_bytes_per_state",
+        "translator_derived_variables", 
         "variables",
         Attribute("search_time", function=sum, min_wins=True),
         "total_time"
@@ -75,6 +81,7 @@ REPORT_ATTRIBUTES = [
 
 exp.add_absolute_report_step(attributes=REPORT_ATTRIBUTES)
 
-exp.add_scatter_plot_step_rev(attribute="memory", revisions=REVISIONS)
+exp.add_scatter_plot_step(relative=False, attributes=["translator_task_size"])
+exp.add_scatter_plot_step(relative=False, attributes=["search_time"])
 
 exp.run_steps()

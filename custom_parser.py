@@ -22,5 +22,9 @@ class CustomParser(Parser):
 def get_parser():
     parser = CustomParser()
     parser.add_pattern("translator_exit_code", r"translate exit code: (.+)", type=int, file="run.log")
+    parser.add_pattern("search_bytes_per_state", r"Bytes per state: (.+)", type=int, file="run.log")
+    parser.add_pattern("blowup_potential", r"Translator total blow-up potential: (.+)", type=int, file="run.log")
+    parser.add_pattern("refactored_disjunctions", r"Translator axiom refactored disjunctions: (.+)", type=int, file="run.log")
+    parser.add_pattern("refactored_conditions", r"Translator axiom refactored conditions: (.+)", type=int, file="run.log")
     parser.add_function(translator_exit)
     return parser
