@@ -30,5 +30,6 @@ def get_parser():
     parser.add_pattern("derived_in_precond", r"Number of derived variables in Preconditions: (.+)", type=int, file="run.log")
     parser.add_pattern("ratio_in_precond", r"Ratio of derived variables in Preconditions: (.+)", type=float, file="run.log")
     parser.add_pattern("sccs", r"Number of SCCs: (.+)", type=int, file="run.log")
+    parser.add_pattern("sccs_max", r"Max size of SCCs: (.+)", type=int, file="run.log")
     parser.add_function(translator_exit)
     return parser

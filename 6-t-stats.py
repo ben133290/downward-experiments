@@ -11,11 +11,11 @@ from downward.reports.scatter import ScatterPlotReport
 DIR = os.path.dirname(os.path.abspath(__file__))
 REPO_DIR = os.environ["DOWNWARD_REPO"]
 BENCHMARKS_DIR = os.environ["DISJUNCTIVE_BENCHMARKS"]
-REVISIONS = ["c44e3b4d3"]
+REVISIONS = ["9ba9e477"]
 BUILDS = ["release"]
 CONFIG_NICKS = [
-    ("astar-blind-none", ["--translate", "--translate-options", "--eliminate-disjunctions=none", "--search-options"]),
-    ("astar-blind-all", ["--translate", "--translate-options", "--eliminate-disjunctions=all", "--search-options"]),
+    ("1astar-blind-none", ["--translate", "--translate-options", "--eliminate-disjunctions=none", "--search-options"]),
+    ("2astar-blind-all", ["--translate", "--translate-options", "--eliminate-disjunctions=all", "--search-options"]),
     #("astar-blind-extreme", ["--translate", "--translate-options", "--eliminate-disjunctions=extreme", "--search-options"]),
 ]
 CONFIGS = [
@@ -60,6 +60,7 @@ REPORT_ATTRIBUTES = [
         "derived_in_precond",
         Attribute("ratio_in_precond", function=average, min_wins=True),
         "sccs",
+        "sccs_max",
         "translator_exit_code", 
         Attribute("translator_peak_memory", function=average, min_wins=True), 
         "translator_success", 
