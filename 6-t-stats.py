@@ -80,7 +80,4 @@ REPORT_ATTRIBUTES = [
 
 exp.add_absolute_report_step(attributes=REPORT_ATTRIBUTES)
 
-exp.add_scatter_plot_step(relative=False, attributes=["translator_task_size"])
-exp.add_scatter_plot_step(relative=False, attributes=["search_time"])
-
 exp.run_steps()
