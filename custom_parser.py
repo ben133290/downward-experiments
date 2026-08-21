@@ -31,5 +31,56 @@ def get_parser():
     parser.add_pattern("ratio_in_precond", r"Ratio of derived variables in Preconditions: (.+)", type=float, file="run.log")
     parser.add_pattern("sccs", r"Number of SCCs: (.+)", type=int, file="run.log")
     parser.add_pattern("sccs_max", r"Max size of SCCs: (.+)", type=int, file="run.log")
+
+    parser.add_pattern(
+        "translator_tot_der_precond",
+        r"Translator total derived variables in precond: (.+)",
+        type=int,
+        file="run.log",
+    )
+    parser.add_pattern(
+        "translator_der_precond",
+        r"Translator derived variables in precond: (.+)",
+        type=int,
+        file="run.log",
+    )
+    parser.add_pattern(
+        "translator_der_effcond",
+        r"Translator derived variables in effcond: (.+)",
+        type=int,
+        file="run.log",
+    )
+    parser.add_pattern(
+        "translator_der_goalcond",
+        r"Translator derived variables in goalcond: (.+)",
+        type=int,
+        file="run.log",
+    )
+
+    # Ratios
+    parser.add_pattern(
+        "translator_tot_ratio_precond",
+        r"Translator total ratio variables in precond: (.+)",
+        type=float,
+        file="run.log",
+    )
+    parser.add_pattern(
+        "translator_ratio_precond",
+        r"Translator ratio variables in precond: (.+)",
+        type=float,
+        file="run.log",
+    )
+    parser.add_pattern(
+        "translator_ratio_effcond",
+        r"Translator ratio variables in effcond: (.+)",
+        type=float,
+        file="run.log",
+    )
+    parser.add_pattern(
+        "translator_ratio_goalcond",
+        r"Translator ratio variables in goalcond: (.+)",
+        type=float,
+        file="run.log",
+    )
     parser.add_function(translator_exit)
     return parser

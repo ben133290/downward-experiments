@@ -11,7 +11,7 @@ from downward.reports.scatter import ScatterPlotReport
 DIR = os.path.dirname(os.path.abspath(__file__))
 REPO_DIR = os.environ["DOWNWARD_REPO"]
 BENCHMARKS_DIR = os.environ["DISJUNCTIVE_BENCHMARKS"]
-REVISIONS = ["9ba9e477"]
+REVISIONS = ["409982b29"]
 BUILDS = ["release"]
 CONFIG_NICKS = [
     ("1astar-blind-none", ["--translate", "--translate-options", "--eliminate-disjunctions=none", "--search-options"]),
@@ -55,7 +55,7 @@ exp.add_step('parse', exp.parse)
 exp.add_fetcher(name='fetch')
 
 REPORT_ATTRIBUTES = [
-        "error", 
+        #"error", 
         "reused_axioms",
         "derived_in_precond",
         Attribute("ratio_in_precond", function=average, min_wins=True),
@@ -63,23 +63,19 @@ REPORT_ATTRIBUTES = [
         "sccs_max",
         "translator_exit_code", 
         Attribute("translator_peak_memory", function=average, min_wins=True), 
+        "translator_tot_der_precond"
+        "translator_der_precond"
+        "translator_der_effcond"
+        "translator_der_goalcond"
+        "translator_tot_ratio_precond"
+        "translator_ratio_precond"
+        "translator_ratio_effcond"
+        "translator_ratio_goalcond"
         "translator_success", 
         "translator_task_size", 
-        "memory",
-        "cost", 
-        "planner_memory",
-        "expansions_until_last_jump",
-        Attribute("generated", function=sum, min_wins=True),
-        Attribute("expansions", function=sum, min_wins=True),
-        "generated_until_last_jump", 
-        "planner_time", 
-        "coverage", 
         "task_size", 
         "translator_axioms", 
         "translator_derived_variables", 
-        "variables",
-        Attribute("search_time", function=sum, min_wins=True),
-        "total_time"
         ]
 
 exp.add_absolute_report_step(attributes=REPORT_ATTRIBUTES)
