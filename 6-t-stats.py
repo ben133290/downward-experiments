@@ -63,14 +63,14 @@ REPORT_ATTRIBUTES = [
         "sccs_max",
         "translator_exit_code", 
         Attribute("translator_peak_memory", function=average, min_wins=True), 
-        "translator_tot_der_precond"
-        "translator_der_precond"
-        "translator_der_effcond"
-        "translator_der_goalcond"
-        "translator_tot_ratio_precond"
-        "translator_ratio_precond"
-        "translator_ratio_effcond"
-        "translator_ratio_goalcond"
+        "translator_tot_der_precond",
+        "translator_der_precond",
+        "translator_der_effcond",
+        "translator_der_goalcond",
+        "translator_tot_ratio_precond",
+        "translator_ratio_precond",
+        "translator_ratio_effcond",
+        "translator_ratio_goalcond",
         "translator_success", 
         "translator_task_size", 
         "task_size", 
