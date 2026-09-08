@@ -11,7 +11,7 @@ from downward.reports.scatter import ScatterPlotReport
 DIR = os.path.dirname(os.path.abspath(__file__))
 REPO_DIR = os.environ["DOWNWARD_REPO"]
 BENCHMARKS_DIR = os.environ["DISJUNCTIVE_BENCHMARKS"]
-REVISIONS = ["409982b293", "80929ba016"]
+REVISIONS = ["hybrid", "partial"]
 BUILDS = ["release"]
 CONFIG_NICKS = [
     ("1-none", ["--translate-options", "--eliminate-disjunctions=none", "--search-options", "--search", "let(hff, ff(transform=adapt_costs(one)),eager_greedy([hff],preferred=[hff],cost_type=one))"]),

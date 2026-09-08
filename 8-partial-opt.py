@@ -5,13 +5,13 @@ import custom_parser
 from lab.environments import BaselSlurmEnvironment
 from lab.reports import Attribute
 import common_setup
-from common_setup import OptionsConfig, TranslatorExperiment, average
+from common_setup import OptionsConfig, TranslatorExperiment, average, BENCHMARKS
 from downward.reports.scatter import ScatterPlotReport
 
 DIR = os.path.dirname(os.path.abspath(__file__))
 REPO_DIR = os.environ["DOWNWARD_REPO"]
 BENCHMARKS_DIR = os.environ["DISJUNCTIVE_BENCHMARKS"]
-REVISIONS = ["409982b293", "80929ba016"]
+REVISIONS = ["hybrid", "partial"]
 BUILDS = ["release"]
 CONFIG_NICKS = [
     ("1-none", ["--translate-options", "--eliminate-disjunctions=none", "--search-options", "--search", "astar(blind())"]),
@@ -28,7 +28,7 @@ CONFIGS = [
     for config_nick, config in CONFIG_NICKS
 ]
 
-SUITE = list(set(['muddy-children', 'muddy-child', 'blocker', 'psr-middle', 'sum', 'word-rooms', 'collab-and-comm', 'psr-large', 'miconic-fulladl', 'optical-telegraphs', 'social-planning', 'ghosh-etal-JAR-acc-cc2', 'ged1-ds2nd', 'ged1-ds1', 'assembly', 'miconic-axioms', 'explode',]))
+SUITE = BENCHMARKS
 ENVIRONMENT = BaselSlurmEnvironment(
     partition="infai_2",
     email="ben.heuser@unibas.ch",
