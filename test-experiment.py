@@ -16,7 +16,6 @@ BUILDS = ["release"]
 CONFIG_NICKS = [
     ("1astar-none", ["--translate-options", "--eliminate-disjunctions=none", "--search-options", "--search", "astar(blind())"]),
     ("2astar-all", ["--translate-options", "--eliminate-disjunctions=all", "--search-options", "--search", "astar(blind())"]),
-    ("2astar-extreme", ["--translate-options", "--eliminate-disjunctions=extreme", "--search-options", "--search", "astar(blind())"]),
 ]
 CONFIGS = [
     OptionsConfig(

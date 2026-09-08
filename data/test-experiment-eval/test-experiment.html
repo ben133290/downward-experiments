@@ -1,0 +1,2535 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>test-experiment</title>
+<meta name="generator" content="https://txt2tags.org">
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<style>
+blockquote{margin: 1em 2em; border-left: 2px solid #999;
+  font-style: oblique; padding-left: 1em;}
+blockquote:first-letter{margin: .2em .1em .1em 0; font-size: 160%; font-weight: bold;}
+blockquote:first-line{font-weight: bold;}
+body{font-family: sans-serif;}
+hr{background-color:#000;border:0;color:#000;}
+hr.heavy{height:2px;}
+hr.light{height:1px;}
+img{border:0;display:block;}
+img.right{margin:0 0 0 auto;}
+img.center{border:0;margin:0 auto;}
+table{border-collapse: collapse;}
+table th,table td{padding: 3px 7px 2px 7px;}
+table th{background-color: lightgrey;}
+table.center{margin-left:auto; margin-right:auto;}
+.center{text-align:center;}
+.right{text-align:right;}
+.left{text-align:left;}
+.tableborder,.tableborder td,.tableborder th{border:1px solid #000;}
+.underline{text-decoration:underline;}
+</style>
+<style type="text/css">
+    body {
+        font-family: Ubuntu, Helvetica, Arial, sans-serif;
+    }
+    table {
+        border-collapse: collapse;
+    }
+    table th {
+        text-align: left;
+        padding-top: 5px;
+        padding-bottom: 4px;
+        background-color: #aaa;
+        color: #ffffff;
+        /* Make table headers sticky. */
+        position: sticky;
+        top: 0;
+    }
+</style>
+<script type="text/javascript">
+function toggle_element(element) {
+    if (element.style.display == "none") {
+        element.style.display = "";
+    } else {
+        element.style.display = "none";
+    }
+}
+
+function find_next(element, classname) {
+    element = element.nextSibling;
+    while(element.nodeName != classname)
+        element = element.nextSibling;
+    return element;
+}
+
+function toggle_table(toggle_button) {
+    var table = find_next(toggle_button, "TABLE");
+    toggle_element(table);
+    if (toggle_button.innerHTML == "Show table") {
+        toggle_button.innerHTML = "Hide table";
+    } else {
+        toggle_button.innerHTML = "Show table";
+    }
+}
+
+function show_table(section) {
+    heading = section.children[0];
+    var toggle_button = find_next(heading, "BUTTON");
+    var table = find_next(toggle_button, "TABLE");
+    table.style.display = "";
+    toggle_button.innerHTML = "Hide table";
+}
+
+function show_all_tables_in_section(section_id) {
+    var section = document.getElementById(section_id);
+    if (!section) return;
+
+    var tables = section.getElementsByTagName('table');
+    var buttons = section.getElementsByClassName('toggle-table');
+
+    for (var i = 0; i < tables.length; i++) {
+        tables[i].style.display = "";
+    }
+    for (var i = 0; i < buttons.length; i++) {
+        buttons[i].innerHTML = "Hide table";
+    }
+}
+
+function hide_all_tables_in_section(section_id) {
+    var section = document.getElementById(section_id);
+    if (!section) return;
+
+    var tables = section.getElementsByTagName('table');
+    var buttons = section.getElementsByClassName('toggle-table');
+
+    for (var i = 0; i < tables.length; i++) {
+        tables[i].style.display = "none";
+    }
+    for (var i = 0; i < buttons.length; i++) {
+        buttons[i].innerHTML = "Show table";
+    }
+}
+
+function show_main_tables() {
+    var names = ["unexplained-errors", "info", "summary"];
+    for (var i = 0; i < names.length; i++) {
+        var section = document.getElementById(names[i]);
+        try {
+            show_table(section);
+        } catch (e) {
+            console.log("No table found for " + names[i]);
+        }
+    }
+
+    // If there is only one table, show it and hide the button.
+    var buttons = document.getElementsByTagName('button');
+    var tables = document.getElementsByTagName('table');
+    if (buttons.length == 1 && tables.length == 1) {
+        tables[0].style.display = "";
+        buttons[0].style.display = "none";
+    }
+}
+
+document.addEventListener("DOMContentLoaded", show_main_tables);
+</script>
+</head>
+<body>
+<header>
+<hgroup>
+<h1>test-experiment</h1>
+<h3>2026-09-08</h3>
+</hgroup>
+</header>
+
+
+<div class="body">
+
+<ul>
+<li><strong><a href="#unexplained-errors" onclick="show_table(document.getElementById('unexplained-errors'));">Unexplained Errors</a></strong>
+</li>
+<li><strong><a href="#info" onclick="show_table(document.getElementById('info'));">Info</a></strong>
+</li>
+<li><strong><a href="#summary" onclick="show_table(document.getElementById('summary'));">Summary</a></strong>
+</li>
+<li><strong><a href="#cost" onclick="show_table(document.getElementById('cost'));">cost</a></strong>
+  <ul>
+  <li><a href="#cost-explode" onclick="show_table(document.getElementById('cost-explode'));">explode</a>
+  </li>
+  </ul>
+</li>
+<li><strong><a href="#coverage" onclick="show_table(document.getElementById('coverage'));">coverage</a></strong>
+  <ul>
+  <li><a href="#coverage-explode" onclick="show_table(document.getElementById('coverage-explode'));">explode</a>
+  </li>
+  </ul>
+</li>
+<li><strong><a href="#expansions" onclick="show_table(document.getElementById('expansions'));">expansions</a></strong>
+  <ul>
+  <li><a href="#expansions-explode" onclick="show_table(document.getElementById('expansions-explode'));">explode</a>
+  </li>
+  </ul>
+</li>
+<li><strong><a href="#expansions_until_last_jump" onclick="show_table(document.getElementById('expansions_until_last_jump'));">expansions_until_last_jump</a></strong>
+  <ul>
+  <li><a href="#expansions_until_last_jump-explode" onclick="show_table(document.getElementById('expansions_until_last_jump-explode'));">explode</a>
+  </li>
+  </ul>
+</li>
+<li><strong><a href="#generated" onclick="show_table(document.getElementById('generated'));">generated</a></strong>
+  <ul>
+  <li><a href="#generated-explode" onclick="show_table(document.getElementById('generated-explode'));">explode</a>
+  </li>
+  </ul>
+</li>
+<li><strong><a href="#generated_until_last_jump" onclick="show_table(document.getElementById('generated_until_last_jump'));">generated_until_last_jump</a></strong>
+  <ul>
+  <li><a href="#generated_until_last_jump-explode" onclick="show_table(document.getElementById('generated_until_last_jump-explode'));">explode</a>
+  </li>
+  </ul>
+</li>
+<li><strong><a href="#memory" onclick="show_table(document.getElementById('memory'));">memory</a></strong>
+  <ul>
+  <li><a href="#memory-explode" onclick="show_table(document.getElementById('memory-explode'));">explode</a>
+  </li>
+  </ul>
+</li>
+<li><strong><a href="#planner_memory" onclick="show_table(document.getElementById('planner_memory'));">planner_memory</a></strong>
+  <ul>
+  <li><a href="#planner_memory-explode" onclick="show_table(document.getElementById('planner_memory-explode'));">explode</a>
+  </li>
+  </ul>
+</li>
+<li><strong><a href="#planner_time" onclick="show_table(document.getElementById('planner_time'));">planner_time</a></strong>
+  <ul>
+  <li><a href="#planner_time-explode" onclick="show_table(document.getElementById('planner_time-explode'));">explode</a>
+  </li>
+  </ul>
+</li>
+<li><strong><a href="#search_bytes_per_state" onclick="show_table(document.getElementById('search_bytes_per_state'));">search_bytes_per_state</a></strong>
+  <ul>
+  <li><a href="#search_bytes_per_state-explode" onclick="show_table(document.getElementById('search_bytes_per_state-explode'));">explode</a>
+  </li>
+  </ul>
+</li>
+<li><strong><a href="#search_time" onclick="show_table(document.getElementById('search_time'));">search_time</a></strong>
+  <ul>
+  <li><a href="#search_time-explode" onclick="show_table(document.getElementById('search_time-explode'));">explode</a>
+  </li>
+  </ul>
+</li>
+<li><strong><a href="#total_time" onclick="show_table(document.getElementById('total_time'));">total_time</a></strong>
+  <ul>
+  <li><a href="#total_time-explode" onclick="show_table(document.getElementById('total_time-explode'));">explode</a>
+  </li>
+  </ul>
+</li>
+<li><strong><a href="#translator_axioms" onclick="show_table(document.getElementById('translator_axioms'));">translator_axioms</a></strong>
+  <ul>
+  <li><a href="#translator_axioms-explode" onclick="show_table(document.getElementById('translator_axioms-explode'));">explode</a>
+  </li>
+  </ul>
+</li>
+<li><strong><a href="#translator_derived_variables" onclick="show_table(document.getElementById('translator_derived_variables'));">translator_derived_variables</a></strong>
+  <ul>
+  <li><a href="#translator_derived_variables-explode" onclick="show_table(document.getElementById('translator_derived_variables-explode'));">explode</a>
+  </li>
+  </ul>
+</li>
+</ul>
+
+<section~A~>
+<h1></h1>
+<section id="unexplained-errors">
+<h2>unexplained-errors</h2>
+
+<button type="button" class="toggle-table" onclick="toggle_table(this)">Show table</button><p></p>
+<table class="tableborder" style="display:none">
+<tr>
+<th>Unexplained errors</th> <th>algorithm</th> <th>domain</th> <th>problem</th> <th>error</th> <th>planner_wall_clock_time</th> <th>raw_memory</th> <th>node</th> <th>run_dir</th>
+</tr>
+<tr>
+<td rowspan="1">['critical-error',&nbsp;'run.err:&nbsp;Traceback&nbsp;(most&nbsp;recent&nbsp;call&nbsp;last):<br />&nbsp;&nbsp;File&nbsp;"/infai/heuser0000/downward-experiments/data/test-experiment/code-36888230b175ba1f6d512957b51b42c3630e6b00_bd874d5d/fast-downward.py",&nbsp;line&nbsp;5,&nbsp;in&nbsp;<module><br />&nbsp;&nbsp;&nbsp;&nbsp;main()<br />&nbsp;&nbsp;File&nbsp;"/infai/heuser0000/downward-experiments/data/test-experiment/code-36888230b175ba1f6d512957b51b42c3630e6b00_bd874d5d/driver/main.py",&nbsp;line&nbsp;37,&nbsp;in&nbsp;main<br />&nbsp;&nbsp;&nbsp;&nbsp;(exitcode,&nbsp;continue_execution)&nbsp;=&nbsp;run_components.run_translate(args)<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^<br />&nbsp;&nbsp;File&nbsp;"/infai/heuser0000/downward-experiments/data/test-experiment/code-36888230b175ba1f6d512957b51b42c3630e6b00_bd874d5d/driver/run_components.py",&nbsp;line&nbsp;96,&nbsp;in&nbsp;run_translate<br />&nbsp;&nbsp;&nbsp;&nbsp;if&nbsp;"MemoryError"&nbsp;not&nbsp;in&nbsp;line:<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;^^^^^^^^^^^^^^^^^^^^^^^^^<br />TypeError:&nbsp;a&nbsp;bytes-like&nbsp;object&nbsp;is&nbsp;required,&nbsp;not&nbsp;\'str\'<br />']</td>
+<td>partial-1astar-none</td> <td>explode</td> <td>n24.pddl</td> <td>critical-error</td> <td>37.64</td> <td>?</td> <td>icb01</td> <td>runs-00001-00100/00020</td>
+</tr>
+<tr>
+<td rowspan="35">['run.err:&nbsp;Problem&nbsp;in&nbsp;domain&nbsp;definition!<br />Traceback&nbsp;(most&nbsp;recent&nbsp;call&nbsp;last):<br />&nbsp;&nbsp;File&nbsp;"/infai/heuser0000/downward-experiments/data/test-experiment/code-36888230b175ba1f6d512957b51b42c3630e6b00_bd874d5d/fast-downward.py",&nbsp;line&nbsp;5,&nbsp;in&nbsp;<module><br />&nbsp;&nbsp;&nbsp;&nbsp;main()<br />&nbsp;&nbsp;File&nbsp;"/infai/heuser0000/downward-experiments/data/test-experiment/code-36888230b175ba1f6d512957b51b42c3630e6b00_bd874d5d/driver/main.py",&nbsp;line&nbsp;44,&nbsp;in&nbsp;main<br />&nbsp;&nbsp;&nbsp;&nbsp;(exitcode,&nbsp;continue_execution)&nbsp;=&nbsp;run_components.run_validate(args)<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^<br />&nbsp;&nbsp;File&nbsp;"/infai/heuser0000/downward-experiments/data/test-experiment/code-36888230b175ba1f6d512957b51b42c3630e6b00_bd874d5d/driver/run_components.py",&nbsp;line&nbsp;174,&nbsp;in&nbsp;run_validate<br />&nbsp;&nbsp;&nbsp;&nbsp;call.check_call(<br />&nbsp;&nbsp;File&nbsp;"/infai/heuser0000/downward-experiments/data/test-experiment/code-36888230b175ba1f6d512957b51b42c3630e6b00_bd874d5d/driver/call.py",&nbsp;line&nbsp;79,&nbsp;in&nbsp;check_call<br />&nbsp;&nbsp;&nbsp;&nbsp;return&nbsp;subprocess.check_call(cmd,&nbsp;**kwargs)<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^<br />&nbsp;&nbsp;File&nbsp;"/scicore/soft/easybuild/apps/Python/3.11.5-GCCcore-13.2.0/lib/python3.11/subprocess.py",&nbsp;line&nbsp;413,&nbsp;in&nbsp;check_call<br />&nbsp;&nbsp;&nbsp;&nbsp;raise&nbsp;CalledProcessError(retcode,&nbsp;cmd)<br />subprocess.CalledProcessError:&nbsp;Command&nbsp;\'[\'/infai/heuser0000/bin/validate\',&nbsp;\'domain.pddl\',&nbsp;\'problem.pddl\',&nbsp;\'sas_plan\']\'&nbsp;returned&nbsp;non-zero&nbsp;exit&nbsp;status&nbsp;255.<br />']</td>
+<td>partial-1astar-none</td> <td>explode</td> <td>n10.pddl</td> <td>search-plan-found-and-out-of-memory</td> <td>300.69</td> <td>10656</td> <td>icb01</td> <td>runs-00001-00100/00006</td>
+</tr>
+<tr><td>partial-1astar-none</td> <td>explode</td> <td>n11.pddl</td> <td>search-plan-found-and-out-of-memory</td> <td>300.77</td> <td>10656</td> <td>icb01</td> <td>runs-00001-00100/00007</td></tr>
+<tr><td>partial-1astar-none</td> <td>explode</td> <td>n12.pddl</td> <td>search-plan-found-and-out-of-memory</td> <td>301.16</td> <td>10656</td> <td>icb03</td> <td>runs-00001-00100/00008</td></tr>
+<tr><td>partial-1astar-none</td> <td>explode</td> <td>n13.pddl</td> <td>search-plan-found-and-out-of-memory</td> <td>302.33</td> <td>10788</td> <td>icb02</td> <td>runs-00001-00100/00009</td></tr>
+<tr><td>partial-1astar-none</td> <td>explode</td> <td>n14.pddl</td> <td>search-plan-found-and-out-of-memory</td> <td>304.96</td> <td>11976</td> <td>icb02</td> <td>runs-00001-00100/00010</td></tr>
+<tr><td>partial-1astar-none</td> <td>explode</td> <td>n15.pddl</td> <td>search-plan-found-and-out-of-memory</td> <td>308.62</td> <td>10788</td> <td>icb01</td> <td>runs-00001-00100/00011</td></tr>
+<tr><td>partial-1astar-none</td> <td>explode</td> <td>n16.pddl</td> <td>search-plan-found-and-out-of-memory</td> <td>317.99</td> <td>11052</td> <td>icb01</td> <td>runs-00001-00100/00012</td></tr>
+<tr><td>partial-1astar-none</td> <td>explode</td> <td>n17.pddl</td> <td>search-plan-found-and-out-of-memory</td> <td>338.7</td> <td>10788</td> <td>icb02</td> <td>runs-00001-00100/00013</td></tr>
+<tr><td>partial-1astar-none</td> <td>explode</td> <td>n18.pddl</td> <td>search-plan-found-and-out-of-memory</td> <td>377.48</td> <td>11444</td> <td>icb02</td> <td>runs-00001-00100/00014</td></tr>
+<tr><td>partial-1astar-none</td> <td>explode</td> <td>n5.pddl</td> <td>search-plan-found-and-out-of-memory</td> <td>0.79</td> <td>10656</td> <td>icb01</td> <td>runs-00001-00100/00001</td></tr>
+<tr><td>partial-1astar-none</td> <td>explode</td> <td>n6.pddl</td> <td>search-plan-found-and-out-of-memory</td> <td>2.87</td> <td>10656</td> <td>icb02</td> <td>runs-00001-00100/00002</td></tr>
+<tr><td>partial-1astar-none</td> <td>explode</td> <td>n7.pddl</td> <td>search-plan-found-and-out-of-memory</td> <td>18.23</td> <td>10656</td> <td>icb02</td> <td>runs-00001-00100/00003</td></tr>
+<tr><td>partial-1astar-none</td> <td>explode</td> <td>n8.pddl</td> <td>search-plan-found-and-out-of-memory</td> <td>116.77</td> <td>10656</td> <td>icb02</td> <td>runs-00001-00100/00004</td></tr>
+<tr><td>partial-1astar-none</td> <td>explode</td> <td>n9.pddl</td> <td>search-plan-found-and-out-of-memory</td> <td>300.74</td> <td>10656</td> <td>icb02</td> <td>runs-00001-00100/00005</td></tr>
+<tr><td>partial-2astar-all</td> <td>explode</td> <td>n10.pddl</td> <td>search-plan-found-and-out-of-memory</td> <td>14.34</td> <td>10656</td> <td>icb02</td> <td>runs-00001-00100/00027</td></tr>
+<tr><td>partial-2astar-all</td> <td>explode</td> <td>n11.pddl</td> <td>search-plan-found-and-out-of-memory</td> <td>14.97</td> <td>10656</td> <td>icb02</td> <td>runs-00001-00100/00028</td></tr>
+<tr><td>partial-2astar-all</td> <td>explode</td> <td>n12.pddl</td> <td>search-plan-found-and-out-of-memory</td> <td>16.18</td> <td>10656</td> <td>icb01</td> <td>runs-00001-00100/00029</td></tr>
+<tr><td>partial-2astar-all</td> <td>explode</td> <td>n13.pddl</td> <td>search-plan-found-and-out-of-memory</td> <td>17.7</td> <td>10788</td> <td>icb01</td> <td>runs-00001-00100/00030</td></tr>
+<tr><td>partial-2astar-all</td> <td>explode</td> <td>n14.pddl</td> <td>search-plan-found-and-out-of-memory</td> <td>17.93</td> <td>10792</td> <td>icb01</td> <td>runs-00001-00100/00031</td></tr>
+<tr><td>partial-2astar-all</td> <td>explode</td> <td>n15.pddl</td> <td>search-plan-found-and-out-of-memory</td> <td>19.62</td> <td>10788</td> <td>icb02</td> <td>runs-00001-00100/00032</td></tr>
+<tr><td>partial-2astar-all</td> <td>explode</td> <td>n16.pddl</td> <td>search-plan-found-and-out-of-memory</td> <td>20.72</td> <td>10792</td> <td>icb01</td> <td>runs-00001-00100/00033</td></tr>
+<tr><td>partial-2astar-all</td> <td>explode</td> <td>n17.pddl</td> <td>search-plan-found-and-out-of-memory</td> <td>20.63</td> <td>10788</td> <td>icb03</td> <td>runs-00001-00100/00034</td></tr>
+<tr><td>partial-2astar-all</td> <td>explode</td> <td>n18.pddl</td> <td>search-plan-found-and-out-of-memory</td> <td>22.44</td> <td>10792</td> <td>icb01</td> <td>runs-00001-00100/00035</td></tr>
+<tr><td>partial-2astar-all</td> <td>explode</td> <td>n19.pddl</td> <td>search-plan-found-and-out-of-memory</td> <td>24.82</td> <td>10788</td> <td>icb02</td> <td>runs-00001-00100/00036</td></tr>
+<tr><td>partial-2astar-all</td> <td>explode</td> <td>n20.pddl</td> <td>search-plan-found-and-out-of-memory</td> <td>24.21</td> <td>10792</td> <td>icb01</td> <td>runs-00001-00100/00037</td></tr>
+<tr><td>partial-2astar-all</td> <td>explode</td> <td>n21.pddl</td> <td>search-plan-found-and-out-of-memory</td> <td>25.26</td> <td>10788</td> <td>icb01</td> <td>runs-00001-00100/00038</td></tr>
+<tr><td>partial-2astar-all</td> <td>explode</td> <td>n22.pddl</td> <td>search-plan-found-and-out-of-memory</td> <td>26.84</td> <td>10788</td> <td>icb02</td> <td>runs-00001-00100/00039</td></tr>
+<tr><td>partial-2astar-all</td> <td>explode</td> <td>n23.pddl</td> <td>search-plan-found-and-out-of-memory</td> <td>29.05</td> <td>10792</td> <td>icb02</td> <td>runs-00001-00100/00040</td></tr>
+<tr><td>partial-2astar-all</td> <td>explode</td> <td>n24.pddl</td> <td>search-plan-found-and-out-of-memory</td> <td>28.31</td> <td>10792</td> <td>icb01</td> <td>runs-00001-00100/00041</td></tr>
+<tr><td>partial-2astar-all</td> <td>explode</td> <td>n25.pddl</td> <td>search-plan-found-and-out-of-memory</td> <td>31.1</td> <td>10792</td> <td>icb02</td> <td>runs-00001-00100/00042</td></tr>
+<tr><td>partial-2astar-all</td> <td>explode</td> <td>n5.pddl</td> <td>search-plan-found-and-out-of-memory</td> <td>0.37</td> <td>10656</td> <td>icb02</td> <td>runs-00001-00100/00022</td></tr>
+<tr><td>partial-2astar-all</td> <td>explode</td> <td>n6.pddl</td> <td>search-plan-found-and-out-of-memory</td> <td>0.59</td> <td>10656</td> <td>icb01</td> <td>runs-00001-00100/00023</td></tr>
+<tr><td>partial-2astar-all</td> <td>explode</td> <td>n7.pddl</td> <td>search-plan-found-and-out-of-memory</td> <td>1.86</td> <td>10656</td> <td>icb01</td> <td>runs-00001-00100/00024</td></tr>
+<tr><td>partial-2astar-all</td> <td>explode</td> <td>n8.pddl</td> <td>search-plan-found-and-out-of-memory</td> <td>8.04</td> <td>10656</td> <td>icb01</td> <td>runs-00001-00100/00025</td></tr>
+<tr><td>partial-2astar-all</td> <td>explode</td> <td>n9.pddl</td> <td>search-plan-found-and-out-of-memory</td> <td>13.07</td> <td>10656</td> <td>icb02</td> <td>runs-00001-00100/00026</td></tr>
+<tr>
+<td rowspan="1">['exitcode-30',&nbsp;'run.err:&nbsp;b\'Traceback&nbsp;(most&nbsp;recent&nbsp;call&nbsp;last):<br />\&nbsp;&nbsp;File&nbsp;"<frozen&nbsp;runpy>",&nbsp;line&nbsp;198,&nbsp;in&nbsp;_run_module_as_main<br />\&nbsp;&nbsp;File&nbsp;"<frozen&nbsp;runpy>",&nbsp;line&nbsp;88,&nbsp;in&nbsp;_run_code<br />\&nbsp;&nbsp;File&nbsp;"/infai/heuser0000/downward-experiments/data/test-experiment/code-36888230b175ba1f6d512957b51b42c3630e6b00_bd874d5d/builds/release/bin/translate/__main__.py",&nbsp;line&nbsp;37,&nbsp;in&nbsp;<module><br />\&nbsp;&nbsp;&nbsp;&nbsp;main()<br />\&nbsp;&nbsp;File&nbsp;"/infai/heuser0000/downward-experiments/data/test-experiment/code-36888230b175ba1f6d512957b51b42c3630e6b00_bd874d5d/builds/release/bin/translate/main.py",&nbsp;line&nbsp;720,&nbsp;in&nbsp;main<br />\&nbsp;&nbsp;&nbsp;&nbsp;sas_task&nbsp;=&nbsp;pddl_to_sas(task)<br />\&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;^^^^^^^^^^^^^^^^^<br />\&nbsp;&nbsp;File&nbsp;"/infai/heuser0000/downward-experiments/data/test-experiment/code-36888230b175ba1f6d512957b51b42c3630e6b00_bd874d5d/builds/release/bin/translate/main.py",&nbsp;line&nbsp;536,&nbsp;in&nbsp;pddl_to_sas<br />\&nbsp;&nbsp;&nbsp;&nbsp;reachable_action_params)&nbsp;=&nbsp;instantiate.explore(task)<br />\&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;^^^^^^^^^^^^^^^^^^^^^^^^^<br />\&nbsp;&nbsp;File&nbsp;"/infai/heuser0000/downward-experiments/data/test-experiment/code-36888230b175ba1f6d512957b51b42c3630e6b00_bd874d5d/builds/release/bin/translate/instantiate.py",&nbsp;line&nbsp;117,&nbsp;in&nbsp;explore<br />\&nbsp;&nbsp;&nbsp;&nbsp;model&nbsp;=&nbsp;build_model.compute_model(prog)<br />\&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^<br />\&nbsp;&nbsp;File&nbsp;"/infai/heuser0000/downward-experiments/data/test-experiment/code-36888230b175ba1f6d512957b51b42c3630e6b00_bd874d5d/builds/release/bin/translate/build_model.py",&nbsp;line&nbsp;301,&nbsp;in&nbsp;compute_model<br />\&nbsp;&nbsp;&nbsp;&nbsp;rules&nbsp;=&nbsp;convert_rules(prog)<br />\&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;^^^^^^^^^^^^^^^^^^^<br />\SystemError:&nbsp;error&nbsp;return&nbsp;without&nbsp;exception&nbsp;set<br /><br />'<br />']</td>
+<td>partial-1astar-none</td> <td>explode</td> <td>n20.pddl</td> <td>exitcode-30</td> <td>225.2</td> <td>?</td> <td>icb01</td> <td>runs-00001-00100/00016</td>
+</tr>
+</table>
+
+</section>
+<section id="info">
+<h2>info</h2>
+
+<button type="button" class="toggle-table" onclick="toggle_table(this)">Show table</button><p></p>
+
+<table class="tableborder" style="display:none">
+<tr>
+<th>algorithm</th>
+<th>local_<wbr>revision</th>
+<th>global_<wbr>revision</th>
+<th>build_<wbr>options</th>
+<th>driver_<wbr>options</th>
+<th>component_<wbr>options</th>
+</tr>
+<tr>
+<td>partial-1astar-none</td>
+<td>partial</td>
+<td>36888230b175ba1f6d512957b51b42c3630e6b00</td>
+<td>['release']</td>
+<td>['--validate', '--overall-time-limit', '30m', '--overall-memory-limit', '3584M', '--search-time-limit', '20m', '--search-memory-limit', '4000', '--build', 'release']</td>
+<td>['--translate-options', '--eliminate-disjunctions=none', '--search-options', '--search', 'astar(blind())']</td>
+</tr>
+<tr>
+<td>partial-2astar-all</td>
+<td>partial</td>
+<td>36888230b175ba1f6d512957b51b42c3630e6b00</td>
+<td>['release']</td>
+<td>['--validate', '--overall-time-limit', '30m', '--overall-memory-limit', '3584M', '--search-time-limit', '20m', '--search-memory-limit', '4000', '--build', 'release']</td>
+<td>['--translate-options', '--eliminate-disjunctions=all', '--search-options', '--search', 'astar(blind())']</td>
+</tr>
+</table>
+
+<p>
+Used nodes: <a href="icb03">icb01, icb02,</a>
+</p>
+
+</section>
+<section id="summary">
+<h2>summary</h2>
+
+<button type="button" class="toggle-table" onclick="toggle_table(this)">Show table</button><p></p>
+
+<table class="tableborder" style="display:none">
+<tr>
+<th>Summary</th>
+<th>partial-1astar-none</th>
+<th>partial-2astar-all</th>
+</tr>
+<tr>
+<td><a href="#cost" onclick="show_table(document.getElementById('cost'));">cost - Sum</a></td>
+<td class="right"><span style="color:rgb(127,127,127)">14.00</span></td>
+<td class="right"><span style="color:rgb(127,127,127)">14.00</span></td>
+</tr>
+<tr>
+<td><a href="#coverage" onclick="show_table(document.getElementById('coverage'));">coverage - Sum</a></td>
+<td class="right"><span style="color:rgb(0,0,178)">14</span></td>
+<td class="right"><span style="color:rgb(0,178,0)">21</span></td>
+</tr>
+<tr>
+<td><a href="#expansions" onclick="show_table(document.getElementById('expansions'));">expansions - Sum</a></td>
+<td class="right"><span style="color:rgb(127,127,127)">28</span></td>
+<td class="right"><span style="color:rgb(127,127,127)">28</span></td>
+</tr>
+<tr>
+<td><a href="#expansions_until_last_jump" onclick="show_table(document.getElementById('expansions_until_last_jump'));">expansions_until_last_jump - Sum</a></td>
+<td class="right"><span style="color:rgb(127,127,127)">0</span></td>
+<td class="right"><span style="color:rgb(127,127,127)">0</span></td>
+</tr>
+<tr>
+<td><a href="#generated" onclick="show_table(document.getElementById('generated'));">generated - Sum</a></td>
+<td class="right"><span style="color:rgb(0,0,178)">1974</span></td>
+<td class="right"><span style="color:rgb(0,178,0)">14</span></td>
+</tr>
+<tr>
+<td><a href="#generated_until_last_jump" onclick="show_table(document.getElementById('generated_until_last_jump'));">generated_until_last_jump - Sum</a></td>
+<td class="right"><span style="color:rgb(127,127,127)">0</span></td>
+<td class="right"><span style="color:rgb(127,127,127)">0</span></td>
+</tr>
+<tr>
+<td><a href="#memory" onclick="show_table(document.getElementById('memory'));">memory - Sum</a></td>
+<td class="right"><span style="color:rgb(0,0,178)">152084</span></td>
+<td class="right"><span style="color:rgb(0,178,0)">149988</span></td>
+</tr>
+<tr>
+<td><a href="#planner_memory" onclick="show_table(document.getElementById('planner_memory'));">planner_memory - Sum</a></td>
+<td class="right"><span style="color:rgb(0,0,178)">5127912</span></td>
+<td class="right"><span style="color:rgb(0,178,0)">2411376</span></td>
+</tr>
+<tr>
+<td><a href="#planner_time" onclick="show_table(document.getElementById('planner_time'));">planner_time - Geometric mean</a></td>
+<td class="right"><span style="color:rgb(0,0,178)">105.59</span></td>
+<td class="right"><span style="color:rgb(0,178,0)">7.30</span></td>
+</tr>
+<tr>
+<td><a href="#search_bytes_per_state" onclick="show_table(document.getElementById('search_bytes_per_state'));">search_bytes_per_state - Sum</a></td>
+<td class="right"><span style="color:rgb(0,178,0)">56</span></td>
+<td class="right"><span style="color:rgb(0,0,178)">80</span></td>
+</tr>
+<tr>
+<td><a href="#search_time" onclick="show_table(document.getElementById('search_time'));">search_time - Sum</a></td>
+<td class="right"><span style="color:rgb(127,127,127)">0.14</span></td>
+<td class="right"><span style="color:rgb(127,127,127)">0.14</span></td>
+</tr>
+<tr>
+<td><a href="#total_time" onclick="show_table(document.getElementById('total_time'));">total_time - Geometric mean</a></td>
+<td class="right"><span style="color:rgb(127,127,127)">0.01</span></td>
+<td class="right"><span style="color:rgb(127,127,127)">0.01</span></td>
+</tr>
+<tr>
+<td><a href="#translator_axioms" onclick="show_table(document.getElementById('translator_axioms'));">translator_axioms - Sum</a></td>
+<td class="right"><span style="color:rgb(0,178,0)">0</span></td>
+<td class="right"><span style="color:rgb(0,0,178)">226</span></td>
+</tr>
+<tr>
+<td><a href="#translator_derived_variables" onclick="show_table(document.getElementById('translator_derived_variables'));">translator_derived_variables - Sum</a></td>
+<td class="right"><span style="color:rgb(0,178,0)">0</span></td>
+<td class="right"><span style="color:rgb(0,0,178)">161</span></td>
+</tr>
+</table>
+
+</section>
+<section id="cost">
+<h2>cost</h2>
+
+<p>
+<button type="button" onclick="show_all_tables_in_section('cost')">Show all tables</button> <button type="button" onclick="hide_all_tables_in_section('cost')">Hide all tables</button>
+</p>
+
+<button type="button" class="toggle-table" onclick="toggle_table(this)">Show table</button><p></p>
+
+<table class="tableborder" style="display:none">
+<tr>
+<th>cost</th>
+<th>partial-1astar-none</th>
+<th>partial-2astar-all</th>
+</tr>
+<tr>
+<td><a href="#cost-explode" onclick="show_table(document.getElementById('cost-explode'));">explode</a> (14)</td>
+<td class="right"><span style="color:rgb(127,127,127)">14.00</span></td>
+<td class="right"><span style="color:rgb(127,127,127)">14.00</span></td>
+</tr>
+<tr>
+<td><strong>Sum (14)</strong></td>
+<td class="right"><span style="color:rgb(127,127,127)">14.00</span></td>
+<td class="right"><span style="color:rgb(127,127,127)">14.00</span></td>
+</tr>
+</table>
+
+<p>
+Only tasks where all algorithms have a value for "cost" are considered. Each table entry gives the sum of "cost" for that domain. The bottom row reports the sum across all domains.
+</p>
+
+<section id="cost-explode">
+<h3>explode</h3>
+
+<button type="button" class="toggle-table" onclick="toggle_table(this)">Show table</button><p></p>
+
+<table class="tableborder" style="display:none">
+<tr>
+<th>cost</th>
+<th>partial-1astar-none</th>
+<th>partial-2astar-all</th>
+</tr>
+<tr>
+<td>n5.pddl</td>
+<td class="right"><span style="color:rgb(127,127,127)">1.00</span></td>
+<td class="right"><span style="color:rgb(127,127,127)">1.00</span></td>
+</tr>
+<tr>
+<td>n6.pddl</td>
+<td class="right"><span style="color:rgb(127,127,127)">1.00</span></td>
+<td class="right"><span style="color:rgb(127,127,127)">1.00</span></td>
+</tr>
+<tr>
+<td>n7.pddl</td>
+<td class="right"><span style="color:rgb(127,127,127)">1.00</span></td>
+<td class="right"><span style="color:rgb(127,127,127)">1.00</span></td>
+</tr>
+<tr>
+<td>n8.pddl</td>
+<td class="right"><span style="color:rgb(127,127,127)">1.00</span></td>
+<td class="right"><span style="color:rgb(127,127,127)">1.00</span></td>
+</tr>
+<tr>
+<td>n9.pddl</td>
+<td class="right"><span style="color:rgb(127,127,127)">1.00</span></td>
+<td class="right"><span style="color:rgb(127,127,127)">1.00</span></td>
+</tr>
+<tr>
+<td>n10.pddl</td>
+<td class="right"><span style="color:rgb(127,127,127)">1.00</span></td>
+<td class="right"><span style="color:rgb(127,127,127)">1.00</span></td>
+</tr>
+<tr>
+<td>n11.pddl</td>
+<td class="right"><span style="color:rgb(127,127,127)">1.00</span></td>
+<td class="right"><span style="color:rgb(127,127,127)">1.00</span></td>
+</tr>
+<tr>
+<td>n12.pddl</td>
+<td class="right"><span style="color:rgb(127,127,127)">1.00</span></td>
+<td class="right"><span style="color:rgb(127,127,127)">1.00</span></td>
+</tr>
+<tr>
+<td>n13.pddl</td>
+<td class="right"><span style="color:rgb(127,127,127)">1.00</span></td>
+<td class="right"><span style="color:rgb(127,127,127)">1.00</span></td>
+</tr>
+<tr>
+<td>n14.pddl</td>
+<td class="right"><span style="color:rgb(127,127,127)">1.00</span></td>
+<td class="right"><span style="color:rgb(127,127,127)">1.00</span></td>
+</tr>
+<tr>
+<td>n15.pddl</td>
+<td class="right"><span style="color:rgb(127,127,127)">1.00</span></td>
+<td class="right"><span style="color:rgb(127,127,127)">1.00</span></td>
+</tr>
+<tr>
+<td>n16.pddl</td>
+<td class="right"><span style="color:rgb(127,127,127)">1.00</span></td>
+<td class="right"><span style="color:rgb(127,127,127)">1.00</span></td>
+</tr>
+<tr>
+<td>n17.pddl</td>
+<td class="right"><span style="color:rgb(127,127,127)">1.00</span></td>
+<td class="right"><span style="color:rgb(127,127,127)">1.00</span></td>
+</tr>
+<tr>
+<td>n18.pddl</td>
+<td class="right"><span style="color:rgb(127,127,127)">1.00</span></td>
+<td class="right"><span style="color:rgb(127,127,127)">1.00</span></td>
+</tr>
+<tr>
+<td>n19.pddl</td>
+<td class="right"><span style="color:rgb(127,127,127)">None</span></td>
+<td class="right"><span style="color:rgb(0,178,0)">1.00</span></td>
+</tr>
+<tr>
+<td>n20.pddl</td>
+<td class="right"><span style="color:rgb(127,127,127)">None</span></td>
+<td class="right"><span style="color:rgb(0,178,0)">1.00</span></td>
+</tr>
+<tr>
+<td>n21.pddl</td>
+<td class="right"><span style="color:rgb(127,127,127)">None</span></td>
+<td class="right"><span style="color:rgb(0,178,0)">1.00</span></td>
+</tr>
+<tr>
+<td>n22.pddl</td>
+<td class="right"><span style="color:rgb(127,127,127)">None</span></td>
+<td class="right"><span style="color:rgb(0,178,0)">1.00</span></td>
+</tr>
+<tr>
+<td>n23.pddl</td>
+<td class="right"><span style="color:rgb(127,127,127)">None</span></td>
+<td class="right"><span style="color:rgb(0,178,0)">1.00</span></td>
+</tr>
+<tr>
+<td>n24.pddl</td>
+<td class="right"><span style="color:rgb(127,127,127)">None</span></td>
+<td class="right"><span style="color:rgb(0,178,0)">1.00</span></td>
+</tr>
+<tr>
+<td>n25.pddl</td>
+<td class="right"><span style="color:rgb(127,127,127)">None</span></td>
+<td class="right"><span style="color:rgb(0,178,0)">1.00</span></td>
+</tr>
+</table>
+
+</section>
+</section>
+<section id="coverage">
+<h2>coverage</h2>
+
+<p>
+<button type="button" onclick="show_all_tables_in_section('coverage')">Show all tables</button> <button type="button" onclick="hide_all_tables_in_section('coverage')">Hide all tables</button>
+</p>
+
+<button type="button" class="toggle-table" onclick="toggle_table(this)">Show table</button><p></p>
+
+<table class="tableborder" style="display:none">
+<tr>
+<th>coverage</th>
+<th>partial-1astar-none</th>
+<th>partial-2astar-all</th>
+</tr>
+<tr>
+<td><a href="#coverage-explode" onclick="show_table(document.getElementById('coverage-explode'));">explode</a> (21)</td>
+<td class="right"><span style="color:rgb(0,0,178)">14</span></td>
+<td class="right"><span style="color:rgb(0,178,0)">21</span></td>
+</tr>
+<tr>
+<td><strong>Sum (21)</strong></td>
+<td class="right"><span style="color:rgb(0,0,178)">14</span></td>
+<td class="right"><span style="color:rgb(0,178,0)">21</span></td>
+</tr>
+</table>
+
+<p>
+The bottom row reports the sum across all domains.
+</p>
+
+<section id="coverage-explode">
+<h3>explode</h3>
+
+<button type="button" class="toggle-table" onclick="toggle_table(this)">Show table</button><p></p>
+
+<table class="tableborder" style="display:none">
+<tr>
+<th>coverage</th>
+<th>partial-1astar-none</th>
+<th>partial-2astar-all</th>
+</tr>
+<tr>
+<td>n5.pddl</td>
+<td class="right"><span style="color:rgb(127,127,127)">1</span></td>
+<td class="right"><span style="color:rgb(127,127,127)">1</span></td>
+</tr>
+<tr>
+<td>n6.pddl</td>
+<td class="right"><span style="color:rgb(127,127,127)">1</span></td>
+<td class="right"><span style="color:rgb(127,127,127)">1</span></td>
+</tr>
+<tr>
+<td>n7.pddl</td>
+<td class="right"><span style="color:rgb(127,127,127)">1</span></td>
+<td class="right"><span style="color:rgb(127,127,127)">1</span></td>
+</tr>
+<tr>
+<td>n8.pddl</td>
+<td class="right"><span style="color:rgb(127,127,127)">1</span></td>
+<td class="right"><span style="color:rgb(127,127,127)">1</span></td>
+</tr>
+<tr>
+<td>n9.pddl</td>
+<td class="right"><span style="color:rgb(127,127,127)">1</span></td>
+<td class="right"><span style="color:rgb(127,127,127)">1</span></td>
+</tr>
+<tr>
+<td>n10.pddl</td>
+<td class="right"><span style="color:rgb(127,127,127)">1</span></td>
+<td class="right"><span style="color:rgb(127,127,127)">1</span></td>
+</tr>
+<tr>
+<td>n11.pddl</td>
+<td class="right"><span style="color:rgb(127,127,127)">1</span></td>
+<td class="right"><span style="color:rgb(127,127,127)">1</span></td>
+</tr>
+<tr>
+<td>n12.pddl</td>
+<td class="right"><span style="color:rgb(127,127,127)">1</span></td>
+<td class="right"><span style="color:rgb(127,127,127)">1</span></td>
+</tr>
+<tr>
+<td>n13.pddl</td>
+<td class="right"><span style="color:rgb(127,127,127)">1</span></td>
+<td class="right"><span style="color:rgb(127,127,127)">1</span></td>
+</tr>
+<tr>
+<td>n14.pddl</td>
+<td class="right"><span style="color:rgb(127,127,127)">1</span></td>
+<td class="right"><span style="color:rgb(127,127,127)">1</span></td>
+</tr>
+<tr>
+<td>n15.pddl</td>
+<td class="right"><span style="color:rgb(127,127,127)">1</span></td>
+<td class="right"><span style="color:rgb(127,127,127)">1</span></td>
+</tr>
+<tr>
+<td>n16.pddl</td>
+<td class="right"><span style="color:rgb(127,127,127)">1</span></td>
+<td class="right"><span style="color:rgb(127,127,127)">1</span></td>
+</tr>
+<tr>
+<td>n17.pddl</td>
+<td class="right"><span style="color:rgb(127,127,127)">1</span></td>
+<td class="right"><span style="color:rgb(127,127,127)">1</span></td>
+</tr>
+<tr>
+<td>n18.pddl</td>
+<td class="right"><span style="color:rgb(127,127,127)">1</span></td>
+<td class="right"><span style="color:rgb(127,127,127)">1</span></td>
+</tr>
+<tr>
+<td>n19.pddl</td>
+<td class="right"><span style="color:rgb(0,0,178)">0</span></td>
+<td class="right"><span style="color:rgb(0,178,0)">1</span></td>
+</tr>
+<tr>
+<td>n20.pddl</td>
+<td class="right"><span style="color:rgb(0,0,178)">0</span></td>
+<td class="right"><span style="color:rgb(0,178,0)">1</span></td>
+</tr>
+<tr>
+<td>n21.pddl</td>
+<td class="right"><span style="color:rgb(0,0,178)">0</span></td>
+<td class="right"><span style="color:rgb(0,178,0)">1</span></td>
+</tr>
+<tr>
+<td>n22.pddl</td>
+<td class="right"><span style="color:rgb(0,0,178)">0</span></td>
+<td class="right"><span style="color:rgb(0,178,0)">1</span></td>
+</tr>
+<tr>
+<td>n23.pddl</td>
+<td class="right"><span style="color:rgb(0,0,178)">0</span></td>
+<td class="right"><span style="color:rgb(0,178,0)">1</span></td>
+</tr>
+<tr>
+<td>n24.pddl</td>
+<td class="right"><span style="color:rgb(0,0,178)">0</span></td>
+<td class="right"><span style="color:rgb(0,178,0)">1</span></td>
+</tr>
+<tr>
+<td>n25.pddl</td>
+<td class="right"><span style="color:rgb(0,0,178)">0</span></td>
+<td class="right"><span style="color:rgb(0,178,0)">1</span></td>
+</tr>
+</table>
+
+</section>
+</section>
+<section id="expansions">
+<h2>expansions</h2>
+
+<p>
+<button type="button" onclick="show_all_tables_in_section('expansions')">Show all tables</button> <button type="button" onclick="hide_all_tables_in_section('expansions')">Hide all tables</button>
+</p>
+
+<button type="button" class="toggle-table" onclick="toggle_table(this)">Show table</button><p></p>
+
+<table class="tableborder" style="display:none">
+<tr>
+<th>expansions</th>
+<th>partial-1astar-none</th>
+<th>partial-2astar-all</th>
+</tr>
+<tr>
+<td><a href="#expansions-explode" onclick="show_table(document.getElementById('expansions-explode'));">explode</a> (14)</td>
+<td class="right"><span style="color:rgb(127,127,127)">28</span></td>
+<td class="right"><span style="color:rgb(127,127,127)">28</span></td>
+</tr>
+<tr>
+<td><strong>Sum (14)</strong></td>
+<td class="right"><span style="color:rgb(127,127,127)">28</span></td>
+<td class="right"><span style="color:rgb(127,127,127)">28</span></td>
+</tr>
+</table>
+
+<p>
+Only tasks where all algorithms have a value for "expansions" are considered. Each table entry gives the sum of "expansions" for that domain. The bottom row reports the sum across all domains.
+</p>
+
+<section id="expansions-explode">
+<h3>explode</h3>
+
+<button type="button" class="toggle-table" onclick="toggle_table(this)">Show table</button><p></p>
+
+<table class="tableborder" style="display:none">
+<tr>
+<th>expansions</th>
+<th>partial-1astar-none</th>
+<th>partial-2astar-all</th>
+</tr>
+<tr>
+<td>n5.pddl</td>
+<td class="right"><span style="color:rgb(127,127,127)">2</span></td>
+<td class="right"><span style="color:rgb(127,127,127)">2</span></td>
+</tr>
+<tr>
+<td>n6.pddl</td>
+<td class="right"><span style="color:rgb(127,127,127)">2</span></td>
+<td class="right"><span style="color:rgb(127,127,127)">2</span></td>
+</tr>
+<tr>
+<td>n7.pddl</td>
+<td class="right"><span style="color:rgb(127,127,127)">2</span></td>
+<td class="right"><span style="color:rgb(127,127,127)">2</span></td>
+</tr>
+<tr>
+<td>n8.pddl</td>
+<td class="right"><span style="color:rgb(127,127,127)">2</span></td>
+<td class="right"><span style="color:rgb(127,127,127)">2</span></td>
+</tr>
+<tr>
+<td>n9.pddl</td>
+<td class="right"><span style="color:rgb(127,127,127)">2</span></td>
+<td class="right"><span style="color:rgb(127,127,127)">2</span></td>
+</tr>
+<tr>
+<td>n10.pddl</td>
+<td class="right"><span style="color:rgb(127,127,127)">2</span></td>
+<td class="right"><span style="color:rgb(127,127,127)">2</span></td>
+</tr>
+<tr>
+<td>n11.pddl</td>
+<td class="right"><span style="color:rgb(127,127,127)">2</span></td>
+<td class="right"><span style="color:rgb(127,127,127)">2</span></td>
+</tr>
+<tr>
+<td>n12.pddl</td>
+<td class="right"><span style="color:rgb(127,127,127)">2</span></td>
+<td class="right"><span style="color:rgb(127,127,127)">2</span></td>
+</tr>
+<tr>
+<td>n13.pddl</td>
+<td class="right"><span style="color:rgb(127,127,127)">2</span></td>
+<td class="right"><span style="color:rgb(127,127,127)">2</span></td>
+</tr>
+<tr>
+<td>n14.pddl</td>
+<td class="right"><span style="color:rgb(127,127,127)">2</span></td>
+<td class="right"><span style="color:rgb(127,127,127)">2</span></td>
+</tr>
+<tr>
+<td>n15.pddl</td>
+<td class="right"><span style="color:rgb(127,127,127)">2</span></td>
+<td class="right"><span style="color:rgb(127,127,127)">2</span></td>
+</tr>
+<tr>
+<td>n16.pddl</td>
+<td class="right"><span style="color:rgb(127,127,127)">2</span></td>
+<td class="right"><span style="color:rgb(127,127,127)">2</span></td>
+</tr>
+<tr>
+<td>n17.pddl</td>
+<td class="right"><span style="color:rgb(127,127,127)">2</span></td>
+<td class="right"><span style="color:rgb(127,127,127)">2</span></td>
+</tr>
+<tr>
+<td>n18.pddl</td>
+<td class="right"><span style="color:rgb(127,127,127)">2</span></td>
+<td class="right"><span style="color:rgb(127,127,127)">2</span></td>
+</tr>
+<tr>
+<td>n19.pddl</td>
+<td class="right"><span style="color:rgb(127,127,127)">None</span></td>
+<td class="right"><span style="color:rgb(0,178,0)">2</span></td>
+</tr>
+<tr>
+<td>n20.pddl</td>
+<td class="right"><span style="color:rgb(127,127,127)">None</span></td>
+<td class="right"><span style="color:rgb(0,178,0)">2</span></td>
+</tr>
+<tr>
+<td>n21.pddl</td>
+<td class="right"><span style="color:rgb(127,127,127)">None</span></td>
+<td class="right"><span style="color:rgb(0,178,0)">2</span></td>
+</tr>
+<tr>
+<td>n22.pddl</td>
+<td class="right"><span style="color:rgb(127,127,127)">None</span></td>
+<td class="right"><span style="color:rgb(0,178,0)">2</span></td>
+</tr>
+<tr>
+<td>n23.pddl</td>
+<td class="right"><span style="color:rgb(127,127,127)">None</span></td>
+<td class="right"><span style="color:rgb(0,178,0)">2</span></td>
+</tr>
+<tr>
+<td>n24.pddl</td>
+<td class="right"><span style="color:rgb(127,127,127)">None</span></td>
+<td class="right"><span style="color:rgb(0,178,0)">2</span></td>
+</tr>
+<tr>
+<td>n25.pddl</td>
+<td class="right"><span style="color:rgb(127,127,127)">None</span></td>
+<td class="right"><span style="color:rgb(0,178,0)">2</span></td>
+</tr>
+</table>
+
+</section>
+</section>
+<section id="expansions_until_last_jump">
+<h2>expansions_until_last_jump</h2>
+
+<p>
+<button type="button" onclick="show_all_tables_in_section('expansions_until_last_jump')">Show all tables</button> <button type="button" onclick="hide_all_tables_in_section('expansions_until_last_jump')">Hide all tables</button>
+</p>
+
+<button type="button" class="toggle-table" onclick="toggle_table(this)">Show table</button><p></p>
+
+<table class="tableborder" style="display:none">
+<tr>
+<th>expansions_<wbr>until_<wbr>last_<wbr>jump</th>
+<th>partial-1astar-none</th>
+<th>partial-2astar-all</th>
+</tr>
+<tr>
+<td><a href="#expansions_until_last_jump-explode" onclick="show_table(document.getElementById('expansions_until_last_jump-explode'));">explode</a> (14)</td>
+<td class="right"><span style="color:rgb(127,127,127)">0</span></td>
+<td class="right"><span style="color:rgb(127,127,127)">0</span></td>
+</tr>
+<tr>
+<td><strong>Sum (14)</strong></td>
+<td class="right"><span style="color:rgb(127,127,127)">0</span></td>
+<td class="right"><span style="color:rgb(127,127,127)">0</span></td>
+</tr>
+</table>
+
+<p>
+Only tasks where all algorithms have a value for "expansions_until_last_jump" are considered. Each table entry gives the sum of "expansions_until_last_jump" for that domain. The bottom row reports the sum across all domains.
+</p>
+
+<section id="expansions_until_last_jump-explode">
+<h3>explode</h3>
+
+<button type="button" class="toggle-table" onclick="toggle_table(this)">Show table</button><p></p>
+
+<table class="tableborder" style="display:none">
+<tr>
+<th>expansions_<wbr>until_<wbr>last_<wbr>jump</th>
+<th>partial-1astar-none</th>
+<th>partial-2astar-all</th>
+</tr>
+<tr>
+<td>n5.pddl</td>
+<td class="right"><span style="color:rgb(127,127,127)">0</span></td>
+<td class="right"><span style="color:rgb(127,127,127)">0</span></td>
+</tr>
+<tr>
+<td>n6.pddl</td>
+<td class="right"><span style="color:rgb(127,127,127)">0</span></td>
+<td class="right"><span style="color:rgb(127,127,127)">0</span></td>
+</tr>
+<tr>
+<td>n7.pddl</td>
+<td class="right"><span style="color:rgb(127,127,127)">0</span></td>
+<td class="right"><span style="color:rgb(127,127,127)">0</span></td>
+</tr>
+<tr>
+<td>n8.pddl</td>
+<td class="right"><span style="color:rgb(127,127,127)">0</span></td>
+<td class="right"><span style="color:rgb(127,127,127)">0</span></td>
+</tr>
+<tr>
+<td>n9.pddl</td>
+<td class="right"><span style="color:rgb(127,127,127)">0</span></td>
+<td class="right"><span style="color:rgb(127,127,127)">0</span></td>
+</tr>
+<tr>
+<td>n10.pddl</td>
+<td class="right"><span style="color:rgb(127,127,127)">0</span></td>
+<td class="right"><span style="color:rgb(127,127,127)">0</span></td>
+</tr>
+<tr>
+<td>n11.pddl</td>
+<td class="right"><span style="color:rgb(127,127,127)">0</span></td>
+<td class="right"><span style="color:rgb(127,127,127)">0</span></td>
+</tr>
+<tr>
+<td>n12.pddl</td>
+<td class="right"><span style="color:rgb(127,127,127)">0</span></td>
+<td class="right"><span style="color:rgb(127,127,127)">0</span></td>
+</tr>
+<tr>
+<td>n13.pddl</td>
+<td class="right"><span style="color:rgb(127,127,127)">0</span></td>
+<td class="right"><span style="color:rgb(127,127,127)">0</span></td>
+</tr>
+<tr>
+<td>n14.pddl</td>
+<td class="right"><span style="color:rgb(127,127,127)">0</span></td>
+<td class="right"><span style="color:rgb(127,127,127)">0</span></td>
+</tr>
+<tr>
+<td>n15.pddl</td>
+<td class="right"><span style="color:rgb(127,127,127)">0</span></td>
+<td class="right"><span style="color:rgb(127,127,127)">0</span></td>
+</tr>
+<tr>
+<td>n16.pddl</td>
+<td class="right"><span style="color:rgb(127,127,127)">0</span></td>
+<td class="right"><span style="color:rgb(127,127,127)">0</span></td>
+</tr>
+<tr>
+<td>n17.pddl</td>
+<td class="right"><span style="color:rgb(127,127,127)">0</span></td>
+<td class="right"><span style="color:rgb(127,127,127)">0</span></td>
+</tr>
+<tr>
+<td>n18.pddl</td>
+<td class="right"><span style="color:rgb(127,127,127)">0</span></td>
+<td class="right"><span style="color:rgb(127,127,127)">0</span></td>
+</tr>
+<tr>
+<td>n19.pddl</td>
+<td class="right"><span style="color:rgb(127,127,127)">None</span></td>
+<td class="right"><span style="color:rgb(0,178,0)">0</span></td>
+</tr>
+<tr>
+<td>n20.pddl</td>
+<td class="right"><span style="color:rgb(127,127,127)">None</span></td>
+<td class="right"><span style="color:rgb(0,178,0)">0</span></td>
+</tr>
+<tr>
+<td>n21.pddl</td>
+<td class="right"><span style="color:rgb(127,127,127)">None</span></td>
+<td class="right"><span style="color:rgb(0,178,0)">0</span></td>
+</tr>
+<tr>
+<td>n22.pddl</td>
+<td class="right"><span style="color:rgb(127,127,127)">None</span></td>
+<td class="right"><span style="color:rgb(0,178,0)">0</span></td>
+</tr>
+<tr>
+<td>n23.pddl</td>
+<td class="right"><span style="color:rgb(127,127,127)">None</span></td>
+<td class="right"><span style="color:rgb(0,178,0)">0</span></td>
+</tr>
+<tr>
+<td>n24.pddl</td>
+<td class="right"><span style="color:rgb(127,127,127)">None</span></td>
+<td class="right"><span style="color:rgb(0,178,0)">0</span></td>
+</tr>
+<tr>
+<td>n25.pddl</td>
+<td class="right"><span style="color:rgb(127,127,127)">None</span></td>
+<td class="right"><span style="color:rgb(0,178,0)">0</span></td>
+</tr>
+</table>
+
+</section>
+</section>
+<section id="generated">
+<h2>generated</h2>
+
+<p>
+<button type="button" onclick="show_all_tables_in_section('generated')">Show all tables</button> <button type="button" onclick="hide_all_tables_in_section('generated')">Hide all tables</button>
+</p>
+
+<button type="button" class="toggle-table" onclick="toggle_table(this)">Show table</button><p></p>
+
+<table class="tableborder" style="display:none">
+<tr>
+<th>generated</th>
+<th>partial-1astar-none</th>
+<th>partial-2astar-all</th>
+</tr>
+<tr>
+<td><a href="#generated-explode" onclick="show_table(document.getElementById('generated-explode'));">explode</a> (14)</td>
+<td class="right"><span style="color:rgb(0,0,178)">1974</span></td>
+<td class="right"><span style="color:rgb(0,178,0)">14</span></td>
+</tr>
+<tr>
+<td><strong>Sum (14)</strong></td>
+<td class="right"><span style="color:rgb(0,0,178)">1974</span></td>
+<td class="right"><span style="color:rgb(0,178,0)">14</span></td>
+</tr>
+</table>
+
+<p>
+Only tasks where all algorithms have a value for "generated" are considered. Each table entry gives the sum of "generated" for that domain. The bottom row reports the sum across all domains.
+</p>
+
+<section id="generated-explode">
+<h3>explode</h3>
+
+<button type="button" class="toggle-table" onclick="toggle_table(this)">Show table</button><p></p>
+
+<table class="tableborder" style="display:none">
+<tr>
+<th>generated</th>
+<th>partial-1astar-none</th>
+<th>partial-2astar-all</th>
+</tr>
+<tr>
+<td>n5.pddl</td>
+<td class="right"><span style="color:rgb(0,0,178)">8</span></td>
+<td class="right"><span style="color:rgb(0,178,0)">1</span></td>
+</tr>
+<tr>
+<td>n6.pddl</td>
+<td class="right"><span style="color:rgb(0,0,178)">2</span></td>
+<td class="right"><span style="color:rgb(0,178,0)">1</span></td>
+</tr>
+<tr>
+<td>n7.pddl</td>
+<td class="right"><span style="color:rgb(0,0,178)">8</span></td>
+<td class="right"><span style="color:rgb(0,178,0)">1</span></td>
+</tr>
+<tr>
+<td>n8.pddl</td>
+<td class="right"><span style="color:rgb(0,0,178)">16</span></td>
+<td class="right"><span style="color:rgb(0,178,0)">1</span></td>
+</tr>
+<tr>
+<td>n9.pddl</td>
+<td class="right"><span style="color:rgb(0,0,178)">8</span></td>
+<td class="right"><span style="color:rgb(0,178,0)">1</span></td>
+</tr>
+<tr>
+<td>n10.pddl</td>
+<td class="right"><span style="color:rgb(0,0,178)">16</span></td>
+<td class="right"><span style="color:rgb(0,178,0)">1</span></td>
+</tr>
+<tr>
+<td>n11.pddl</td>
+<td class="right"><span style="color:rgb(0,0,178)">8</span></td>
+<td class="right"><span style="color:rgb(0,178,0)">1</span></td>
+</tr>
+<tr>
+<td>n12.pddl</td>
+<td class="right"><span style="color:rgb(0,0,178)">4</span></td>
+<td class="right"><span style="color:rgb(0,178,0)">1</span></td>
+</tr>
+<tr>
+<td>n13.pddl</td>
+<td class="right"><span style="color:rgb(0,0,178)">64</span></td>
+<td class="right"><span style="color:rgb(0,178,0)">1</span></td>
+</tr>
+<tr>
+<td>n14.pddl</td>
+<td class="right"><span style="color:rgb(0,0,178)">1024</span></td>
+<td class="right"><span style="color:rgb(0,178,0)">1</span></td>
+</tr>
+<tr>
+<td>n15.pddl</td>
+<td class="right"><span style="color:rgb(0,0,178)">32</span></td>
+<td class="right"><span style="color:rgb(0,178,0)">1</span></td>
+</tr>
+<tr>
+<td>n16.pddl</td>
+<td class="right"><span style="color:rgb(0,0,178)">256</span></td>
+<td class="right"><span style="color:rgb(0,178,0)">1</span></td>
+</tr>
+<tr>
+<td>n17.pddl</td>
+<td class="right"><span style="color:rgb(0,0,178)">16</span></td>
+<td class="right"><span style="color:rgb(0,178,0)">1</span></td>
+</tr>
+<tr>
+<td>n18.pddl</td>
+<td class="right"><span style="color:rgb(0,0,178)">512</span></td>
+<td class="right"><span style="color:rgb(0,178,0)">1</span></td>
+</tr>
+<tr>
+<td>n19.pddl</td>
+<td class="right"><span style="color:rgb(127,127,127)">None</span></td>
+<td class="right"><span style="color:rgb(0,178,0)">1</span></td>
+</tr>
+<tr>
+<td>n20.pddl</td>
+<td class="right"><span style="color:rgb(127,127,127)">None</span></td>
+<td class="right"><span style="color:rgb(0,178,0)">1</span></td>
+</tr>
+<tr>
+<td>n21.pddl</td>
+<td class="right"><span style="color:rgb(127,127,127)">None</span></td>
+<td class="right"><span style="color:rgb(0,178,0)">1</span></td>
+</tr>
+<tr>
+<td>n22.pddl</td>
+<td class="right"><span style="color:rgb(127,127,127)">None</span></td>
+<td class="right"><span style="color:rgb(0,178,0)">1</span></td>
+</tr>
+<tr>
+<td>n23.pddl</td>
+<td class="right"><span style="color:rgb(127,127,127)">None</span></td>
+<td class="right"><span style="color:rgb(0,178,0)">1</span></td>
+</tr>
+<tr>
+<td>n24.pddl</td>
+<td class="right"><span style="color:rgb(127,127,127)">None</span></td>
+<td class="right"><span style="color:rgb(0,178,0)">1</span></td>
+</tr>
+<tr>
+<td>n25.pddl</td>
+<td class="right"><span style="color:rgb(127,127,127)">None</span></td>
+<td class="right"><span style="color:rgb(0,178,0)">1</span></td>
+</tr>
+</table>
+
+</section>
+</section>
+<section id="generated_until_last_jump">
+<h2>generated_until_last_jump</h2>
+
+<p>
+<button type="button" onclick="show_all_tables_in_section('generated_until_last_jump')">Show all tables</button> <button type="button" onclick="hide_all_tables_in_section('generated_until_last_jump')">Hide all tables</button>
+</p>
+
+<button type="button" class="toggle-table" onclick="toggle_table(this)">Show table</button><p></p>
+
+<table class="tableborder" style="display:none">
+<tr>
+<th>generated_<wbr>until_<wbr>last_<wbr>jump</th>
+<th>partial-1astar-none</th>
+<th>partial-2astar-all</th>
+</tr>
+<tr>
+<td><a href="#generated_until_last_jump-explode" onclick="show_table(document.getElementById('generated_until_last_jump-explode'));">explode</a> (14)</td>
+<td class="right"><span style="color:rgb(127,127,127)">0</span></td>
+<td class="right"><span style="color:rgb(127,127,127)">0</span></td>
+</tr>
+<tr>
+<td><strong>Sum (14)</strong></td>
+<td class="right"><span style="color:rgb(127,127,127)">0</span></td>
+<td class="right"><span style="color:rgb(127,127,127)">0</span></td>
+</tr>
+</table>
+
+<p>
+Only tasks where all algorithms have a value for "generated_until_last_jump" are considered. Each table entry gives the sum of "generated_until_last_jump" for that domain. The bottom row reports the sum across all domains.
+</p>
+
+<section id="generated_until_last_jump-explode">
+<h3>explode</h3>
+
+<button type="button" class="toggle-table" onclick="toggle_table(this)">Show table</button><p></p>
+
+<table class="tableborder" style="display:none">
+<tr>
+<th>generated_<wbr>until_<wbr>last_<wbr>jump</th>
+<th>partial-1astar-none</th>
+<th>partial-2astar-all</th>
+</tr>
+<tr>
+<td>n5.pddl</td>
+<td class="right"><span style="color:rgb(127,127,127)">0</span></td>
+<td class="right"><span style="color:rgb(127,127,127)">0</span></td>
+</tr>
+<tr>
+<td>n6.pddl</td>
+<td class="right"><span style="color:rgb(127,127,127)">0</span></td>
+<td class="right"><span style="color:rgb(127,127,127)">0</span></td>
+</tr>
+<tr>
+<td>n7.pddl</td>
+<td class="right"><span style="color:rgb(127,127,127)">0</span></td>
+<td class="right"><span style="color:rgb(127,127,127)">0</span></td>
+</tr>
+<tr>
+<td>n8.pddl</td>
+<td class="right"><span style="color:rgb(127,127,127)">0</span></td>
+<td class="right"><span style="color:rgb(127,127,127)">0</span></td>
+</tr>
+<tr>
+<td>n9.pddl</td>
+<td class="right"><span style="color:rgb(127,127,127)">0</span></td>
+<td class="right"><span style="color:rgb(127,127,127)">0</span></td>
+</tr>
+<tr>
+<td>n10.pddl</td>
+<td class="right"><span style="color:rgb(127,127,127)">0</span></td>
+<td class="right"><span style="color:rgb(127,127,127)">0</span></td>
+</tr>
+<tr>
+<td>n11.pddl</td>
+<td class="right"><span style="color:rgb(127,127,127)">0</span></td>
+<td class="right"><span style="color:rgb(127,127,127)">0</span></td>
+</tr>
+<tr>
+<td>n12.pddl</td>
+<td class="right"><span style="color:rgb(127,127,127)">0</span></td>
+<td class="right"><span style="color:rgb(127,127,127)">0</span></td>
+</tr>
+<tr>
+<td>n13.pddl</td>
+<td class="right"><span style="color:rgb(127,127,127)">0</span></td>
+<td class="right"><span style="color:rgb(127,127,127)">0</span></td>
+</tr>
+<tr>
+<td>n14.pddl</td>
+<td class="right"><span style="color:rgb(127,127,127)">0</span></td>
+<td class="right"><span style="color:rgb(127,127,127)">0</span></td>
+</tr>
+<tr>
+<td>n15.pddl</td>
+<td class="right"><span style="color:rgb(127,127,127)">0</span></td>
+<td class="right"><span style="color:rgb(127,127,127)">0</span></td>
+</tr>
+<tr>
+<td>n16.pddl</td>
+<td class="right"><span style="color:rgb(127,127,127)">0</span></td>
+<td class="right"><span style="color:rgb(127,127,127)">0</span></td>
+</tr>
+<tr>
+<td>n17.pddl</td>
+<td class="right"><span style="color:rgb(127,127,127)">0</span></td>
+<td class="right"><span style="color:rgb(127,127,127)">0</span></td>
+</tr>
+<tr>
+<td>n18.pddl</td>
+<td class="right"><span style="color:rgb(127,127,127)">0</span></td>
+<td class="right"><span style="color:rgb(127,127,127)">0</span></td>
+</tr>
+<tr>
+<td>n19.pddl</td>
+<td class="right"><span style="color:rgb(127,127,127)">None</span></td>
+<td class="right"><span style="color:rgb(0,178,0)">0</span></td>
+</tr>
+<tr>
+<td>n20.pddl</td>
+<td class="right"><span style="color:rgb(127,127,127)">None</span></td>
+<td class="right"><span style="color:rgb(0,178,0)">0</span></td>
+</tr>
+<tr>
+<td>n21.pddl</td>
+<td class="right"><span style="color:rgb(127,127,127)">None</span></td>
+<td class="right"><span style="color:rgb(0,178,0)">0</span></td>
+</tr>
+<tr>
+<td>n22.pddl</td>
+<td class="right"><span style="color:rgb(127,127,127)">None</span></td>
+<td class="right"><span style="color:rgb(0,178,0)">0</span></td>
+</tr>
+<tr>
+<td>n23.pddl</td>
+<td class="right"><span style="color:rgb(127,127,127)">None</span></td>
+<td class="right"><span style="color:rgb(0,178,0)">0</span></td>
+</tr>
+<tr>
+<td>n24.pddl</td>
+<td class="right"><span style="color:rgb(127,127,127)">None</span></td>
+<td class="right"><span style="color:rgb(0,178,0)">0</span></td>
+</tr>
+<tr>
+<td>n25.pddl</td>
+<td class="right"><span style="color:rgb(127,127,127)">None</span></td>
+<td class="right"><span style="color:rgb(0,178,0)">0</span></td>
+</tr>
+</table>
+
+</section>
+</section>
+<section id="memory">
+<h2>memory</h2>
+
+<p>
+<button type="button" onclick="show_all_tables_in_section('memory')">Show all tables</button> <button type="button" onclick="hide_all_tables_in_section('memory')">Hide all tables</button>
+</p>
+
+<button type="button" class="toggle-table" onclick="toggle_table(this)">Show table</button><p></p>
+
+<table class="tableborder" style="display:none">
+<tr>
+<th>memory</th>
+<th>partial-1astar-none</th>
+<th>partial-2astar-all</th>
+</tr>
+<tr>
+<td><a href="#memory-explode" onclick="show_table(document.getElementById('memory-explode'));">explode</a> (14)</td>
+<td class="right"><span style="color:rgb(0,0,178)">152084</span></td>
+<td class="right"><span style="color:rgb(0,178,0)">149988</span></td>
+</tr>
+<tr>
+<td><strong>Sum (14)</strong></td>
+<td class="right"><span style="color:rgb(0,0,178)">152084</span></td>
+<td class="right"><span style="color:rgb(0,178,0)">149988</span></td>
+</tr>
+</table>
+
+<p>
+Only tasks where all algorithms have a value for "memory" are considered. Each table entry gives the sum of "memory" for that domain. The bottom row reports the sum across all domains.
+</p>
+
+<section id="memory-explode">
+<h3>explode</h3>
+
+<button type="button" class="toggle-table" onclick="toggle_table(this)">Show table</button><p></p>
+
+<table class="tableborder" style="display:none">
+<tr>
+<th>memory</th>
+<th>partial-1astar-none</th>
+<th>partial-2astar-all</th>
+</tr>
+<tr>
+<td>n5.pddl</td>
+<td class="right"><span style="color:rgb(127,127,127)">10656</span></td>
+<td class="right"><span style="color:rgb(127,127,127)">10656</span></td>
+</tr>
+<tr>
+<td>n6.pddl</td>
+<td class="right"><span style="color:rgb(127,127,127)">10656</span></td>
+<td class="right"><span style="color:rgb(127,127,127)">10656</span></td>
+</tr>
+<tr>
+<td>n7.pddl</td>
+<td class="right"><span style="color:rgb(127,127,127)">10656</span></td>
+<td class="right"><span style="color:rgb(127,127,127)">10656</span></td>
+</tr>
+<tr>
+<td>n8.pddl</td>
+<td class="right"><span style="color:rgb(127,127,127)">10656</span></td>
+<td class="right"><span style="color:rgb(127,127,127)">10656</span></td>
+</tr>
+<tr>
+<td>n9.pddl</td>
+<td class="right"><span style="color:rgb(127,127,127)">10656</span></td>
+<td class="right"><span style="color:rgb(127,127,127)">10656</span></td>
+</tr>
+<tr>
+<td>n10.pddl</td>
+<td class="right"><span style="color:rgb(127,127,127)">10656</span></td>
+<td class="right"><span style="color:rgb(127,127,127)">10656</span></td>
+</tr>
+<tr>
+<td>n11.pddl</td>
+<td class="right"><span style="color:rgb(127,127,127)">10656</span></td>
+<td class="right"><span style="color:rgb(127,127,127)">10656</span></td>
+</tr>
+<tr>
+<td>n12.pddl</td>
+<td class="right"><span style="color:rgb(127,127,127)">10656</span></td>
+<td class="right"><span style="color:rgb(127,127,127)">10656</span></td>
+</tr>
+<tr>
+<td>n13.pddl</td>
+<td class="right"><span style="color:rgb(127,127,127)">10788</span></td>
+<td class="right"><span style="color:rgb(127,127,127)">10788</span></td>
+</tr>
+<tr>
+<td>n14.pddl</td>
+<td class="right"><span style="color:rgb(0,0,178)">11976</span></td>
+<td class="right"><span style="color:rgb(0,178,0)">10792</span></td>
+</tr>
+<tr>
+<td>n15.pddl</td>
+<td class="right"><span style="color:rgb(127,127,127)">10788</span></td>
+<td class="right"><span style="color:rgb(127,127,127)">10788</span></td>
+</tr>
+<tr>
+<td>n16.pddl</td>
+<td class="right"><span style="color:rgb(0,0,178)">11052</span></td>
+<td class="right"><span style="color:rgb(0,178,0)">10792</span></td>
+</tr>
+<tr>
+<td>n17.pddl</td>
+<td class="right"><span style="color:rgb(127,127,127)">10788</span></td>
+<td class="right"><span style="color:rgb(127,127,127)">10788</span></td>
+</tr>
+<tr>
+<td>n18.pddl</td>
+<td class="right"><span style="color:rgb(0,0,178)">11444</span></td>
+<td class="right"><span style="color:rgb(0,178,0)">10792</span></td>
+</tr>
+<tr>
+<td>n19.pddl</td>
+<td class="right"><span style="color:rgb(127,127,127)">None</span></td>
+<td class="right"><span style="color:rgb(0,178,0)">10788</span></td>
+</tr>
+<tr>
+<td>n20.pddl</td>
+<td class="right"><span style="color:rgb(127,127,127)">None</span></td>
+<td class="right"><span style="color:rgb(0,178,0)">10792</span></td>
+</tr>
+<tr>
+<td>n21.pddl</td>
+<td class="right"><span style="color:rgb(127,127,127)">None</span></td>
+<td class="right"><span style="color:rgb(0,178,0)">10788</span></td>
+</tr>
+<tr>
+<td>n22.pddl</td>
+<td class="right"><span style="color:rgb(127,127,127)">None</span></td>
+<td class="right"><span style="color:rgb(0,178,0)">10788</span></td>
+</tr>
+<tr>
+<td>n23.pddl</td>
+<td class="right"><span style="color:rgb(127,127,127)">None</span></td>
+<td class="right"><span style="color:rgb(0,178,0)">10792</span></td>
+</tr>
+<tr>
+<td>n24.pddl</td>
+<td class="right"><span style="color:rgb(127,127,127)">None</span></td>
+<td class="right"><span style="color:rgb(0,178,0)">10792</span></td>
+</tr>
+<tr>
+<td>n25.pddl</td>
+<td class="right"><span style="color:rgb(127,127,127)">None</span></td>
+<td class="right"><span style="color:rgb(0,178,0)">10792</span></td>
+</tr>
+</table>
+
+</section>
+</section>
+<section id="planner_memory">
+<h2>planner_memory</h2>
+
+<p>
+<button type="button" onclick="show_all_tables_in_section('planner_memory')">Show all tables</button> <button type="button" onclick="hide_all_tables_in_section('planner_memory')">Hide all tables</button>
+</p>
+
+<button type="button" class="toggle-table" onclick="toggle_table(this)">Show table</button><p></p>
+
+<table class="tableborder" style="display:none">
+<tr>
+<th>planner_<wbr>memory</th>
+<th>partial-1astar-none</th>
+<th>partial-2astar-all</th>
+</tr>
+<tr>
+<td><a href="#planner_memory-explode" onclick="show_table(document.getElementById('planner_memory-explode'));">explode</a> (14)</td>
+<td class="right"><span style="color:rgb(0,0,178)">5127912</span></td>
+<td class="right"><span style="color:rgb(0,178,0)">2411376</span></td>
+</tr>
+<tr>
+<td><strong>Sum (14)</strong></td>
+<td class="right"><span style="color:rgb(0,0,178)">5127912</span></td>
+<td class="right"><span style="color:rgb(0,178,0)">2411376</span></td>
+</tr>
+</table>
+
+<p>
+Only tasks where all algorithms have a value for "planner_memory" are considered. Each table entry gives the sum of "planner_memory" for that domain. The bottom row reports the sum across all domains.
+</p>
+
+<section id="planner_memory-explode">
+<h3>explode</h3>
+
+<button type="button" class="toggle-table" onclick="toggle_table(this)">Show table</button><p></p>
+
+<table class="tableborder" style="display:none">
+<tr>
+<th>planner_<wbr>memory</th>
+<th>partial-1astar-none</th>
+<th>partial-2astar-all</th>
+</tr>
+<tr>
+<td>n5.pddl</td>
+<td class="right"><span style="color:rgb(0,178,0)">34040</span></td>
+<td class="right"><span style="color:rgb(0,0,178)">35180</span></td>
+</tr>
+<tr>
+<td>n6.pddl</td>
+<td class="right"><span style="color:rgb(0,178,0)">37228</span></td>
+<td class="right"><span style="color:rgb(0,0,178)">40300</span></td>
+</tr>
+<tr>
+<td>n7.pddl</td>
+<td class="right"><span style="color:rgb(0,178,0)">46444</span></td>
+<td class="right"><span style="color:rgb(0,0,178)">63852</span></td>
+</tr>
+<tr>
+<td>n8.pddl</td>
+<td class="right"><span style="color:rgb(0,178,0)">78572</span></td>
+<td class="right"><span style="color:rgb(0,0,178)">161136</span></td>
+</tr>
+<tr>
+<td>n9.pddl</td>
+<td class="right"><span style="color:rgb(0,178,0)">141680</span></td>
+<td class="right"><span style="color:rgb(0,0,178)">219504</span></td>
+</tr>
+<tr>
+<td>n10.pddl</td>
+<td class="right"><span style="color:rgb(0,178,0)">152944</span></td>
+<td class="right"><span style="color:rgb(0,0,178)">209264</span></td>
+</tr>
+<tr>
+<td>n11.pddl</td>
+<td class="right"><span style="color:rgb(0,178,0)">153968</span></td>
+<td class="right"><span style="color:rgb(0,0,178)">208240</span></td>
+</tr>
+<tr>
+<td>n12.pddl</td>
+<td class="right"><span style="color:rgb(0,178,0)">136560</span></td>
+<td class="right"><span style="color:rgb(0,0,178)">208240</span></td>
+</tr>
+<tr>
+<td>n13.pddl</td>
+<td class="right"><span style="color:rgb(0,178,0)">123248</span></td>
+<td class="right"><span style="color:rgb(0,0,178)">209264</span></td>
+</tr>
+<tr>
+<td>n14.pddl</td>
+<td class="right"><span style="color:rgb(0,178,0)">145668</span></td>
+<td class="right"><span style="color:rgb(0,0,178)">210124</span></td>
+</tr>
+<tr>
+<td>n15.pddl</td>
+<td class="right"><span style="color:rgb(0,0,178)">267868</span></td>
+<td class="right"><span style="color:rgb(0,178,0)">209264</span></td>
+</tr>
+<tr>
+<td>n16.pddl</td>
+<td class="right"><span style="color:rgb(0,0,178)">527560</span></td>
+<td class="right"><span style="color:rgb(0,178,0)">211312</span></td>
+</tr>
+<tr>
+<td>n17.pddl</td>
+<td class="right"><span style="color:rgb(0,0,178)">1062640</span></td>
+<td class="right"><span style="color:rgb(0,178,0)">211312</span></td>
+</tr>
+<tr>
+<td>n18.pddl</td>
+<td class="right"><span style="color:rgb(0,0,178)">2219492</span></td>
+<td class="right"><span style="color:rgb(0,178,0)">214384</span></td>
+</tr>
+<tr>
+<td>n19.pddl</td>
+<td class="right"><span style="color:rgb(127,127,127)">None</span></td>
+<td class="right"><span style="color:rgb(0,178,0)">215408</span></td>
+</tr>
+<tr>
+<td>n20.pddl</td>
+<td class="right"><span style="color:rgb(127,127,127)">None</span></td>
+<td class="right"><span style="color:rgb(0,178,0)">217456</span></td>
+</tr>
+<tr>
+<td>n21.pddl</td>
+<td class="right"><span style="color:rgb(127,127,127)">None</span></td>
+<td class="right"><span style="color:rgb(0,178,0)">214384</span></td>
+</tr>
+<tr>
+<td>n22.pddl</td>
+<td class="right"><span style="color:rgb(127,127,127)">None</span></td>
+<td class="right"><span style="color:rgb(0,178,0)">213360</span></td>
+</tr>
+<tr>
+<td>n23.pddl</td>
+<td class="right"><span style="color:rgb(127,127,127)">None</span></td>
+<td class="right"><span style="color:rgb(0,178,0)">212336</span></td>
+</tr>
+<tr>
+<td>n24.pddl</td>
+<td class="right"><span style="color:rgb(127,127,127)">None</span></td>
+<td class="right"><span style="color:rgb(0,178,0)">209264</span></td>
+</tr>
+<tr>
+<td>n25.pddl</td>
+<td class="right"><span style="color:rgb(127,127,127)">None</span></td>
+<td class="right"><span style="color:rgb(0,178,0)">206192</span></td>
+</tr>
+</table>
+
+</section>
+</section>
+<section id="planner_time">
+<h2>planner_time</h2>
+
+<p>
+<button type="button" onclick="show_all_tables_in_section('planner_time')">Show all tables</button> <button type="button" onclick="hide_all_tables_in_section('planner_time')">Hide all tables</button>
+</p>
+
+<button type="button" class="toggle-table" onclick="toggle_table(this)">Show table</button><p></p>
+
+<table class="tableborder" style="display:none">
+<tr>
+<th>planner_<wbr>time</th>
+<th>partial-1astar-none</th>
+<th>partial-2astar-all</th>
+</tr>
+<tr>
+<td><a href="#planner_time-explode" onclick="show_table(document.getElementById('planner_time-explode'));">explode</a> (14)</td>
+<td class="right"><span style="color:rgb(0,0,178)">105.59</span></td>
+<td class="right"><span style="color:rgb(0,178,0)">7.30</span></td>
+</tr>
+<tr>
+<td><strong>Geometric mean (14)</strong></td>
+<td class="right"><span style="color:rgb(0,0,178)">105.59</span></td>
+<td class="right"><span style="color:rgb(0,178,0)">7.30</span></td>
+</tr>
+</table>
+
+<p>
+Only tasks where all algorithms have a value for "planner_time" are considered. Each table entry gives the geometric mean of "planner_time" for that domain. The bottom row reports the geometric mean across all domains.
+</p>
+
+<section id="planner_time-explode">
+<h3>explode</h3>
+
+<button type="button" class="toggle-table" onclick="toggle_table(this)">Show table</button><p></p>
+
+<table class="tableborder" style="display:none">
+<tr>
+<th>planner_<wbr>time</th>
+<th>partial-1astar-none</th>
+<th>partial-2astar-all</th>
+</tr>
+<tr>
+<td>n5.pddl</td>
+<td class="right"><span style="color:rgb(0,0,178)">0.41</span></td>
+<td class="right"><span style="color:rgb(0,178,0)">0.11</span></td>
+</tr>
+<tr>
+<td>n6.pddl</td>
+<td class="right"><span style="color:rgb(0,0,178)">2.66</span></td>
+<td class="right"><span style="color:rgb(0,178,0)">0.37</span></td>
+</tr>
+<tr>
+<td>n7.pddl</td>
+<td class="right"><span style="color:rgb(0,0,178)">17.97</span></td>
+<td class="right"><span style="color:rgb(0,178,0)">1.64</span></td>
+</tr>
+<tr>
+<td>n8.pddl</td>
+<td class="right"><span style="color:rgb(0,0,178)">116.51</span></td>
+<td class="right"><span style="color:rgb(0,178,0)">7.81</span></td>
+</tr>
+<tr>
+<td>n9.pddl</td>
+<td class="right"><span style="color:rgb(0,0,178)">300.47</span></td>
+<td class="right"><span style="color:rgb(0,178,0)">12.84</span></td>
+</tr>
+<tr>
+<td>n10.pddl</td>
+<td class="right"><span style="color:rgb(0,0,178)">300.43</span></td>
+<td class="right"><span style="color:rgb(0,178,0)">14.10</span></td>
+</tr>
+<tr>
+<td>n11.pddl</td>
+<td class="right"><span style="color:rgb(0,0,178)">300.51</span></td>
+<td class="right"><span style="color:rgb(0,178,0)">14.70</span></td>
+</tr>
+<tr>
+<td>n12.pddl</td>
+<td class="right"><span style="color:rgb(0,0,178)">300.87</span></td>
+<td class="right"><span style="color:rgb(0,178,0)">15.96</span></td>
+</tr>
+<tr>
+<td>n13.pddl</td>
+<td class="right"><span style="color:rgb(0,0,178)">301.89</span></td>
+<td class="right"><span style="color:rgb(0,178,0)">17.45</span></td>
+</tr>
+<tr>
+<td>n14.pddl</td>
+<td class="right"><span style="color:rgb(0,0,178)">304.69</span></td>
+<td class="right"><span style="color:rgb(0,178,0)">17.48</span></td>
+</tr>
+<tr>
+<td>n15.pddl</td>
+<td class="right"><span style="color:rgb(0,0,178)">308.32</span></td>
+<td class="right"><span style="color:rgb(0,178,0)">19.37</span></td>
+</tr>
+<tr>
+<td>n16.pddl</td>
+<td class="right"><span style="color:rgb(0,0,178)">317.67</span></td>
+<td class="right"><span style="color:rgb(0,178,0)">20.49</span></td>
+</tr>
+<tr>
+<td>n17.pddl</td>
+<td class="right"><span style="color:rgb(0,0,178)">338.39</span></td>
+<td class="right"><span style="color:rgb(0,178,0)">20.36</span></td>
+</tr>
+<tr>
+<td>n18.pddl</td>
+<td class="right"><span style="color:rgb(0,0,178)">377.08</span></td>
+<td class="right"><span style="color:rgb(0,178,0)">22.21</span></td>
+</tr>
+<tr>
+<td>n19.pddl</td>
+<td class="right"><span style="color:rgb(127,127,127)">None</span></td>
+<td class="right"><span style="color:rgb(0,178,0)">24.58</span></td>
+</tr>
+<tr>
+<td>n20.pddl</td>
+<td class="right"><span style="color:rgb(127,127,127)">None</span></td>
+<td class="right"><span style="color:rgb(0,178,0)">23.99</span></td>
+</tr>
+<tr>
+<td>n21.pddl</td>
+<td class="right"><span style="color:rgb(127,127,127)">None</span></td>
+<td class="right"><span style="color:rgb(0,178,0)">25.04</span></td>
+</tr>
+<tr>
+<td>n22.pddl</td>
+<td class="right"><span style="color:rgb(127,127,127)">None</span></td>
+<td class="right"><span style="color:rgb(0,178,0)">26.61</span></td>
+</tr>
+<tr>
+<td>n23.pddl</td>
+<td class="right"><span style="color:rgb(127,127,127)">None</span></td>
+<td class="right"><span style="color:rgb(0,178,0)">28.79</span></td>
+</tr>
+<tr>
+<td>n24.pddl</td>
+<td class="right"><span style="color:rgb(127,127,127)">None</span></td>
+<td class="right"><span style="color:rgb(0,178,0)">28.06</span></td>
+</tr>
+<tr>
+<td>n25.pddl</td>
+<td class="right"><span style="color:rgb(127,127,127)">None</span></td>
+<td class="right"><span style="color:rgb(0,178,0)">30.86</span></td>
+</tr>
+</table>
+
+</section>
+</section>
+<section id="search_bytes_per_state">
+<h2>search_bytes_per_state</h2>
+
+<p>
+<button type="button" onclick="show_all_tables_in_section('search_bytes_per_state')">Show all tables</button> <button type="button" onclick="hide_all_tables_in_section('search_bytes_per_state')">Hide all tables</button>
+</p>
+
+<button type="button" class="toggle-table" onclick="toggle_table(this)">Show table</button><p></p>
+
+<table class="tableborder" style="display:none">
+<tr>
+<th>search_<wbr>bytes_<wbr>per_<wbr>state</th>
+<th>partial-1astar-none</th>
+<th>partial-2astar-all</th>
+</tr>
+<tr>
+<td><a href="#search_bytes_per_state-explode" onclick="show_table(document.getElementById('search_bytes_per_state-explode'));">explode</a> (14)</td>
+<td class="right"><span style="color:rgb(0,178,0)">56</span></td>
+<td class="right"><span style="color:rgb(0,0,178)">80</span></td>
+</tr>
+<tr>
+<td><strong>Sum (14)</strong></td>
+<td class="right"><span style="color:rgb(0,178,0)">56</span></td>
+<td class="right"><span style="color:rgb(0,0,178)">80</span></td>
+</tr>
+</table>
+
+<p>
+Only tasks where all algorithms have a value for "search_bytes_per_state" are considered. Each table entry gives the sum of "search_bytes_per_state" for that domain. The bottom row reports the sum across all domains.
+</p>
+
+<section id="search_bytes_per_state-explode">
+<h3>explode</h3>
+
+<button type="button" class="toggle-table" onclick="toggle_table(this)">Show table</button><p></p>
+
+<table class="tableborder" style="display:none">
+<tr>
+<th>search_<wbr>bytes_<wbr>per_<wbr>state</th>
+<th>partial-1astar-none</th>
+<th>partial-2astar-all</th>
+</tr>
+<tr>
+<td>n5.pddl</td>
+<td class="right"><span style="color:rgb(127,127,127)">4</span></td>
+<td class="right"><span style="color:rgb(127,127,127)">4</span></td>
+</tr>
+<tr>
+<td>n6.pddl</td>
+<td class="right"><span style="color:rgb(127,127,127)">4</span></td>
+<td class="right"><span style="color:rgb(127,127,127)">4</span></td>
+</tr>
+<tr>
+<td>n7.pddl</td>
+<td class="right"><span style="color:rgb(127,127,127)">4</span></td>
+<td class="right"><span style="color:rgb(127,127,127)">4</span></td>
+</tr>
+<tr>
+<td>n8.pddl</td>
+<td class="right"><span style="color:rgb(127,127,127)">4</span></td>
+<td class="right"><span style="color:rgb(127,127,127)">4</span></td>
+</tr>
+<tr>
+<td>n9.pddl</td>
+<td class="right"><span style="color:rgb(127,127,127)">4</span></td>
+<td class="right"><span style="color:rgb(127,127,127)">4</span></td>
+</tr>
+<tr>
+<td>n10.pddl</td>
+<td class="right"><span style="color:rgb(127,127,127)">4</span></td>
+<td class="right"><span style="color:rgb(127,127,127)">4</span></td>
+</tr>
+<tr>
+<td>n11.pddl</td>
+<td class="right"><span style="color:rgb(127,127,127)">4</span></td>
+<td class="right"><span style="color:rgb(127,127,127)">4</span></td>
+</tr>
+<tr>
+<td>n12.pddl</td>
+<td class="right"><span style="color:rgb(127,127,127)">4</span></td>
+<td class="right"><span style="color:rgb(127,127,127)">4</span></td>
+</tr>
+<tr>
+<td>n13.pddl</td>
+<td class="right"><span style="color:rgb(0,178,0)">4</span></td>
+<td class="right"><span style="color:rgb(0,0,178)">8</span></td>
+</tr>
+<tr>
+<td>n14.pddl</td>
+<td class="right"><span style="color:rgb(0,178,0)">4</span></td>
+<td class="right"><span style="color:rgb(0,0,178)">8</span></td>
+</tr>
+<tr>
+<td>n15.pddl</td>
+<td class="right"><span style="color:rgb(0,178,0)">4</span></td>
+<td class="right"><span style="color:rgb(0,0,178)">8</span></td>
+</tr>
+<tr>
+<td>n16.pddl</td>
+<td class="right"><span style="color:rgb(0,178,0)">4</span></td>
+<td class="right"><span style="color:rgb(0,0,178)">8</span></td>
+</tr>
+<tr>
+<td>n17.pddl</td>
+<td class="right"><span style="color:rgb(0,178,0)">4</span></td>
+<td class="right"><span style="color:rgb(0,0,178)">8</span></td>
+</tr>
+<tr>
+<td>n18.pddl</td>
+<td class="right"><span style="color:rgb(0,178,0)">4</span></td>
+<td class="right"><span style="color:rgb(0,0,178)">8</span></td>
+</tr>
+<tr>
+<td>n19.pddl</td>
+<td class="right"><span style="color:rgb(127,127,127)">None</span></td>
+<td class="right"><span style="color:rgb(0,178,0)">8</span></td>
+</tr>
+<tr>
+<td>n20.pddl</td>
+<td class="right"><span style="color:rgb(127,127,127)">None</span></td>
+<td class="right"><span style="color:rgb(0,178,0)">8</span></td>
+</tr>
+<tr>
+<td>n21.pddl</td>
+<td class="right"><span style="color:rgb(127,127,127)">None</span></td>
+<td class="right"><span style="color:rgb(0,178,0)">8</span></td>
+</tr>
+<tr>
+<td>n22.pddl</td>
+<td class="right"><span style="color:rgb(127,127,127)">None</span></td>
+<td class="right"><span style="color:rgb(0,178,0)">8</span></td>
+</tr>
+<tr>
+<td>n23.pddl</td>
+<td class="right"><span style="color:rgb(127,127,127)">None</span></td>
+<td class="right"><span style="color:rgb(0,178,0)">8</span></td>
+</tr>
+<tr>
+<td>n24.pddl</td>
+<td class="right"><span style="color:rgb(127,127,127)">None</span></td>
+<td class="right"><span style="color:rgb(0,178,0)">8</span></td>
+</tr>
+<tr>
+<td>n25.pddl</td>
+<td class="right"><span style="color:rgb(127,127,127)">None</span></td>
+<td class="right"><span style="color:rgb(0,178,0)">8</span></td>
+</tr>
+</table>
+
+</section>
+</section>
+<section id="search_time">
+<h2>search_time</h2>
+
+<p>
+<button type="button" onclick="show_all_tables_in_section('search_time')">Show all tables</button> <button type="button" onclick="hide_all_tables_in_section('search_time')">Hide all tables</button>
+</p>
+
+<button type="button" class="toggle-table" onclick="toggle_table(this)">Show table</button><p></p>
+
+<table class="tableborder" style="display:none">
+<tr>
+<th>search_<wbr>time</th>
+<th>partial-1astar-none</th>
+<th>partial-2astar-all</th>
+</tr>
+<tr>
+<td><a href="#search_time-explode" onclick="show_table(document.getElementById('search_time-explode'));">explode</a> (14)</td>
+<td class="right"><span style="color:rgb(127,127,127)">0.14</span></td>
+<td class="right"><span style="color:rgb(127,127,127)">0.14</span></td>
+</tr>
+<tr>
+<td><strong>Sum (14)</strong></td>
+<td class="right"><span style="color:rgb(127,127,127)">0.14</span></td>
+<td class="right"><span style="color:rgb(127,127,127)">0.14</span></td>
+</tr>
+</table>
+
+<p>
+Only tasks where all algorithms have a value for "search_time" are considered. Each table entry gives the sum of "search_time" for that domain. The bottom row reports the sum across all domains.
+</p>
+
+<section id="search_time-explode">
+<h3>explode</h3>
+
+<button type="button" class="toggle-table" onclick="toggle_table(this)">Show table</button><p></p>
+
+<table class="tableborder" style="display:none">
+<tr>
+<th>search_<wbr>time</th>
+<th>partial-1astar-none</th>
+<th>partial-2astar-all</th>
+</tr>
+<tr>
+<td>n5.pddl</td>
+<td class="right"><span style="color:rgb(127,127,127)">0.01</span></td>
+<td class="right"><span style="color:rgb(127,127,127)">0.01</span></td>
+</tr>
+<tr>
+<td>n6.pddl</td>
+<td class="right"><span style="color:rgb(127,127,127)">0.01</span></td>
+<td class="right"><span style="color:rgb(127,127,127)">0.01</span></td>
+</tr>
+<tr>
+<td>n7.pddl</td>
+<td class="right"><span style="color:rgb(127,127,127)">0.01</span></td>
+<td class="right"><span style="color:rgb(127,127,127)">0.01</span></td>
+</tr>
+<tr>
+<td>n8.pddl</td>
+<td class="right"><span style="color:rgb(127,127,127)">0.01</span></td>
+<td class="right"><span style="color:rgb(127,127,127)">0.01</span></td>
+</tr>
+<tr>
+<td>n9.pddl</td>
+<td class="right"><span style="color:rgb(127,127,127)">0.01</span></td>
+<td class="right"><span style="color:rgb(127,127,127)">0.01</span></td>
+</tr>
+<tr>
+<td>n10.pddl</td>
+<td class="right"><span style="color:rgb(127,127,127)">0.01</span></td>
+<td class="right"><span style="color:rgb(127,127,127)">0.01</span></td>
+</tr>
+<tr>
+<td>n11.pddl</td>
+<td class="right"><span style="color:rgb(127,127,127)">0.01</span></td>
+<td class="right"><span style="color:rgb(127,127,127)">0.01</span></td>
+</tr>
+<tr>
+<td>n12.pddl</td>
+<td class="right"><span style="color:rgb(127,127,127)">0.01</span></td>
+<td class="right"><span style="color:rgb(127,127,127)">0.01</span></td>
+</tr>
+<tr>
+<td>n13.pddl</td>
+<td class="right"><span style="color:rgb(127,127,127)">0.01</span></td>
+<td class="right"><span style="color:rgb(127,127,127)">0.01</span></td>
+</tr>
+<tr>
+<td>n14.pddl</td>
+<td class="right"><span style="color:rgb(127,127,127)">0.01</span></td>
+<td class="right"><span style="color:rgb(127,127,127)">0.01</span></td>
+</tr>
+<tr>
+<td>n15.pddl</td>
+<td class="right"><span style="color:rgb(127,127,127)">0.01</span></td>
+<td class="right"><span style="color:rgb(127,127,127)">0.01</span></td>
+</tr>
+<tr>
+<td>n16.pddl</td>
+<td class="right"><span style="color:rgb(127,127,127)">0.01</span></td>
+<td class="right"><span style="color:rgb(127,127,127)">0.01</span></td>
+</tr>
+<tr>
+<td>n17.pddl</td>
+<td class="right"><span style="color:rgb(127,127,127)">0.01</span></td>
+<td class="right"><span style="color:rgb(127,127,127)">0.01</span></td>
+</tr>
+<tr>
+<td>n18.pddl</td>
+<td class="right"><span style="color:rgb(127,127,127)">0.01</span></td>
+<td class="right"><span style="color:rgb(127,127,127)">0.01</span></td>
+</tr>
+<tr>
+<td>n19.pddl</td>
+<td class="right"><span style="color:rgb(127,127,127)">None</span></td>
+<td class="right"><span style="color:rgb(0,178,0)">0.01</span></td>
+</tr>
+<tr>
+<td>n20.pddl</td>
+<td class="right"><span style="color:rgb(127,127,127)">None</span></td>
+<td class="right"><span style="color:rgb(0,178,0)">0.01</span></td>
+</tr>
+<tr>
+<td>n21.pddl</td>
+<td class="right"><span style="color:rgb(127,127,127)">None</span></td>
+<td class="right"><span style="color:rgb(0,178,0)">0.01</span></td>
+</tr>
+<tr>
+<td>n22.pddl</td>
+<td class="right"><span style="color:rgb(127,127,127)">None</span></td>
+<td class="right"><span style="color:rgb(0,178,0)">0.01</span></td>
+</tr>
+<tr>
+<td>n23.pddl</td>
+<td class="right"><span style="color:rgb(127,127,127)">None</span></td>
+<td class="right"><span style="color:rgb(0,178,0)">0.01</span></td>
+</tr>
+<tr>
+<td>n24.pddl</td>
+<td class="right"><span style="color:rgb(127,127,127)">None</span></td>
+<td class="right"><span style="color:rgb(0,178,0)">0.01</span></td>
+</tr>
+<tr>
+<td>n25.pddl</td>
+<td class="right"><span style="color:rgb(127,127,127)">None</span></td>
+<td class="right"><span style="color:rgb(0,178,0)">0.01</span></td>
+</tr>
+</table>
+
+</section>
+</section>
+<section id="total_time">
+<h2>total_time</h2>
+
+<p>
+<button type="button" onclick="show_all_tables_in_section('total_time')">Show all tables</button> <button type="button" onclick="hide_all_tables_in_section('total_time')">Hide all tables</button>
+</p>
+
+<button type="button" class="toggle-table" onclick="toggle_table(this)">Show table</button><p></p>
+
+<table class="tableborder" style="display:none">
+<tr>
+<th>total_<wbr>time</th>
+<th>partial-1astar-none</th>
+<th>partial-2astar-all</th>
+</tr>
+<tr>
+<td><a href="#total_time-explode" onclick="show_table(document.getElementById('total_time-explode'));">explode</a> (14)</td>
+<td class="right"><span style="color:rgb(127,127,127)">0.01</span></td>
+<td class="right"><span style="color:rgb(127,127,127)">0.01</span></td>
+</tr>
+<tr>
+<td><strong>Geometric mean (14)</strong></td>
+<td class="right"><span style="color:rgb(127,127,127)">0.01</span></td>
+<td class="right"><span style="color:rgb(127,127,127)">0.01</span></td>
+</tr>
+</table>
+
+<p>
+Only tasks where all algorithms have a value for "total_time" are considered. Each table entry gives the geometric mean of "total_time" for that domain. The bottom row reports the geometric mean across all domains.
+</p>
+
+<section id="total_time-explode">
+<h3>explode</h3>
+
+<button type="button" class="toggle-table" onclick="toggle_table(this)">Show table</button><p></p>
+
+<table class="tableborder" style="display:none">
+<tr>
+<th>total_<wbr>time</th>
+<th>partial-1astar-none</th>
+<th>partial-2astar-all</th>
+</tr>
+<tr>
+<td>n5.pddl</td>
+<td class="right"><span style="color:rgb(127,127,127)">0.01</span></td>
+<td class="right"><span style="color:rgb(127,127,127)">0.01</span></td>
+</tr>
+<tr>
+<td>n6.pddl</td>
+<td class="right"><span style="color:rgb(127,127,127)">0.01</span></td>
+<td class="right"><span style="color:rgb(127,127,127)">0.01</span></td>
+</tr>
+<tr>
+<td>n7.pddl</td>
+<td class="right"><span style="color:rgb(127,127,127)">0.01</span></td>
+<td class="right"><span style="color:rgb(127,127,127)">0.01</span></td>
+</tr>
+<tr>
+<td>n8.pddl</td>
+<td class="right"><span style="color:rgb(127,127,127)">0.01</span></td>
+<td class="right"><span style="color:rgb(127,127,127)">0.01</span></td>
+</tr>
+<tr>
+<td>n9.pddl</td>
+<td class="right"><span style="color:rgb(127,127,127)">0.01</span></td>
+<td class="right"><span style="color:rgb(127,127,127)">0.01</span></td>
+</tr>
+<tr>
+<td>n10.pddl</td>
+<td class="right"><span style="color:rgb(127,127,127)">0.01</span></td>
+<td class="right"><span style="color:rgb(127,127,127)">0.01</span></td>
+</tr>
+<tr>
+<td>n11.pddl</td>
+<td class="right"><span style="color:rgb(127,127,127)">0.01</span></td>
+<td class="right"><span style="color:rgb(127,127,127)">0.01</span></td>
+</tr>
+<tr>
+<td>n12.pddl</td>
+<td class="right"><span style="color:rgb(127,127,127)">0.01</span></td>
+<td class="right"><span style="color:rgb(127,127,127)">0.01</span></td>
+</tr>
+<tr>
+<td>n13.pddl</td>
+<td class="right"><span style="color:rgb(127,127,127)">0.01</span></td>
+<td class="right"><span style="color:rgb(127,127,127)">0.01</span></td>
+</tr>
+<tr>
+<td>n14.pddl</td>
+<td class="right"><span style="color:rgb(0,0,178)">0.03</span></td>
+<td class="right"><span style="color:rgb(0,178,0)">0.01</span></td>
+</tr>
+<tr>
+<td>n15.pddl</td>
+<td class="right"><span style="color:rgb(127,127,127)">0.01</span></td>
+<td class="right"><span style="color:rgb(127,127,127)">0.01</span></td>
+</tr>
+<tr>
+<td>n16.pddl</td>
+<td class="right"><span style="color:rgb(0,0,178)">0.02</span></td>
+<td class="right"><span style="color:rgb(0,178,0)">0.01</span></td>
+</tr>
+<tr>
+<td>n17.pddl</td>
+<td class="right"><span style="color:rgb(127,127,127)">0.01</span></td>
+<td class="right"><span style="color:rgb(127,127,127)">0.01</span></td>
+</tr>
+<tr>
+<td>n18.pddl</td>
+<td class="right"><span style="color:rgb(0,0,178)">0.03</span></td>
+<td class="right"><span style="color:rgb(0,178,0)">0.01</span></td>
+</tr>
+<tr>
+<td>n19.pddl</td>
+<td class="right"><span style="color:rgb(127,127,127)">None</span></td>
+<td class="right"><span style="color:rgb(0,178,0)">0.01</span></td>
+</tr>
+<tr>
+<td>n20.pddl</td>
+<td class="right"><span style="color:rgb(127,127,127)">None</span></td>
+<td class="right"><span style="color:rgb(0,178,0)">0.01</span></td>
+</tr>
+<tr>
+<td>n21.pddl</td>
+<td class="right"><span style="color:rgb(127,127,127)">None</span></td>
+<td class="right"><span style="color:rgb(0,178,0)">0.01</span></td>
+</tr>
+<tr>
+<td>n22.pddl</td>
+<td class="right"><span style="color:rgb(127,127,127)">None</span></td>
+<td class="right"><span style="color:rgb(0,178,0)">0.01</span></td>
+</tr>
+<tr>
+<td>n23.pddl</td>
+<td class="right"><span style="color:rgb(127,127,127)">None</span></td>
+<td class="right"><span style="color:rgb(0,178,0)">0.01</span></td>
+</tr>
+<tr>
+<td>n24.pddl</td>
+<td class="right"><span style="color:rgb(127,127,127)">None</span></td>
+<td class="right"><span style="color:rgb(0,178,0)">0.01</span></td>
+</tr>
+<tr>
+<td>n25.pddl</td>
+<td class="right"><span style="color:rgb(127,127,127)">None</span></td>
+<td class="right"><span style="color:rgb(0,178,0)">0.01</span></td>
+</tr>
+</table>
+
+</section>
+</section>
+<section id="translator_axioms">
+<h2>translator_axioms</h2>
+
+<p>
+<button type="button" onclick="show_all_tables_in_section('translator_axioms')">Show all tables</button> <button type="button" onclick="hide_all_tables_in_section('translator_axioms')">Hide all tables</button>
+</p>
+
+<button type="button" class="toggle-table" onclick="toggle_table(this)">Show table</button><p></p>
+
+<table class="tableborder" style="display:none">
+<tr>
+<th>translator_<wbr>axioms</th>
+<th>partial-1astar-none</th>
+<th>partial-2astar-all</th>
+</tr>
+<tr>
+<td><a href="#translator_axioms-explode" onclick="show_table(document.getElementById('translator_axioms-explode'));">explode</a> (14)</td>
+<td class="right"><span style="color:rgb(0,178,0)">0</span></td>
+<td class="right"><span style="color:rgb(0,0,178)">226</span></td>
+</tr>
+<tr>
+<td><strong>Sum (14)</strong></td>
+<td class="right"><span style="color:rgb(0,178,0)">0</span></td>
+<td class="right"><span style="color:rgb(0,0,178)">226</span></td>
+</tr>
+</table>
+
+<p>
+Only tasks where all algorithms have a value for "translator_axioms" are considered. Each table entry gives the sum of "translator_axioms" for that domain. The bottom row reports the sum across all domains.
+</p>
+
+<section id="translator_axioms-explode">
+<h3>explode</h3>
+
+<button type="button" class="toggle-table" onclick="toggle_table(this)">Show table</button><p></p>
+
+<table class="tableborder" style="display:none">
+<tr>
+<th>translator_<wbr>axioms</th>
+<th>partial-1astar-none</th>
+<th>partial-2astar-all</th>
+</tr>
+<tr>
+<td>n5.pddl</td>
+<td class="right"><span style="color:rgb(0,178,0)">0</span></td>
+<td class="right"><span style="color:rgb(0,0,178)">8</span></td>
+</tr>
+<tr>
+<td>n6.pddl</td>
+<td class="right"><span style="color:rgb(0,178,0)">0</span></td>
+<td class="right"><span style="color:rgb(0,0,178)">7</span></td>
+</tr>
+<tr>
+<td>n7.pddl</td>
+<td class="right"><span style="color:rgb(0,178,0)">0</span></td>
+<td class="right"><span style="color:rgb(0,0,178)">10</span></td>
+</tr>
+<tr>
+<td>n8.pddl</td>
+<td class="right"><span style="color:rgb(0,178,0)">0</span></td>
+<td class="right"><span style="color:rgb(0,0,178)">12</span></td>
+</tr>
+<tr>
+<td>n9.pddl</td>
+<td class="right"><span style="color:rgb(0,178,0)">0</span></td>
+<td class="right"><span style="color:rgb(0,0,178)">12</span></td>
+</tr>
+<tr>
+<td>n10.pddl</td>
+<td class="right"><span style="color:rgb(0,178,0)">0</span></td>
+<td class="right"><span style="color:rgb(0,0,178)">14</span></td>
+</tr>
+<tr>
+<td>n11.pddl</td>
+<td class="right"><span style="color:rgb(0,178,0)">0</span></td>
+<td class="right"><span style="color:rgb(0,0,178)">14</span></td>
+</tr>
+<tr>
+<td>n12.pddl</td>
+<td class="right"><span style="color:rgb(0,178,0)">0</span></td>
+<td class="right"><span style="color:rgb(0,0,178)">14</span></td>
+</tr>
+<tr>
+<td>n13.pddl</td>
+<td class="right"><span style="color:rgb(0,178,0)">0</span></td>
+<td class="right"><span style="color:rgb(0,0,178)">19</span></td>
+</tr>
+<tr>
+<td>n14.pddl</td>
+<td class="right"><span style="color:rgb(0,178,0)">0</span></td>
+<td class="right"><span style="color:rgb(0,0,178)">24</span></td>
+</tr>
+<tr>
+<td>n15.pddl</td>
+<td class="right"><span style="color:rgb(0,178,0)">0</span></td>
+<td class="right"><span style="color:rgb(0,0,178)">20</span></td>
+</tr>
+<tr>
+<td>n16.pddl</td>
+<td class="right"><span style="color:rgb(0,178,0)">0</span></td>
+<td class="right"><span style="color:rgb(0,0,178)">24</span></td>
+</tr>
+<tr>
+<td>n17.pddl</td>
+<td class="right"><span style="color:rgb(0,178,0)">0</span></td>
+<td class="right"><span style="color:rgb(0,0,178)">21</span></td>
+</tr>
+<tr>
+<td>n18.pddl</td>
+<td class="right"><span style="color:rgb(0,178,0)">0</span></td>
+<td class="right"><span style="color:rgb(0,0,178)">27</span></td>
+</tr>
+<tr>
+<td>n19.pddl</td>
+<td class="right"><span style="color:rgb(127,127,127)">None</span></td>
+<td class="right"><span style="color:rgb(0,178,0)">27</span></td>
+</tr>
+<tr>
+<td>n20.pddl</td>
+<td class="right"><span style="color:rgb(127,127,127)">None</span></td>
+<td class="right"><span style="color:rgb(0,178,0)">25</span></td>
+</tr>
+<tr>
+<td>n21.pddl</td>
+<td class="right"><span style="color:rgb(127,127,127)">None</span></td>
+<td class="right"><span style="color:rgb(0,178,0)">29</span></td>
+</tr>
+<tr>
+<td>n22.pddl</td>
+<td class="right"><span style="color:rgb(127,127,127)">None</span></td>
+<td class="right"><span style="color:rgb(0,178,0)">27</span></td>
+</tr>
+<tr>
+<td>n23.pddl</td>
+<td class="right"><span style="color:rgb(127,127,127)">None</span></td>
+<td class="right"><span style="color:rgb(0,178,0)">31</span></td>
+</tr>
+<tr>
+<td>n24.pddl</td>
+<td class="right"><span style="color:rgb(127,127,127)">None</span></td>
+<td class="right"><span style="color:rgb(0,178,0)">31</span></td>
+</tr>
+<tr>
+<td>n25.pddl</td>
+<td class="right"><span style="color:rgb(127,127,127)">None</span></td>
+<td class="right"><span style="color:rgb(0,178,0)">32</span></td>
+</tr>
+</table>
+
+</section>
+</section>
+<section id="translator_derived_variables">
+<h2>translator_derived_variables</h2>
+
+<p>
+<button type="button" onclick="show_all_tables_in_section('translator_derived_variables')">Show all tables</button> <button type="button" onclick="hide_all_tables_in_section('translator_derived_variables')">Hide all tables</button>
+</p>
+
+<button type="button" class="toggle-table" onclick="toggle_table(this)">Show table</button><p></p>
+
+<table class="tableborder" style="display:none">
+<tr>
+<th>translator_<wbr>derived_<wbr>variables</th>
+<th>partial-1astar-none</th>
+<th>partial-2astar-all</th>
+</tr>
+<tr>
+<td><a href="#translator_derived_variables-explode" onclick="show_table(document.getElementById('translator_derived_variables-explode'));">explode</a> (14)</td>
+<td class="right"><span style="color:rgb(0,178,0)">0</span></td>
+<td class="right"><span style="color:rgb(0,0,178)">161</span></td>
+</tr>
+<tr>
+<td><strong>Sum (14)</strong></td>
+<td class="right"><span style="color:rgb(0,178,0)">0</span></td>
+<td class="right"><span style="color:rgb(0,0,178)">161</span></td>
+</tr>
+</table>
+
+<p>
+Only tasks where all algorithms have a value for "translator_derived_variables" are considered. Each table entry gives the sum of "translator_derived_variables" for that domain. The bottom row reports the sum across all domains.
+</p>
+
+<section id="translator_derived_variables-explode">
+<h3>explode</h3>
+
+<button type="button" class="toggle-table" onclick="toggle_table(this)">Show table</button><p></p>
+
+<table class="tableborder" style="display:none">
+<tr>
+<th>translator_<wbr>derived_<wbr>variables</th>
+<th>partial-1astar-none</th>
+<th>partial-2astar-all</th>
+</tr>
+<tr>
+<td>n5.pddl</td>
+<td class="right"><span style="color:rgb(0,178,0)">0</span></td>
+<td class="right"><span style="color:rgb(0,0,178)">5</span></td>
+</tr>
+<tr>
+<td>n6.pddl</td>
+<td class="right"><span style="color:rgb(0,178,0)">0</span></td>
+<td class="right"><span style="color:rgb(0,0,178)">6</span></td>
+</tr>
+<tr>
+<td>n7.pddl</td>
+<td class="right"><span style="color:rgb(0,178,0)">0</span></td>
+<td class="right"><span style="color:rgb(0,0,178)">7</span></td>
+</tr>
+<tr>
+<td>n8.pddl</td>
+<td class="right"><span style="color:rgb(0,178,0)">0</span></td>
+<td class="right"><span style="color:rgb(0,0,178)">8</span></td>
+</tr>
+<tr>
+<td>n9.pddl</td>
+<td class="right"><span style="color:rgb(0,178,0)">0</span></td>
+<td class="right"><span style="color:rgb(0,0,178)">9</span></td>
+</tr>
+<tr>
+<td>n10.pddl</td>
+<td class="right"><span style="color:rgb(0,178,0)">0</span></td>
+<td class="right"><span style="color:rgb(0,0,178)">10</span></td>
+</tr>
+<tr>
+<td>n11.pddl</td>
+<td class="right"><span style="color:rgb(0,178,0)">0</span></td>
+<td class="right"><span style="color:rgb(0,0,178)">11</span></td>
+</tr>
+<tr>
+<td>n12.pddl</td>
+<td class="right"><span style="color:rgb(0,178,0)">0</span></td>
+<td class="right"><span style="color:rgb(0,0,178)">12</span></td>
+</tr>
+<tr>
+<td>n13.pddl</td>
+<td class="right"><span style="color:rgb(0,178,0)">0</span></td>
+<td class="right"><span style="color:rgb(0,0,178)">13</span></td>
+</tr>
+<tr>
+<td>n14.pddl</td>
+<td class="right"><span style="color:rgb(0,178,0)">0</span></td>
+<td class="right"><span style="color:rgb(0,0,178)">14</span></td>
+</tr>
+<tr>
+<td>n15.pddl</td>
+<td class="right"><span style="color:rgb(0,178,0)">0</span></td>
+<td class="right"><span style="color:rgb(0,0,178)">15</span></td>
+</tr>
+<tr>
+<td>n16.pddl</td>
+<td class="right"><span style="color:rgb(0,178,0)">0</span></td>
+<td class="right"><span style="color:rgb(0,0,178)">16</span></td>
+</tr>
+<tr>
+<td>n17.pddl</td>
+<td class="right"><span style="color:rgb(0,178,0)">0</span></td>
+<td class="right"><span style="color:rgb(0,0,178)">17</span></td>
+</tr>
+<tr>
+<td>n18.pddl</td>
+<td class="right"><span style="color:rgb(0,178,0)">0</span></td>
+<td class="right"><span style="color:rgb(0,0,178)">18</span></td>
+</tr>
+<tr>
+<td>n19.pddl</td>
+<td class="right"><span style="color:rgb(127,127,127)">None</span></td>
+<td class="right"><span style="color:rgb(0,178,0)">19</span></td>
+</tr>
+<tr>
+<td>n20.pddl</td>
+<td class="right"><span style="color:rgb(127,127,127)">None</span></td>
+<td class="right"><span style="color:rgb(0,178,0)">20</span></td>
+</tr>
+<tr>
+<td>n21.pddl</td>
+<td class="right"><span style="color:rgb(127,127,127)">None</span></td>
+<td class="right"><span style="color:rgb(0,178,0)">21</span></td>
+</tr>
+<tr>
+<td>n22.pddl</td>
+<td class="right"><span style="color:rgb(127,127,127)">None</span></td>
+<td class="right"><span style="color:rgb(0,178,0)">22</span></td>
+</tr>
+<tr>
+<td>n23.pddl</td>
+<td class="right"><span style="color:rgb(127,127,127)">None</span></td>
+<td class="right"><span style="color:rgb(0,178,0)">23</span></td>
+</tr>
+<tr>
+<td>n24.pddl</td>
+<td class="right"><span style="color:rgb(127,127,127)">None</span></td>
+<td class="right"><span style="color:rgb(0,178,0)">24</span></td>
+</tr>
+<tr>
+<td>n25.pddl</td>
+<td class="right"><span style="color:rgb(127,127,127)">None</span></td>
+<td class="right"><span style="color:rgb(0,178,0)">25</span></td>
+</tr>
+</table>
+
+</section>
+</section>
+</section>
+</div>
+</body></html>
