@@ -14,16 +14,16 @@ BENCHMARKS_DIR = os.environ["DISJUNCTIVE_BENCHMARKS"]
 REVISIONS = ["partial"]
 BUILDS = ["release"]
 CONFIG_NICKS = [
-    ("1astar-blind-none", ["--translate", "--translate-options", "--eliminate-disjunctions=none", "--search-options"]),
-    ("2astar-blind-all", ["--translate", "--translate-options", "--eliminate-disjunctions=all", "--search-options"]),
-    ("astar-blind-extreme", ["--translate", "--translate-options", "--eliminate-disjunctions=extreme", "--search-options"]),
+    ("1astar-blind-none", ["--translate-options", "--eliminate-disjunctions=none", "--search-options"]),
+    ("2astar-blind-all", ["--translate-options", "--eliminate-disjunctions=all", "--search-options"]),
+    ("astar-blind-extreme", ["--translate-options", "--eliminate-disjunctions=extreme", "--search-options"]),
 ]
 CONFIGS = [
     OptionsConfig(
         nick=config_nick,
         component_options=config,
         build_options=[build],
-        driver_options=[])
+        driver_options=["--translate"])
     for build in BUILDS
     for config_nick, config in CONFIG_NICKS
 ]

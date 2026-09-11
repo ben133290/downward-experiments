@@ -16,7 +16,7 @@ from downward.reports.absolute import AbsoluteReport
 from downward.reports.compare import ComparativeReport
 from downward.reports.scatter import ScatterPlotReport
 
-BENCHMARKS = list(set(['muddy-children', 'muddy-child', 'blocker', 'blocks-world', 'pathways', 'psr-middle', 'sum', 'word-rooms', 'collab-and-comm', 'psr-large', 'miconic-fulladl', 'optical-telegraphs', 'social-planning', 'ghosh-etal-JAR-acc-cc2', 'ged1-ds2nd', 'ged1-ds1', 'assembly', 'miconic-axioms', 'explode',]))
+BENCHMARKS = list(set(['muddy-children', 'muddy-child', 'blocker', 'blocks-world', 'pathways', 'psr-middle', 'sum', 'word-rooms', 'collab-and-comm', 'psr-large', 'miconic-fulladl', 'telegraphs', 'social-planning', 'acc-cc2', 'ged1-ds2nd', 'ged1-ds1', 'assembly', 'miconic-axioms', 'explode',]))
 
 def parse_args():
     ARGPARSER.add_argument(
