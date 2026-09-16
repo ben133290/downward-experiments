@@ -5,30 +5,30 @@ import custom_parser
 from lab.environments import BaselSlurmEnvironment
 from lab.reports import Attribute
 import common_setup
-from common_setup import OptionsConfig, TranslatorExperiment, average
+from common_setup import OptionsConfig, TranslatorExperiment, average, BENCHMARKS
 from downward.reports.scatter import ScatterPlotReport
 
 DIR = os.path.dirname(os.path.abspath(__file__))
 REPO_DIR = os.environ["DOWNWARD_REPO"]
 BENCHMARKS_DIR = os.environ["DISJUNCTIVE_BENCHMARKS"]
-REVISIONS = ["0d12f540015", "409982b293"]
+REVISIONS = ["hybrid", "memory-optim"]
 BUILDS = ["release"]
 CONFIG_NICKS = [
-    ("1-none", ["--translate-options", "--eliminate-disjunctions=none", "--search-options", "--search", "astar(blind())"]),
-    ("2-all", ["--translate-options", "--eliminate-disjunctions=all", "--search-options", "--search", "astar(blind())"]),
-    ("3-extreme", ["--translate-options", "--eliminate-disjunctions=extreme", "--search-options", "--search", "astar(blind())"]),
+    ("1-none", ["--translate-options", "--eliminate-disjunctions=none"]),
+    ("2-all", ["--translate-options", "--eliminate-disjunctions=all"]),
+    ("3-extreme", ["--translate-options", "--eliminate-disjunctions=extreme"]),
 ]
 CONFIGS = [
     OptionsConfig(
         nick=config_nick,
         component_options=config,
         build_options=[build],
-        driver_options=['--search-time-limit', '20m', '--search-memory-limit', '4000', "--build", build])
+        driver_options=['--alias', 'lama-first', '--search-time-limit', '20m', '--search-memory-limit', '4000', "--build", build])
     for build in BUILDS
     for config_nick, config in CONFIG_NICKS
 ]
 
-SUITE = list(set(['muddy-children', 'muddy-child', 'blocker', 'psr-middle', 'sum', 'word-rooms', 'collab-and-comm', 'psr-large', 'miconic-fulladl', 'optical-telegraphs', 'social-planning', 'ghosh-etal-JAR-acc-cc2', 'ged1-ds2nd', 'ged1-ds1', 'assembly', 'miconic-axioms', 'explode',]))
+SUITE = BENCHMARKS
 ENVIRONMENT = BaselSlurmEnvironment(
     partition="infai_2",
     email="ben.heuser@unibas.ch",
