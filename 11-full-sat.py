@@ -14,16 +14,16 @@ BENCHMARKS_DIR = os.environ["DISJUNCTIVE_BENCHMARKS"]
 REVISIONS = ["hybrid", "memory-optim"]
 BUILDS = ["release"]
 CONFIG_NICKS = [
-    ("1-none", ["--translate-options", "--eliminate-disjunctions=none"]),
-    ("2-all", ["--translate-options", "--eliminate-disjunctions=all"]),
-    ("3-extreme", ["--translate-options", "--eliminate-disjunctions=extreme"]),
+    ("1-none", ["--translate-options", "--eliminate-disjunctions=none", "--search-options", "--search", "let(hff, ff(transform=adapt_costs(one)),eager_greedy([hff],preferred=[hff],cost_type=one))"]),
+    ("2-all", ["--translate-options", "--eliminate-disjunctions=all", "--search-options", "--search", "let(hff, ff(transform=adapt_costs(one)),eager_greedy([hff],preferred=[hff],cost_type=one))"]),
+    ("3-extreme", ["--translate-options", "--eliminate-disjunctions=extreme", "--search-options", "--search", "let(hff, ff(transform=adapt_costs(one)),eager_greedy([hff],preferred=[hff],cost_type=one))"]),
 ]
 CONFIGS = [
     OptionsConfig(
         nick=config_nick,
         component_options=config,
         build_options=[build],
-        driver_options=['--alias', 'lama-first', '--search-time-limit', '20m', '--search-memory-limit', '4000', "--build", build])
+        driver_options=['--search-time-limit', '20m', '--search-memory-limit', '4000', "--build", build])
     for build in BUILDS
     for config_nick, config in CONFIG_NICKS
 ]
@@ -61,6 +61,7 @@ REPORT_ATTRIBUTES = [
     "expansions_until_last_jump",
     Attribute("generated", function=sum, min_wins=True),
     "generated_until_last_jump",
+    "initial_h_value",
     "memory",
     "planner_memory",
     "planner_time",
