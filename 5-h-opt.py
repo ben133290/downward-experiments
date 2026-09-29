@@ -14,8 +14,7 @@ BENCHMARKS_DIR = os.environ["DISJUNCTIVE_BENCHMARKS"]
 REVISIONS = ["hybrid"]
 BUILDS = ["release"]
 CONFIG_NICKS = [
-    ("1astar-blind-none", ["--translate-options", "--eliminate-disjunctions=none", "--search-options", "--search", "astar(blind())"]),
-    ("2astar-blind-hybrid", ["--translate-options", "--eliminate-disjunctions=hybrid", "--search-options", "--search", "astar(blind())"]),
+    ("2-hybrid", ["--translate-options", "--eliminate-disjunctions=hybrid", "--search-options", "--search", "astar(blind())"]),
 ]
 CONFIGS = [
     OptionsConfig(
