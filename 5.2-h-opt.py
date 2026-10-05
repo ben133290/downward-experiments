@@ -14,17 +14,17 @@ BENCHMARKS_DIR = os.environ["DISJUNCTIVE_BENCHMARKS"]
 REVISIONS = ["hybrid"]
 BUILDS = ["release"]
 CONFIG_NICKS = [
-    ("1-none", ["--translate-options", "--eliminate-disjunctions=none", "--search-options", "--search", "astar(blind())"]),
-    ("2-all", ["--translate-options", "--eliminate-disjunctions=all", "--search-options", "--search", "astar(blind())"]),
-    ("3-extreme", ["--translate-options", "--eliminate-disjunctions=extreme", "--search-options", "--search", "astar(blind())"]),
-    ("4-hybrid", ["--translate-options", "--eliminate-disjunctions=hybrid", "--search-options", "--search", "astar(blind())"]),
+    ("1-none", ["--translate-options", "--eliminate-disjunctions=none", "--search-options"]),
+    ("2-all", ["--translate-options", "--eliminate-disjunctions=all", "--search-options"]),
+    ("3-extreme", ["--translate-options", "--eliminate-disjunctions=extreme", "--search-options"]),
+    ("4-hybrid", ["--translate-options", "--eliminate-disjunctions=hybrid", "--search-options"]),
 ]
 CONFIGS = [
     OptionsConfig(
         nick=config_nick,
         component_options=config,
         build_options=[build],
-        driver_options=['--search-time-limit', '20m', '--search-memory-limit', '4000', "--build", build])
+        driver_options=['--alias', 'lama-first', '--search-time-limit', '20m', '--search-memory-limit', '4000', "--build", build])
     for build in BUILDS
     for config_nick, config in CONFIG_NICKS
 ]
